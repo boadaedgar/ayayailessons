@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Las Conexiones de Claude — Gmail, Notion, GitHub y más</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root { --accent: #f5a623; --accent2: #4fc3f7; --green: #81c784; --purple: #ce93d8; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--accent2); font-size: 1em; margin-bottom: 16px; }
+    .reveal .slides section { text-align: left; }
+    .slide-label {
+      position: absolute; top: -40px; right: 0;
+      font-size: 0.45em; color: #666; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .emoji-anchor { font-size: 2.2em; display: block; margin-bottom: 8px; }
+    .metaphor {
+      background: rgba(245,166,35,0.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px; font-size: 0.78em;
+      margin-top: 16px; font-style: italic; color: #ddd;
+    }
+    .metaphor strong { color: var(--accent); font-style: normal; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    ul li { padding: 5px 0; font-size: 0.78em; line-height: 1.4; }
+    ul li::before { content: "▸ "; color: var(--accent); font-size: 1em; }
+    .example-box {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      border-radius: 8px; padding: 16px 20px;
+      font-size: 0.78em; line-height: 1.7;
+    }
+    .example-box .label {
+      font-size: 0.75em; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 6px; display: block;
+    }
+    .quiz-question {
+      font-size: 0.85em; font-weight: bold;
+      color: #eee; margin-bottom: 18px; line-height: 1.4;
+    }
+    .quiz-options { list-style: none; padding: 0; }
+    .quiz-options li {
+      padding: 8px 14px; margin: 6px 0;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px; font-size: 0.75em; cursor: default;
+    }
+    .quiz-options li::before { content: none; }
+    .quiz-answer {
+      background: rgba(76,175,80,0.2);
+      border: 1px solid #81c784 !important; color: #81c784;
+    }
+    .reveal-hint { font-size: 0.55em; color: #666; margin-top: 10px; font-style: italic; }
+    .remember {
+      background: rgba(245,166,35,0.15);
+      border-radius: 6px; padding: 12px 16px;
+      font-size: 0.75em; margin-top: 20px;
+      color: var(--accent); font-weight: bold;
+    }
+    .remember span { color: #aaa; font-weight: normal; }
+    .nav-hint { font-size: 0.42em; color: #444; text-align: center; margin-top: 30px; }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .tool-card {
+      border-radius: 8px;
+      padding: 10px 10px 8px;
+      font-size: 0.63em;
+      line-height: 1.4;
+      text-align: center;
+    }
+    .tool-card .icon { font-size: 1.5em; display: block; margin-bottom: 4px; }
+    .tool-card strong { display: block; font-size: 1.05em; margin-bottom: 2px; }
+    .tool-card span { color: #999; font-size: 0.9em; }
+    .tc-google { background: rgba(66,133,244,0.1); border: 1px solid rgba(66,133,244,0.3); }
+    .tc-work   { background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.25); }
+    .tc-code   { background: rgba(206,147,216,0.1); border: 1px solid rgba(206,147,216,0.3); }
+    .tc-data   { background: rgba(255,152,0,0.1); border: 1px solid rgba(255,152,0,0.3); }
+    .workflow-row {
+      display: flex; align-items: center; gap: 8px;
+      margin: 8px 0; flex-wrap: wrap;
+    }
+    .wf-pill {
+      border-radius: 6px; padding: 6px 12px;
+      font-size: 0.66em; font-weight: 500;
+    }
+    .wf-tool { background: rgba(79,195,247,0.12); border: 1px solid rgba(79,195,247,0.3); color: var(--accent2); }
+    .wf-action { background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.3); color: var(--accent); }
+    .wf-arrow { color: #555; font-size: 0.9em; }
+    .section-chip {
+      display: inline-block;
+      font-size: 0.5em; text-transform: uppercase;
+      letter-spacing: 1.5px; padding: 2px 10px;
+      border-radius: 20px; margin-bottom: 10px;
+      background: rgba(245,166,35,0.15);
+      color: var(--accent); border: 1px solid rgba(245,166,35,0.3);
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- SLIDE 1: HOOK -->
+  <section>
+    <div class="slide-label">Lección · Slide 1 de 5</div>
+    <span class="emoji-anchor">🔌</span>
+    <h2>¿Y si una sola IA manejara todo lo que usás?</h2>
+    <p style="font-size:0.82em; line-height:1.6; color:#ccc;">
+      Gmail. Notion. GitHub. Google Drive. Redes sociales.<br/>
+      Normalmente son herramientas separadas que no se hablan entre sí.<br/><br/>
+      <strong style="color:var(--accent);">Claude Code se conecta a todas ellas.</strong><br/>
+      Y puede hacer cosas en tu nombre — automáticamente.
+    </p>
+    <div class="nav-hint">Presioná → para continuar</div>
+  </section>
+
+  <!-- SLIDE 2: THE BIG IDEA -->
+  <section>
+    <div class="slide-label">Lección · Slide 2 de 5</div>
+    <h2>Claude como centro de comando</h2>
+    <p style="font-size:0.82em; line-height:1.5; color:#ddd;">
+      Claude no vive solo en una ventana de chat.<br/>
+      Tiene <strong style="color:var(--accent)">brazos</strong> que llegan a tus herramientas reales y <strong style="color:var(--accent)">hace cosas</strong> en ellas.
+    </p>
+    <div class="metaphor">
+      <strong>Metáfora:</strong> Es como tener un asistente en tu oficina que puede ir al correo, actualizar tu agenda, subir archivos y avisarte en Slack — todo en un solo pedido tuyo.
+    </div>
+    <ul style="margin-top:14px;">
+      <li>🛠️ Estas conexiones se llaman <strong>integraciones</strong> o <strong>MCP servers</strong></li>
+      <li>🗣️ Vos le pedís en palabras. Claude hace la acción real.</li>
+      <li>🔄 Puede combinar varias herramientas en una sola tarea</li>
+    </ul>
+  </section>
+
+  <!-- SLIDE 3: THE TOOLS GRID -->
+  <section>
+    <div class="slide-label">Lección · Slide 3 de 5</div>
+    <h2>¿Con qué se conecta?</h2>
+
+    <div class="tools-grid">
+      <div class="tool-card tc-google">
+        <span class="icon">📧</span>
+        <strong>Gmail</strong>
+        <span>Lee, responde<br/>y organiza emails</span>
+      </div>
+      <div class="tool-card tc-google">
+        <span class="icon">📁</span>
+        <strong>Google Drive</strong>
+        <span>Crea y lee<br/>documentos y carpetas</span>
+      </div>
+      <div class="tool-card tc-google">
+        <span class="icon">📅</span>
+        <strong>Google Calendar</strong>
+        <span>Crea eventos<br/>y revisa agenda</span>
+      </div>
+      <div class="tool-card tc-work">
+        <span class="icon">📒</span>
+        <strong>Notion</strong>
+        <span>Escribe páginas,<br/>actualiza bases</span>
+      </div>
+      <div class="tool-card tc-work">
+        <span class="icon">💬</span>
+        <strong>Slack</strong>
+        <span>Envía mensajes,<br/>lee canales</span>
+      </div>
+      <div class="tool-card tc-work">
+        <span class="icon">🎨</span>
+        <strong>Figma</strong>
+        <span>Lee diseños<br/>y deja comentarios</span>
+      </div>
+      <div class="tool-card tc-code">
+        <span class="icon">🐙</span>
+        <strong>GitHub</strong>
+        <span>Sube código,<br/>crea issues y PRs</span>
+      </div>
+      <div class="tool-card tc-code">
+        <span class="icon">🗄️</span>
+        <strong>Bases de datos</strong>
+        <span>Lee y escribe<br/>en PostgreSQL, SQLite</span>
+      </div>
+      <div class="tool-card tc-data">
+        <span class="icon">🕸️</span>
+        <strong>Apify</strong>
+        <span>Extrae datos<br/>de cualquier sitio web</span>
+      </div>
+      <div class="tool-card tc-data">
+        <span class="icon">🔍</span>
+        <strong>Búsqueda web</strong>
+        <span>Busca info en<br/>internet en tiempo real</span>
+      </div>
+      <div class="tool-card tc-data">
+        <span class="icon">⚡</span>
+        <strong>Zapier</strong>
+        <span>Conecta cualquier<br/>herramienta entre sí</span>
+      </div>
+      <div class="tool-card tc-code">
+        <span class="icon">📂</span>
+        <strong>Archivos locales</strong>
+        <span>Lee, escribe, organiza<br/>archivos en tu PC</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: REAL EXAMPLE -->
+  <section>
+    <div class="slide-label">Lección · Slide 4 de 5</div>
+    <h2>Ejemplo real — todo conectado</h2>
+    <div class="example-box">
+      <span class="label">Caso práctico · Apify + Notion + Gmail</span>
+
+      <div class="section-chip">El pedido</div><br/>
+      <em style="color:#ccc;">"Buscá los 5 competidores más activos en Instagram en fitness para Parkinson, guardá los datos en Notion y mandame un resumen por email."</em>
+      <br/><br/>
+
+      <div class="section-chip">Lo que Claude hace</div>
+
+      <div class="workflow-row">
+        <div class="wf-pill wf-tool">🕸️ Apify</div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-pill wf-action">extrae perfiles de Instagram</div>
+      </div>
+      <div class="workflow-row">
+        <div class="wf-pill wf-tool">📒 Notion</div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-pill wf-action">crea tabla con los datos encontrados</div>
+      </div>
+      <div class="workflow-row">
+        <div class="wf-pill wf-tool">📧 Gmail</div>
+        <div class="wf-arrow">→</div>
+        <div class="wf-pill wf-action">manda el resumen a tu correo</div>
+      </div>
+
+      <br/>
+      <strong style="color:#81c784;">Resultado:</strong> Tres herramientas trabajando juntas. Un solo pedido en lenguaje natural. Vos no tocaste ninguna.
+    </div>
+  </section>
+
+  <!-- SLIDE 5: QUIZ + TAKEAWAY -->
+  <section>
+    <div class="slide-label">Lección · Slide 5 de 5</div>
+    <h2>🧠 ¿Lo entendiste?</h2>
+    <p class="quiz-question">¿Qué hace Apify cuando Claude lo usa?</p>
+    <ul class="quiz-options">
+      <li>A) Traduce texto de un idioma a otro automáticamente</li>
+      <li>B) Extrae datos de sitios web — como Instagram, Google Maps o tiendas online</li>
+      <li>C) Es un sistema para guardar archivos en la nube</li>
+    </ul>
+    <p class="reveal-hint">Presioná → para ver la respuesta</p>
+    <div class="fragment">
+      <ul class="quiz-options">
+        <li class="quiz-answer">✓ Correcto: B — Apify saca datos de cualquier sitio web.</li>
+      </ul>
+      <div class="remember">
+        💡 Recordá: <span>Claude no trabaja solo. Se conecta a tus herramientas reales y las coordina. Vos pedís en palabras. Él ejecuta en acción.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

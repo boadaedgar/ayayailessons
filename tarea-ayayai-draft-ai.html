@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarea Ayayai — ¿Qué quiero hacer con IA?</title>
+  <style>
+    :root {
+      --accent: #f5a623;
+      --accent2: #4fc3f7;
+      --bg: #1a1a2e;
+      --surface: #16213e;
+      --surface2: #0f3460;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --green: #81c784;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.7;
+      padding: 40px 20px;
+    }
+
+    .container { max-width: 780px; margin: 0 auto; }
+
+    /* Header */
+    .header {
+      border-left: 4px solid var(--accent);
+      padding-left: 20px;
+      margin-bottom: 48px;
+    }
+    .header .tag {
+      font-size: 0.72em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .header h1 {
+      font-size: 2em;
+      color: #fff;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .header p {
+      margin-top: 12px;
+      color: var(--text-muted);
+      font-size: 0.95em;
+    }
+
+    /* Sections */
+    section { margin-bottom: 48px; }
+    section h2 {
+      font-size: 1.1em;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent2);
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(79,195,247,0.2);
+    }
+
+    /* Trigger questions */
+    .questions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .question-card {
+      background: var(--surface);
+      border: 1px solid rgba(245,166,35,0.2);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 0.88em;
+      color: #ccc;
+      line-height: 1.5;
+    }
+    .question-card::before {
+      content: "?";
+      display: block;
+      font-size: 1.4em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .style-note {
+      background: rgba(79,195,247,0.06);
+      border: 1px solid rgba(79,195,247,0.18);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 0.83em;
+      color: #aaa;
+      line-height: 1.6;
+    }
+    .style-note strong { color: var(--accent2); }
+
+    /* Domain table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.88em; }
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      background: var(--surface2);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: #ccc;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    td:first-child { color: var(--accent2); font-weight: 600; }
+
+    /* Draft sections */
+    .draft-section {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      border-left: 3px solid var(--accent);
+    }
+    .draft-section h3 { font-size: 1em; color: var(--accent); margin-bottom: 8px; }
+    .draft-section p { font-size: 0.88em; color: #aaa; margin-bottom: 0; }
+
+    .tip {
+      background: rgba(245,166,35,0.08);
+      border: 1px solid rgba(245,166,35,0.25);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 0.8em;
+      color: #bbb;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    .tip strong { color: var(--accent); }
+
+    .prompt-components {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .prompt-tag {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.78em;
+      color: var(--accent2);
+    }
+    .prompt-tag.style-tag {
+      background: rgba(245,166,35,0.1);
+      border-color: rgba(245,166,35,0.3);
+      color: var(--accent);
+    }
+
+    /* Checklist */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.9em;
+      color: #ccc;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-box {
+      width: 20px; height: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Examples — accordion */
+    .examples-list { display: flex; flex-direction: column; gap: 12px; }
+
+    details {
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid rgba(79,195,247,0.12);
+      overflow: hidden;
+    }
+    details[open] { border-color: rgba(79,195,247,0.3); }
+
+    summary {
+      cursor: pointer;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      user-select: none;
+      list-style: none;
+      outline: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary:hover { background: rgba(255,255,255,0.03); }
+
+    .ex-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1em;
+      flex-shrink: 0;
+    }
+    .ex-title { flex: 1; }
+    .ex-title strong {
+      display: block;
+      font-size: 0.9em;
+      color: #eee;
+    }
+    .ex-title span {
+      font-size: 0.75em;
+      color: var(--text-muted);
+    }
+    .ex-arrow {
+      font-size: 0.7em;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+    details[open] .ex-arrow { transform: rotate(90deg); }
+
+    .ex-body {
+      padding: 0 22px 22px 22px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .ex-row { margin-top: 16px; }
+    .ex-label {
+      font-size: 0.7em;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent2);
+      margin-bottom: 3px;
+    }
+    .ex-label.style { color: var(--accent); }
+    .ex-content { font-size: 0.86em; color: #ccc; line-height: 1.6; }
+    .ex-note { font-size: 0.74em; color: var(--text-muted); font-style: italic; margin-top: 3px; }
+
+    .prompt-box {
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+      padding: 14px 16px;
+      font-family: 'Consolas', monospace;
+      font-size: 0.82em;
+      color: #b0d4e8;
+      line-height: 1.6;
+      border-left: 3px solid var(--accent2);
+    }
+
+    /* Entrega */
+    .entrega-card {
+      background: rgba(245,166,35,0.08);
+      border: 1px solid rgba(245,166,35,0.3);
+      border-radius: 10px;
+      padding: 24px 28px;
+      text-align: center;
+    }
+    .entrega-card p { font-size: 0.9em; color: #ccc; margin-bottom: 6px; }
+    .entrega-card .tiempo {
+      font-size: 0.8em;
+      color: var(--accent);
+      margin-top: 12px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 580px) {
+      .questions-grid { grid-template-columns: 1fr; }
+      body { padding: 24px 16px; }
+      .header h1 { font-size: 1.5em; }
+    }
+
+    @media print {
+      body { background: white; color: #111; }
+      details { background: #f9f9f9 !important; border-color: #ddd !important; }
+      details[open] { border-color: #bbb !important; }
+      .draft-section, .entrega-card, .question-card, .tip, .prompt-box, .style-note {
+        background: #f5f5f5 !important;
+        border-color: #ddd !important;
+        color: #111 !important;
+      }
+      h1, h2, h3, td:first-child, .prompt-tag, .ex-label { color: #333 !important; }
+      td, .checklist li, .ex-content, .ex-note, th, summary .ex-title strong, summary .ex-title span {
+        color: #444 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="tag">Tarea · Ayayai</div>
+    <h1>¿Qué quiero hacer con IA?</h1>
+    <p>Describí 1, 2 o 3 cosas que querés crear, hacer o aprender con inteligencia artificial.<br>
+    Al terminar vas a tener algo concreto para probar esta misma semana.</p>
+  </div>
+
+  <!-- Inspiración -->
+  <section>
+    <h2>Antes de escribir: buscá tu idea</h2>
+    <div class="questions-grid">
+      <div class="question-card">¿Qué tarea hacés hoy que es repetitiva o te cansa?</div>
+      <div class="question-card">¿Qué quisiste hacer y no tenías tiempo o habilidad?</div>
+      <div class="question-card">¿Qué te impresionó de la IA la primera vez que la viste en acción?</div>
+      <div class="question-card">Si pudieras delegarle una cosa a una IA esta semana, ¿qué sería?</div>
+    </div>
+    <div class="style-note">
+      <strong>Estilo de escritura para el draft:</strong> escribí como si se lo explicaras a un colega. Directo, en primera persona, sin formalismos. No hace falta que suene académico — hace falta que sea honesto. Si no sabés algo, decilo. Si tenés dudas, incluílas.
+    </div>
+  </section>
+
+  <!-- Dominios -->
+  <section>
+    <h2>Dónde puede ayudar la IA</h2>
+    <table>
+      <thead>
+        <tr><th>Área</th><th>Ejemplos concretos</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Trabajo</td><td>Resumir reuniones, responder mails, preparar informes</td></tr>
+        <tr><td>Creatividad</td><td>Escribir textos, generar ideas, revisar borradores</td></tr>
+        <tr><td>Aprendizaje</td><td>Que te explique algo, que te haga preguntas, que traduzca</td></tr>
+        <tr><td>Personal</td><td>Organizar decisiones, escribir un plan, reflexionar sobre algo</td></tr>
+        <tr><td>Negocio</td><td>Responder clientes, crear contenido, mejorar procesos</td></tr>
+        <tr><td>Técnico / Especializado</td><td>Analizar datos, documentar procesos, generar protocolos</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- La consigna -->
+  <section>
+    <h2>Tu borrador — completá para cada idea</h2>
+
+    <div class="draft-section">
+      <h3>1. El Qué</h3>
+      <p>¿Qué exactamente querés crear, hacer o aprender?</p>
+      <div class="tip">
+        <strong>Test rápido:</strong> ¿Podés describir el resultado en una oración concreta?<br>
+        "Aprender IA" → demasiado vago. &nbsp;|&nbsp; "Hacer que Claude revise mis mails antes de enviarlos" → vas bien.
+      </div>
+    </div>
+
+    <div class="draft-section">
+      <h3>2. El Por Qué</h3>
+      <p>¿Para qué lo querés hacer? ¿Qué problema resuelve o qué oportunidad abre? ¿Qué cambia si lo lográs?</p>
+    </div>
+
+    <div class="draft-section">
+      <h3>3. El Cómo</h3>
+      <p>Plan paso a paso (aunque sea rough), herramientas que usarías, estilo o enfoque.</p>
+    </div>
+
+    <div class="draft-section">
+      <h3>4. El Prompt</h3>
+      <p>Escribí el prompt o instrucción que le darías a una IA para arrancar. No tiene que ser perfecto.</p>
+      <div class="tip">
+        <strong>Un buen prompt tiene al menos:</strong>
+      </div>
+      <div class="prompt-components">
+        <span class="prompt-tag">Contexto — quién sos, qué situación tenés</span>
+        <span class="prompt-tag">Pedido — qué querés que haga exactamente</span>
+        <span class="prompt-tag">Formato — cómo querés la respuesta</span>
+        <span class="prompt-tag style-tag">Tono / Estilo — formal, técnico, amigable, directo…</span>
+      </div>
+    </div>
+
+    <div class="draft-section">
+      <h3>5. Cómo sabés que está bien</h3>
+      <p>¿Cómo reconocés que el resultado es suficientemente bueno? ¿Qué tendría que tener o hacer?</p>
+    </div>
+
+    <div class="draft-section">
+      <h3>6. Primer paso concreto esta semana</h3>
+      <p>¿Qué es lo primero que podrías hacer para avanzar en los próximos 7 días?</p>
+    </div>
+
+    <div class="draft-section" style="border-left-color: var(--text-muted);">
+      <h3 style="color: var(--text-muted);">7. Otros detalles (opcional)</h3>
+      <p>Contexto extra, restricciones, ideas sueltas, preguntas que tenés.</p>
+    </div>
+  </section>
+
+  <!-- Test de especificidad -->
+  <section>
+    <h2>Test de especificidad — antes de entregar</h2>
+    <ul class="checklist">
+      <li><div class="check-box"></div><span>¿Puedo describir el resultado en una oración concreta?</span></li>
+      <li><div class="check-box"></div><span>¿Sé a quién ayuda o qué problema resuelve?</span></li>
+      <li><div class="check-box"></div><span>¿Puedo imaginar cómo se vería si estuviera terminado?</span></li>
+    </ul>
+  </section>
+
+  <!-- Ejemplos -->
+  <section>
+    <h2>Ejemplos completos — hacé clic para expandir</h2>
+    <div class="examples-list">
+
+      <!-- 1. Diseño -->
+      <details>
+        <summary>
+          <div class="ex-icon">🎨</div>
+          <div class="ex-title">
+            <strong>Mensaje de bienvenida para clientes</strong>
+            <span>Estudio de diseño</span>
+          </div>
+          <span class="ex-arrow">▶</span>
+        </summary>
+        <div class="ex-body">
+          <div class="ex-row">
+            <div class="ex-label">Qué</div>
+            <div class="ex-content">Crear un texto de bienvenida para nuevos clientes del estudio.</div>
+            <div class="ex-note">Concreto: dice exactamente qué va a existir cuando termine.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Por qué</div>
+            <div class="ex-content">Pierdo tiempo escribiendo el mismo mensaje cada vez. Quiero algo que refleje mi voz y pueda enviar sin pensar.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo</div>
+            <div class="ex-content">Le paso a Claude 2 mensajes que ya escribí como referencia y pido 3 versiones para elegir.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label style">Tono / Estilo del prompt</div>
+            <div class="ex-content">Primera persona. Cálido pero profesional. Con ejemplos propios como referencia de voz.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Prompt</div>
+            <div class="prompt-box">"Tengo un estudio de diseño. Escribí 3 versiones de un mensaje de bienvenida para nuevos clientes. Tiene que sonar cálido pero profesional, no corporativo. Acá van ejemplos de cómo escribo yo: [ejemplos]. Formato: cada versión en un párrafo separado, máximo 5 oraciones."</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo sé que está bien</div>
+            <div class="ex-content">Si puedo enviarlo sin cambiar más de 2 o 3 palabras.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Primer paso esta semana</div>
+            <div class="ex-content">Abrir Claude con 2 mensajes que ya escribí y hacer el primer intento.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 2. Docente -->
+      <details>
+        <summary>
+          <div class="ex-icon">📚</div>
+          <div class="ex-title">
+            <strong>Explicaciones por nivel para alumnos</strong>
+            <span>Docente</span>
+          </div>
+          <span class="ex-arrow">▶</span>
+        </summary>
+        <div class="ex-body">
+          <div class="ex-row">
+            <div class="ex-label">Qué</div>
+            <div class="ex-content">Generar explicaciones del mismo concepto en 3 niveles de dificultad para grupos de distintas edades.</div>
+            <div class="ex-note">Concreto: un concepto → 3 versiones listas para usar en clase.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Por qué</div>
+            <div class="ex-content">Preparo materiales por separado para cada grupo y me lleva horas. Con esto, el punto de partida ya está y solo ajusto.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo</div>
+            <div class="ex-content">Paso el concepto, el rango de edad de cada grupo, y el vocabulario esperado. Claude genera las 3 versiones con ejemplos distintos para cada una.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label style">Tono / Estilo del prompt</div>
+            <div class="ex-content">Técnico y específico. Nombrar el concepto exacto, la edad, y el nivel de lenguaje esperado. Pedir ejemplos de la vida cotidiana.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Prompt</div>
+            <div class="prompt-box">"Soy docente de matemática. Explicame el concepto de 'fracción' en 3 versiones: para alumnos de 8 años (primaria), 13 años (secundaria básica) y 16 años (secundaria avanzada). Cada explicación con un ejemplo de la vida real diferente. Máximo 5 oraciones por versión. Evitá jerga matemática en las versiones de menor edad."</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo sé que está bien</div>
+            <div class="ex-content">Si puedo leerla en clase sin agregar más de una oración de contexto propio.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Primer paso esta semana</div>
+            <div class="ex-content">Elegir el concepto que doy esta semana y hacer el prompt con ese tema.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 3. Nutricionista -->
+      <details>
+        <summary>
+          <div class="ex-icon">🥗</div>
+          <div class="ex-title">
+            <strong>Texto educativo para newsletter de pacientes</strong>
+            <span>Nutricionista</span>
+          </div>
+          <span class="ex-arrow">▶</span>
+        </summary>
+        <div class="ex-body">
+          <div class="ex-row">
+            <div class="ex-label">Qué</div>
+            <div class="ex-content">Generar el texto "Recomendación del mes" para el newsletter que envío a mis pacientes.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Por qué</div>
+            <div class="ex-content">Escribir contenido educativo me lleva tiempo fuera de la consulta. Quiero tener una base para editar, no empezar de cero cada mes.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo</div>
+            <div class="ex-content">Le paso el tema del mes y el perfil típico de mis pacientes. Claude genera el texto y yo lo reviso y personalizo antes de enviar.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label style">Tono / Estilo del prompt</div>
+            <div class="ex-content">Profesional pero accesible. Sin jerga médica. Tono didáctico y empático. Pedir que incluya consejos accionables.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Prompt</div>
+            <div class="prompt-box">"Soy nutricionista clínica. Escribí un texto de 150 palabras sobre 'hidratación en invierno' para el newsletter mensual a pacientes adultos. Tono: profesional pero amigable, sin términos médicos complejos. Incluí 2 consejos prácticos y una pregunta de reflexión al final."</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo sé que está bien</div>
+            <div class="ex-content">Si mis pacientes lo entienden sin preguntarme qué significa algo.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Primer paso esta semana</div>
+            <div class="ex-content">Definir el tema del próximo newsletter y armar el prompt con ese tema.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 4. Ingeniero agrónomo / invernaderos -->
+      <details>
+        <summary>
+          <div class="ex-icon">🌱</div>
+          <div class="ex-title">
+            <strong>Análisis semanal de datos de invernadero</strong>
+            <span>Ingeniero agrónomo</span>
+          </div>
+          <span class="ex-arrow">▶</span>
+        </summary>
+        <div class="ex-body">
+          <div class="ex-row">
+            <div class="ex-label">Qué</div>
+            <div class="ex-content">Un prompt reutilizable donde pego los datos de la semana (temperatura, humedad, estado de cultivos) y recibo alertas, análisis de desvíos y un resumen para el equipo.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Por qué</div>
+            <div class="ex-content">Registro todo en planillas separadas y no tengo tiempo de cruzar la info para detectar anomalías rápido. Esto me daría un análisis en segundos.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo</div>
+            <div class="ex-content">Armar una plantilla fija con los campos de datos. Cada semana la completo y la pego en Claude. El output siempre tiene el mismo formato: tabla de alertas + conclusión.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label style">Tono / Estilo del prompt</div>
+            <div class="ex-content">Técnico y estructurado. Con datos numéricos. Pedir salida en formato tabla + párrafo de conclusión. Especificar los rangos óptimos del cultivo.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Prompt</div>
+            <div class="prompt-box">"Soy ingeniero agrónomo. Analizá los datos de mi invernadero esta semana: temp promedio [X°C], humedad relativa [X%], estado visual de plantas [descripción], litros de riego [X]. Rangos óptimos para [cultivo]: temp [X-X°C], humedad [X-X%]. Generá: 1) tabla de alertas (variable | valor registrado | valor óptimo | acción recomendada), 2) párrafo de conclusión de 3 oraciones para enviar al equipo."</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo sé que está bien</div>
+            <div class="ex-content">Si el análisis me ahorra al menos 30 min de revisión manual y no me falta ninguna alerta crítica.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Primer paso esta semana</div>
+            <div class="ex-content">Copiar los datos de la última semana y hacer el primer análisis con esos números.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 5. Ingeniero almacenamiento industrial -->
+      <details>
+        <summary>
+          <div class="ex-icon">🏭</div>
+          <div class="ex-title">
+            <strong>Documentación de procedimientos operativos</strong>
+            <span>Ingeniero — Almacenamiento industrial</span>
+          </div>
+          <span class="ex-arrow">▶</span>
+        </summary>
+        <div class="ex-body">
+          <div class="ex-row">
+            <div class="ex-label">Qué</div>
+            <div class="ex-content">Generar documentación estándar (POE) de procedimientos de seguridad para operaciones de carga y descarga en el depósito.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Por qué</div>
+            <div class="ex-content">Los procedimientos existen pero nunca están formalizados. Para auditorías y capacitaciones necesito documentos que pueda usar directamente. Escribirlos desde cero lleva días.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo</div>
+            <div class="ex-content">Describo el proceso en lenguaje natural como si se lo explicara a un operario nuevo. Claude lo transforma en formato de Procedimiento Operativo Estándar con la estructura correcta.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label style">Tono / Estilo del prompt</div>
+            <div class="ex-content">Formal y técnico. Voz instructiva en tercera persona ("el operario debe…"). Con numeración, puntos de control de seguridad y estructura de POE.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Prompt</div>
+            <div class="prompt-box">"Soy ingeniero de almacenamiento industrial. Voy a describir el proceso de carga de pallets en camión. Formalizalo como Procedimiento Operativo Estándar con: objetivo, responsables, equipos necesarios, pasos numerados, y 3 puntos críticos de seguridad. Tono: formal, instructivo, tercera persona. Proceso: [descripción en lenguaje natural]."</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo sé que está bien</div>
+            <div class="ex-content">Si puedo usarlo en una capacitación sin reescribir nada y pasa una auditoría interna sin observaciones.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Primer paso esta semana</div>
+            <div class="ex-content">Elegir un proceso crítico y escribirlo en lenguaje natural antes de pasárselo a Claude.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 6. FitnessParkinson / NeurofitNess -->
+      <details>
+        <summary>
+          <div class="ex-icon">🧠</div>
+          <div class="ex-title">
+            <strong>Lógica de rutinas adaptativas para app Parkinson</strong>
+            <span>App fitnessparkinson · Neurofitness</span>
+          </div>
+          <span class="ex-arrow">▶</span>
+        </summary>
+        <div class="ex-body">
+          <div class="ex-row">
+            <div class="ex-label">Qué</div>
+            <div class="ex-content">Diseñar la lógica de adaptación diaria de la app: el usuario reporta su estado al abrir la app y el sistema recomienda el tipo de rutina y la duración según esos valores.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Por qué</div>
+            <div class="ex-content">Quiero que la app responda al estado real del paciente ese día, no que tenga rutinas fijas. Para eso necesito definir la lógica antes de pasársela al desarrollador.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo</div>
+            <div class="ex-content">Usar Claude para diseñar el árbol de decisión: inputs del usuario → criterios → tipo de rutina + mensajes motivacionales por nivel. Luego ese documento va al dev como especificación.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label style">Tono / Estilo del prompt</div>
+            <div class="ex-content">Funcional y estructurado. Pensar como product manager / UX. Pedir tabla de lógica + ejemplos de mensajes. Output listo para ser implementado.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Prompt</div>
+            <div class="prompt-box">"Estoy diseñando una app de ejercicios para personas con Parkinson. El usuario responde al abrir la app: nivel de temblor (1-5), rigidez (1-5), energía percibida (1-5). Diseñá: 1) tabla de combinaciones de scores → tipo de rutina recomendada (intensidad alta / media / baja / reposo activo), 2) duración sugerida de sesión por nivel, 3) 2 ejemplos de mensajes motivacionales para cada nivel de intensidad. Formato de tabla para ítems 1 y 2."</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo sé que está bien</div>
+            <div class="ex-content">Si el desarrollador puede implementar la lógica sin hacerme más de 3 preguntas de aclaración.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Primer paso esta semana</div>
+            <div class="ex-content">Definir qué 3 inputs va a responder el usuario al abrir la app y hacer el prompt con eso.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- 7. Agente inmobiliario -->
+      <details>
+        <summary>
+          <div class="ex-icon">🏠</div>
+          <div class="ex-title">
+            <strong>Publicaciones de propiedades para portales y redes</strong>
+            <span>Agente inmobiliario</span>
+          </div>
+          <span class="ex-arrow">▶</span>
+        </summary>
+        <div class="ex-body">
+          <div class="ex-row">
+            <div class="ex-label">Qué</div>
+            <div class="ex-content">Generar las descripciones de cada propiedad en 3 formatos: texto para portal, caption de Instagram y mensaje de WhatsApp para interesados.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Por qué</div>
+            <div class="ex-content">Escribo el mismo texto genérico para todas las propiedades. Quiero que cada publicación tenga gancho y resalte lo mejor de cada una sin que me lleve más de 5 minutos.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo</div>
+            <div class="ex-content">Completar una ficha con los datos técnicos de la propiedad y pedirle a Claude los 3 formatos en un solo prompt. Solo reviso y publico.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label style">Tono / Estilo del prompt</div>
+            <div class="ex-content">Comercial y aspiracional para portal e Instagram. Directo y con CTA para WhatsApp. Especificar largo y tono para cada formato.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Prompt</div>
+            <div class="prompt-box">"Soy agente inmobiliaria. Propiedad: [m², ambientes, zona, destacados]. Escribí: 1) descripción de 120 palabras para portal (tono informativo y atractivo), 2) caption de 3 líneas para Instagram (aspiracional, emoji permitido), 3) mensaje de WhatsApp para interesados (directo, con call to action). Resaltá los 2 puntos más vendedores de esta propiedad."</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Cómo sé que está bien</div>
+            <div class="ex-content">Si un interesado me escribe por la propiedad después de ver la publicación sin que yo la haya contactado primero.</div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-label">Primer paso esta semana</div>
+            <div class="ex-content">Tomar una propiedad activa y cargar sus datos en el prompt para ver el resultado.</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- Entrega -->
+  <section>
+    <div class="entrega-card">
+      <p>Un documento (Google Doc, Notion, Word, lo que uses) con tu borrador completo.</p>
+      <p>No necesita ser largo ni perfecto — necesita ser <strong style="color: var(--accent);">honesto y concreto.</strong></p>
+      <div class="tiempo">⏱ Tiempo estimado: 30 a 45 minutos</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

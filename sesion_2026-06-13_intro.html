@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ayayai — Sesión 13 junio 2026</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: white;
+      padding: 14mm 16mm;
+      page-break-after: always;
+    }
+
+    /* ── PAGE 1: Portada ── */
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 297mm;
+      background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 60%, #1a5276 100%);
+      color: white;
+      padding: 20mm;
+    }
+
+    .cover .logo {
+      font-size: 64px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+
+    .cover .tagline {
+      font-size: 15px;
+      color: #94a3b8;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+
+    .cover h1 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      color: #f0f9ff;
+    }
+
+    .cover .date-box {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 12px;
+      padding: 16px 40px;
+      margin: 24px 0;
+    }
+
+    .cover .date-box .fecha {
+      font-size: 22px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .cover .date-box .hora {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .horarios {
+      display: flex;
+      gap: 20px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .horarios .ciudad {
+      text-align: center;
+    }
+
+    .horarios .ciudad .nombre {
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .horarios .ciudad .tiempo {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .cover .zoom-badge {
+      margin-top: 40px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 8px 24px;
+      font-size: 13px;
+      color: #94a3b8;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── PAGE 2: Agenda ── */
+    .section-page {
+      padding: 14mm 16mm;
+      min-height: 297mm;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid #38bdf8;
+    }
+
+    .page-header .brand {
+      font-size: 22px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -1px;
+    }
+
+    .page-header .brand span { color: #38bdf8; }
+
+    .page-header .session-label {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 28px;
+    }
+
+    /* Agenda items */
+    .agenda-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 14px 18px;
+      border-left: 4px solid #e2e8f0;
+    }
+
+    .agenda-item.highlight { border-left-color: #38bdf8; background: #f0f9ff; }
+    .agenda-item.highlight2 { border-left-color: #a78bfa; background: #faf5ff; }
+    .agenda-item.highlight3 { border-left-color: #34d399; background: #f0fdf4; }
+
+    .agenda-time {
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+      min-width: 60px;
+      padding-top: 2px;
+    }
+
+    .agenda-content .titulo {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .agenda-content .detalle {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .agenda-presenter {
+      margin-left: auto;
+      font-size: 11px;
+      background: #1e3a5f;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+
+    /* Temas section */
+    .temas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .tema-card {
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+    }
+
+    .tema-card.azul { background: #0f172a; color: white; }
+    .tema-card.morado { background: #4c1d95; color: white; }
+    .tema-card.verde { background: #064e3b; color: white; }
+
+    .tema-card .icono { font-size: 32px; margin-bottom: 10px; }
+    .tema-card .nombre { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .tema-card .desc { font-size: 11px; opacity: 0.75; line-height: 1.5; }
+
+    /* Quote box */
+    .quote-box {
+      background: #f0f9ff;
+      border-left: 4px solid #38bdf8;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 20px;
+      margin-bottom: 24px;
+    }
+
+    .quote-box p {
+      font-size: 14px;
+      font-style: italic;
+      color: #1e3a5f;
+      line-height: 1.6;
+    }
+
+    /* ── PAGE 3: Temas detalle ── */
+    .tema-section {
+      margin-bottom: 28px;
+    }
+
+    .tema-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .tema-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .num-azul { background: #1e3a5f; }
+    .num-morado { background: #4c1d95; }
+    .num-verde { background: #064e3b; }
+
+    .tema-title h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .tema-title .presentador-tag {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .puntos {
+      list-style: none;
+      padding-left: 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .puntos li {
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.5;
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .puntos li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+
+    .puntos li strong { color: #0f172a; }
+
+    .tip-box {
+      margin-top: 10px;
+      margin-left: 44px;
+      background: #fef9c3;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #713f12;
+    }
+
+    .tip-box strong { display: block; margin-bottom: 2px; }
+
+    /* ── PAGE 4: Para llevar / cierre ── */
+    .llevar-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .llevar-card {
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .llevar-card .nombre-persona {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .llevar-card .nicho {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .llevar-card .accion {
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.6;
+      padding-left: 14px;
+      border-left: 3px solid #38bdf8;
+    }
+
+    .proximos {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 20px 24px;
+      color: white;
+    }
+
+    .proximos h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #38bdf8;
+    }
+
+    .proximos ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .proximos ul li {
+      font-size: 13px;
+      color: #cbd5e1;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .proximos ul li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer .brand-small {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .footer .brand-small span { color: #38bdf8; }
+
+    .footer .fecha-small {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    /* Print styles */
+    @media print {
+      body { background: white; }
+      .page { margin: 0; box-shadow: none; }
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PÁGINA 1: PORTADA                           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="logo">ayayai</div>
+  <div class="tagline">Aprendemos juntos · Tecnología e IA</div>
+
+  <h1>Sesión de Inteligencia Artificial</h1>
+
+  <div class="date-box">
+    <div class="fecha">Sábado 13 de junio, 2026</div>
+    <div class="hora">Vía Zoom · Sesión práctica</div>
+  </div>
+
+  <div class="horarios">
+    <div class="ciudad">
+      <div class="nombre">Chicago</div>
+      <div class="tiempo">8:30 AM</div>
+    </div>
+    <div class="ciudad">
+      <div class="nombre">Florida</div>
+      <div class="tiempo">9:30 AM</div>
+    </div>
+    <div class="ciudad">
+      <div class="nombre">Venezuela</div>
+      <div class="tiempo">9:30 AM</div>
+    </div>
+    <div class="ciudad">
+      <div class="nombre">Argentina</div>
+      <div class="tiempo">10:30 AM</div>
+    </div>
+    <div class="ciudad">
+      <div class="nombre">Francia</div>
+      <div class="tiempo">3:30 PM</div>
+    </div>
+  </div>
+
+  <div class="zoom-badge">
+    📹 &nbsp; Conéctate desde tu teléfono o computadora
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PÁGINA 2: AGENDA + RESUMEN DE TEMAS         -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page section-page">
+  <div class="page-header">
+    <div class="brand">ay<span>ai</span></div>
+    <div class="session-label">Sesión · 13 junio 2026</div>
+  </div>
+
+  <h2>Agenda del día</h2>
+  <div class="subtitle">Sesión práctica de ~90 minutos</div>
+
+  <div class="agenda-list">
+    <div class="agenda-item">
+      <div class="agenda-time">8:30</div>
+      <div class="agenda-content">
+        <div class="titulo">Bienvenida y contexto</div>
+        <div class="detalle">Repaso rápido de sesiones anteriores. ¿Qué veremos hoy?</div>
+      </div>
+      <div class="agenda-presenter">Edgar</div>
+    </div>
+
+    <div class="agenda-item highlight">
+      <div class="agenda-time">8:35</div>
+      <div class="agenda-content">
+        <div class="titulo">Cursor — Experiencia real con IA y código</div>
+        <div class="detalle">Jean nos comparte cómo usa Cursor en su trabajo real</div>
+      </div>
+      <div class="agenda-presenter">Jean (invitado)</div>
+    </div>
+
+    <div class="agenda-item highlight2">
+      <div class="agenda-time">9:00</div>
+      <div class="agenda-content">
+        <div class="titulo">CapCut — Repaso de puntos clave</div>
+        <div class="detalle">Revisamos lo más importante de la sesión de Valeria. Práctica rápida.</div>
+      </div>
+      <div class="agenda-presenter">Edgar / Todos</div>
+    </div>
+
+    <div class="agenda-item highlight3">
+      <div class="agenda-time">9:25</div>
+      <div class="agenda-content">
+        <div class="titulo">Claude Code — Introducción práctica</div>
+        <div class="detalle">¿Qué es? ¿Para qué sirve? Demo en vivo.</div>
+      </div>
+      <div class="agenda-presenter">Edgar</div>
+    </div>
+
+    <div class="agenda-item">
+      <div class="agenda-time">9:50</div>
+      <div class="agenda-content">
+        <div class="titulo">Preguntas, reflexión y cierre</div>
+        <div class="detalle">Una cosa que aprendí. Próximos pasos.</div>
+      </div>
+      <div class="agenda-presenter">Todos</div>
+    </div>
+  </div>
+
+  <div class="temas-grid">
+    <div class="tema-card azul">
+      <div class="icono">💻</div>
+      <div class="nombre">Cursor</div>
+      <div class="desc">IA integrada en el editor de código. Caso real.</div>
+    </div>
+    <div class="tema-card morado">
+      <div class="icono">🎬</div>
+      <div class="nombre">CapCut</div>
+      <div class="desc">Crear y editar videos para Instagram y redes.</div>
+    </div>
+    <div class="tema-card verde">
+      <div class="icono">🤖</div>
+      <div class="nombre">Claude Code</div>
+      <div class="desc">IA avanzada para crear contenido y automatizar tareas.</div>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    <p>"No importa si no entienden todo hoy. Lo importante es que practiquen <strong>una cosa nueva</strong> esta semana."</p>
+  </div>
+
+  <div class="footer">
+    <div class="brand-small">ay<span>ai</span></div>
+    <div class="fecha-small">Junio 2026 · Aprendemos juntos</div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PÁGINA 3: DETALLE DE LOS 3 TEMAS            -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page section-page">
+  <div class="page-header">
+    <div class="brand">ay<span>ai</span></div>
+    <div class="session-label">Temas de hoy</div>
+  </div>
+
+  <h2>¿Qué vemos hoy?</h2>
+  <div class="subtitle">Tres herramientas. Aplicaciones reales para tu día a día.</div>
+
+  <!-- Tema 1: Cursor -->
+  <div class="tema-section">
+    <div class="tema-title">
+      <div class="tema-num num-azul">1</div>
+      <div>
+        <h3>Cursor &nbsp;<span class="presentador-tag">— Jean (invitado especial)</span></h3>
+      </div>
+    </div>
+    <ul class="puntos">
+      <li><strong>¿Qué es?</strong> Un programa para escribir código, pero con IA adentro.</li>
+      <li><strong>¿Cómo lo usa Jean?</strong> Le describe lo que quiere y la IA lo ayuda a construirlo.</li>
+      <li><strong>¿Por qué importa?</strong> Muestra cómo la IA amplifica lo que ya sabes hacer.</li>
+      <li><strong>Idea clave:</strong> No necesitas saber programar para entender el concepto y aplicarlo a tu trabajo.</li>
+    </ul>
+    <div class="tip-box">
+      <strong>💡 Piénsalo así:</strong>
+      Como tener un asistente que redacta, organiza y ejecuta mientras tú diriges.
+    </div>
+  </div>
+
+  <!-- Tema 2: CapCut -->
+  <div class="tema-section">
+    <div class="tema-title">
+      <div class="tema-num num-morado">2</div>
+      <div>
+        <h3>CapCut &nbsp;<span class="presentador-tag">— Repaso de la sesión de Valeria</span></h3>
+      </div>
+    </div>
+    <ul class="puntos">
+      <li><strong>Importar video</strong> desde tu galería o grabar directo en la app.</li>
+      <li><strong>Cortar y ordenar clips</strong> — quita lo que no sirve, queda solo lo bueno.</li>
+      <li><strong>Texto en pantalla</strong> — título, subtítulos, llamada a la acción.</li>
+      <li><strong>Subtítulos automáticos</strong> — CapCut transcribe tu voz. Gran herramienta.</li>
+      <li><strong>Música de fondo</strong> — biblioteca gratuita incluida en la app.</li>
+      <li><strong>Exportar en 1080p</strong> — calidad óptima para Instagram.</li>
+    </ul>
+    <div class="tip-box">
+      <strong>🎯 Ejercicio rápido:</strong>
+      Toma un video de 30 segundos de tu teléfono. Agrégale un texto de título y subtítulos automáticos. Expórtalo.
+    </div>
+  </div>
+
+  <!-- Tema 3: Claude Code -->
+  <div class="tema-section">
+    <div class="tema-title">
+      <div class="tema-num num-verde">3</div>
+      <div>
+        <h3>Claude Code &nbsp;<span class="presentador-tag">— Introducción</span></h3>
+      </div>
+    </div>
+    <ul class="puntos">
+      <li><strong>Claude</strong> es una IA (como ChatGPT), desarrollada por Anthropic.</li>
+      <li><strong>Claude Code</strong> es la versión para tareas más avanzadas: organizar, crear, automatizar.</li>
+      <li><strong>Demo en vivo:</strong> Crear un plan de contenido para Instagram en segundos.</li>
+      <li><strong>Para ti:</strong> Se puede usar para posts, descripciones, guías, planes de clase — sin saber programar.</li>
+    </ul>
+    <div class="tip-box">
+      <strong>💡 Idea clave:</strong>
+      "No necesitas saber cómo funciona por dentro. Solo necesitas saber qué quieres."
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="brand-small">ay<span>ai</span></div>
+    <div class="fecha-small">Junio 2026 · Aprendemos juntos</div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PÁGINA 4: PARA LLEVAR A CASA                -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page section-page">
+  <div class="page-header">
+    <div class="brand">ay<span>ai</span></div>
+    <div class="session-label">Para llevar a casa</div>
+  </div>
+
+  <h2>Tu tarea de esta semana</h2>
+  <div class="subtitle">Una acción concreta según tu nicho. Solo una. Esta semana.</div>
+
+  <div class="llevar-grid">
+    <div class="llevar-card">
+      <div class="nombre-persona">Nersy</div>
+      <div class="nicho">Fitness · Parkinson</div>
+      <div class="accion">
+        Graba un ejercicio corto. Agrégale subtítulos automáticos en CapCut y el nombre del ejercicio como título. Publícalo en Instagram.
+      </div>
+    </div>
+
+    <div class="llevar-card">
+      <div class="nombre-persona">Zenaida</div>
+      <div class="nicho">Enfermería · Bienes raíces</div>
+      <div class="accion">
+        Crea un video corto con un consejo de salud o mostrando una propiedad. Agrega texto con la información clave. Expórtalo y publícalo.
+      </div>
+    </div>
+
+    <div class="llevar-card">
+      <div class="nombre-persona">Elvira</div>
+      <div class="nicho">Educación · 6to y 7mo grado</div>
+      <div class="accion">
+        Grábate explicando un tema corto de clase. Activa los subtítulos automáticos. Los subtítulos ayudan a los niños a seguir el contenido.
+      </div>
+    </div>
+
+    <div class="llevar-card">
+      <div class="nombre-persona">Todos</div>
+      <div class="nicho">Práctica general</div>
+      <div class="accion">
+        Piensa en 3 ideas de contenido para tu Instagram. Anótalas. En la próxima sesión las trabajamos con IA.
+      </div>
+    </div>
+  </div>
+
+  <div class="proximos">
+    <h3>Recuerda para hoy</h3>
+    <ul>
+      <li>Trae tu teléfono o computadora lista</li>
+      <li>Trae tus preguntas — no hay preguntas tontas</li>
+      <li>Si puedes, abre CapCut antes de la sesión</li>
+      <li>La sesión se grabará — la compartimos después por WhatsApp</li>
+    </ul>
+  </div>
+
+  <br>
+
+  <div class="quote-box">
+    <p>"La IA no reemplaza lo que sabes — <strong>amplifica</strong> lo que ya haces."</p>
+  </div>
+
+  <div class="footer">
+    <div class="brand-small">ay<span>ai</span></div>
+    <div class="fecha-small">Junio 2026 · Aprendemos juntos</div>
+  </div>
+</div>
+
+
+</body>
+</html>

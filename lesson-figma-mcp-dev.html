@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Figma MCP — Guía para Desarrolladores</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root { --accent: #f5a623; --accent2: #4fc3f7; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--accent2); font-size: 1em; margin-bottom: 16px; }
+    .reveal .slides section { text-align: left; }
+    .slide-label {
+      position: absolute; top: -40px; right: 0;
+      font-size: 0.45em; color: #666; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .emoji-anchor { font-size: 2.2em; display: block; margin-bottom: 8px; }
+    .metaphor {
+      background: rgba(245,166,35,0.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px; font-size: 0.75em;
+      margin-top: 14px; font-style: italic; color: #ddd;
+    }
+    .metaphor strong { color: var(--accent); font-style: normal; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    ul li { padding: 4px 0; font-size: 0.76em; line-height: 1.4; }
+    ul li::before { content: "▸ "; color: var(--accent); font-size: 1em; }
+    .code-block {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.75;
+      margin-top: 12px; color: #ccc;
+      overflow: hidden;
+    }
+    .code-block .k  { color: var(--accent2); }   /* key */
+    .code-block .s  { color: #81c784; }           /* string */
+    .code-block .c  { color: #555; font-style: italic; } /* comment */
+    .code-block .t  { color: var(--accent); }     /* tool name */
+    .example-box {
+      background: rgba(79,195,247,0.08);
+      border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 8px; padding: 14px 18px;
+      font-size: 0.75em; line-height: 1.7;
+    }
+    .example-box .label {
+      font-size: 0.72em; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 8px; display: block;
+    }
+    .tool-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; margin-top: 12px;
+    }
+    .tool-chip {
+      background: rgba(79,195,247,0.08);
+      border: 1px solid rgba(79,195,247,0.2);
+      border-radius: 6px; padding: 6px 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.62em; color: var(--accent2);
+    }
+    .tool-chip span { color: #777; font-family: sans-serif; font-size: 0.9em; }
+    .tag {
+      display: inline-block;
+      background: rgba(245,166,35,0.15);
+      border: 1px solid rgba(245,166,35,0.3);
+      border-radius: 4px; padding: 2px 7px;
+      font-size: 0.65em; color: var(--accent);
+      margin-right: 4px; font-family: monospace;
+    }
+    .quiz-question {
+      font-size: 0.85em; font-weight: bold;
+      color: #eee; margin-bottom: 16px; line-height: 1.4;
+    }
+    .quiz-options { list-style: none; padding: 0; }
+    .quiz-options li {
+      padding: 8px 14px; margin: 5px 0;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px; font-size: 0.73em; cursor: default;
+      font-family: 'Courier New', monospace;
+    }
+    .quiz-options li::before { content: none; }
+    .quiz-answer {
+      background: rgba(76,175,80,0.2);
+      border: 1px solid #81c784 !important; color: #81c784;
+    }
+    .reveal-hint { font-size: 0.52em; color: #555; margin-top: 8px; font-style: italic; }
+    .remember {
+      background: rgba(245,166,35,0.12);
+      border-radius: 6px; padding: 10px 14px;
+      font-size: 0.72em; margin-top: 16px;
+      color: var(--accent); font-weight: bold;
+    }
+    .remember span { color: #999; font-weight: normal; font-family: sans-serif; }
+    .nav-hint { font-size: 0.42em; color: #444; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- SLIDE 1: HOOK -->
+  <section>
+    <div class="slide-label">Lección · Slide 1 de 5</div>
+    <span class="emoji-anchor">⚡</span>
+    <h2>¿Cuánto contexto de diseño copiás a mano cada día?</h2>
+    <p style="font-size:0.80em; line-height:1.6; color:#ccc;">
+      Abrir Figma → inspector → copiar hex → pegar en el prompt.
+      "El botón tiene <code style="color:var(--accent2);">border-radius: 6px</code>,
+      <code style="color:var(--accent2);">padding: 8px 20px</code>,
+      color <code style="color:var(--accent);">#f5a623</code>..."
+      <br/><br/>
+      <strong style="color:var(--accent);">Figma MCP</strong> expone tu archivo como
+      herramientas que el agente llama directamente — igual que cualquier otra API.
+      Cero transferencia manual de contexto.
+    </p>
+    <div class="nav-hint">Presioná → para continuar</div>
+  </section>
+
+  <!-- SLIDE 2: THE BIG IDEA -->
+  <section>
+    <div class="slide-label">Lección · Slide 2 de 5</div>
+    <h2>MCP = tu archivo Figma como API de herramientas</h2>
+    <p style="font-size:0.82em; line-height:1.5; color:#ddd;">
+      Figma implementa el <strong style="color:var(--accent);">Model Context Protocol</strong>
+      exponiendo su API de archivos como un conjunto de herramientas (tools) invocables
+      por cualquier agente compatible — Claude Code, Cursor, Windsurf.
+      El agente lee y escribe en Figma igual que vos, pero desde el editor de código.
+    </p>
+    <div class="metaphor">
+      <strong>En términos de dev:</strong> es un servidor MCP que wrappea la Figma REST API.
+      Tu agente llama <code>get_design_context(fileKey, nodeId)</code> y recibe
+      el árbol de componentes, variables y estilos — sin scraping, sin capturas.
+    </div>
+  </section>
+
+  <!-- SLIDE 3: TOOLS -->
+  <section>
+    <div class="slide-label">Lección · Slide 3 de 5</div>
+    <h2>Setup + herramientas disponibles</h2>
+    <div class="code-block">
+      <span class="c"># settings.json (Claude Code) o .cursor/mcp.json</span><br/>
+      {<br/>
+      &nbsp;&nbsp;<span class="k">"mcpServers"</span>: {<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"figma"</span>: {<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"command"</span>: <span class="s">"npx"</span>,<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"args"</span>: [<span class="s">"figma-mcp"</span>],<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"env"</span>: { <span class="k">"FIGMA_ACCESS_TOKEN"</span>: <span class="s">"tu-PAT"</span> }<br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+      &nbsp;&nbsp;}<br/>
+      }
+    </div>
+    <div class="tool-grid" style="margin-top:14px;">
+      <div class="tool-chip">get_design_context <span>— lee frame/node</span></div>
+      <div class="tool-chip">get_variable_defs <span>— tokens/variables</span></div>
+      <div class="tool-chip">get_screenshot <span>— render PNG</span></div>
+      <div class="tool-chip">get_code_connect_map <span>— component map</span></div>
+      <div class="tool-chip">generate_figma_design <span>— escribe en Figma</span></div>
+      <div class="tool-chip">download_assets <span>— exporta assets</span></div>
+      <div class="tool-chip">search_design_system <span>— busca comps</span></div>
+      <div class="tool-chip">create_new_file <span>— nuevo archivo</span></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: REAL EXAMPLE -->
+  <section>
+    <div class="slide-label">Lección · Slide 4 de 5</div>
+    <h2>Flujo real — design-to-code</h2>
+    <div class="example-box">
+      <span class="label">Agente invoca en secuencia</span>
+      <span class="tag">1</span> <code style="color:var(--accent2);">get_design_context(fileKey, nodeId)</code><br/>
+      <span style="color:#555; font-size:0.85em;">→ devuelve colores, tipografía, layout, componentes del frame</span><br/><br/>
+      <span class="tag">2</span> <code style="color:var(--accent2);">get_variable_defs(fileKey)</code><br/>
+      <span style="color:#555; font-size:0.85em;">→ devuelve Figma Variables como tokens (primary: #f5a623, spacing-md: 16px)</span><br/><br/>
+      <span class="tag">3</span> Agente genera JSX/CSS con valores exactos del archivo<br/>
+      <span style="color:#555; font-size:0.85em;">→ sin alucinaciones de color, sin valores inventados</span><br/><br/>
+      <strong style="color:#81c784;">Resultado:</strong> componente pixel-perfect en el primer intento.
+      Code Connect mapea tu <code>&lt;Button&gt;</code> real al componente de Figma — no uno genérico.
+    </div>
+  </section>
+
+  <!-- SLIDE 5: QUIZ -->
+  <section>
+    <div class="slide-label">Lección · Slide 5 de 5</div>
+    <h2>🧠 ¿Lo entendiste?</h2>
+    <p class="quiz-question">¿Qué herramienta usarías para extraer los design tokens (colores, spacing) de un archivo Figma con el MCP?</p>
+    <ul class="quiz-options">
+      <li>A) get_screenshot(fileKey)</li>
+      <li>B) get_variable_defs(fileKey)</li>
+      <li>C) search_design_system(query)</li>
+    </ul>
+    <p class="reveal-hint">Presioná → para ver la respuesta</p>
+    <div class="fragment">
+      <ul class="quiz-options">
+        <li class="quiz-answer">✓ Correcto: B — get_variable_defs devuelve las Figma Variables como tokens estructurados.</li>
+      </ul>
+      <div class="remember">
+        💡 Recordá: <span>Figma MCP expone ~19 tools. Para tokens usás <code>get_variable_defs</code>. Para layout y componentes, <code>get_design_context</code>.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

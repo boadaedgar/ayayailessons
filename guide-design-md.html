@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DESIGN.md — User Guide</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+    .reveal a { color: var(--blue); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    /* COVER */
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; letter-spacing: -0.5px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px; font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25); color: var(--accent); }
+
+    /* SECTION COVER */
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    /* CODE */
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .ref { color: #ce93d8; }
+    .code .dim { color: #555; }
+
+    /* CALLOUT */
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue  { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.red   { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+
+    /* TABLES */
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+    .tool-note { color: var(--muted); font-style: italic; font-size: 0.9em; }
+
+    /* WORKFLOW STEPS */
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    /* TWO-COL */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* BADGES */
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-alpha { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free  { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-cli   { background: rgba(79,195,247,0.15);  color: var(--blue);  border: 1px solid rgba(79,195,247,0.3); }
+
+    /* PILL */
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+    .pill.blue { background: rgba(79,195,247,0.08); border-color: rgba(79,195,247,0.2); color: var(--blue); }
+    .pill.amber { background: rgba(245,166,35,0.08); border-color: rgba(245,166,35,0.2); color: var(--accent); }
+    .pill.green { background: rgba(129,199,132,0.08); border-color: rgba(129,199,132,0.2); color: var(--green); }
+    .pill.red   { background: rgba(229,115,115,0.08); border-color: rgba(229,115,115,0.2); color: var(--red); }
+
+    /* LINT RULE TABLE */
+    .sev-error   { color: var(--red);    font-weight: 700; font-size: 0.85em; }
+    .sev-warning { color: var(--yellow); font-weight: 700; font-size: 0.85em; }
+    .sev-info    { color: var(--blue);   font-weight: 700; font-size: 0.85em; }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ══════════════════════════════════════
+     COVER
+══════════════════════════════════════ -->
+<section>
+  <p class="section-number">User Guide</p>
+  <div class="cover-title">DESIGN.md</div>
+  <p class="cover-sub">Design token system for AI coding agents — by Google Labs</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>Give AI agents your exact colors, fonts, and spacing — no guessing</li>
+    <li>Validate tokens, check WCAG contrast, detect regressions with one command</li>
+    <li>Export to Tailwind v3/v4, CSS custom properties, or W3C DTCG format</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Google Labs</span>
+    <span class="tag amber">alpha</span>
+    <span class="tag">Design Tokens</span>
+    <span class="tag">AI Agents</span>
+    <span class="tag">Tailwind</span>
+    <span class="tag">WCAG</span>
+  </div>
+  <div class="nav-hint">→ next section · ↓ sub-slides within section</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 1 — WHAT IS IT
+══════════════════════════════════════ -->
+<section>
+
+  <section>
+    <div class="slide-label">Section 1 — What Is It</div>
+    <p class="section-number">01</p>
+    <div class="section-title">What Is It?</div>
+    <p class="section-desc">
+      DESIGN.md solves the problem of AI agents inventing brand colors.
+      One file, one source of truth, any agent.
+    </p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">What Is It · The Problem</div>
+    <h2>The problem it solves</h2>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>❌ Without DESIGN.md</h4>
+        <ul>
+          <li>AI invents colors every session</li>
+          <li>No consistent spacing or typography</li>
+          <li>Every "create a button" prompt yields different results</li>
+          <li>You re-explain brand tokens in every prompt</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h4>✅ With DESIGN.md</h4>
+        <ul>
+          <li>AI reads your exact hex codes, font stacks, spacing scale</li>
+          <li>Consistent output across every agent, every session</li>
+          <li>Token validation catches broken refs and contrast failures</li>
+          <li>One-command export to Tailwind or CSS</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">What Is It · File Structure</div>
+    <h2>File structure — two layers</h2>
+    <p style="font-size:0.75em; color:#aaa; margin-bottom:10px;">
+      A single <code style="color:var(--blue);">DESIGN.md</code> file in your project root.
+      Agents pick it up automatically.
+    </p>
+    <div class="code">
+<span class="c">--- ← YAML front matter (machine-readable tokens)</span><br/>
+<span class="k">version:</span> <span class="s">"alpha"</span><br/>
+<span class="k">name:</span> <span class="s">"My Project"</span><br/>
+<span class="k">colors:</span><br/>
+&nbsp;&nbsp;<span class="k">primary:</span> <span class="s">"#f5a623"</span><br/>
+<span class="k">typography:</span><br/>
+&nbsp;&nbsp;<span class="k">body:</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontFamily:</span> <span class="s">"Inter, sans-serif"</span><br/>
+<span class="k">components:</span><br/>
+&nbsp;&nbsp;<span class="k">button:</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">backgroundColor:</span> <span class="ref">"{colors.primary}"</span> <span class="c">← token reference</span><br/>
+<span class="c">---</span><br/><br/>
+<span class="c">## Overview ← Markdown body (human-readable rationale)</span><br/>
+Primary amber is for CTAs only. Never use it decoratively.
+    </div>
+    <div class="callout blue">
+      <strong>Token references:</strong> Use <code>{section.token-name}</code> syntax to reference other tokens.
+      The linter validates all references — broken refs are caught at lint time.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">What Is It · Markdown Sections</div>
+    <h2>Canonical Markdown section order</h2>
+    <p style="font-size:0.74em; color:#aaa; margin-bottom:10px;">
+      All sections optional. Must appear in this order if present.
+    </p>
+    <table class="tool-table">
+      <tr><th>#</th><th>Section</th><th>Purpose</th></tr>
+      <tr><td style="color:var(--muted);">1</td><td class="tool-name">## Overview</td><td class="tool-desc">What the design system is, who it serves, design philosophy</td></tr>
+      <tr><td style="color:var(--muted);">2</td><td class="tool-name">## Colors</td><td class="tool-desc">Color usage rules — when to use each token, forbidden uses</td></tr>
+      <tr><td style="color:var(--muted);">3</td><td class="tool-name">## Typography</td><td class="tool-desc">Font usage, hierarchy rules, what to avoid</td></tr>
+      <tr><td style="color:var(--muted);">4</td><td class="tool-name">## Layout</td><td class="tool-desc">Grid, max-width, breakpoints, container rules</td></tr>
+      <tr><td style="color:var(--muted);">5</td><td class="tool-name">## Elevation & Depth</td><td class="tool-desc">Shadow system, z-index scale, layering rules</td></tr>
+      <tr><td style="color:var(--muted);">6</td><td class="tool-name">## Shapes</td><td class="tool-desc">Border radius usage, when to use pill vs. rounded vs. sharp</td></tr>
+      <tr><td style="color:var(--muted);">7</td><td class="tool-name">## Components</td><td class="tool-desc">Per-component usage guidelines and do's/don'ts</td></tr>
+      <tr><td style="color:var(--muted);">8</td><td class="tool-name">## Do's and Don'ts</td><td class="tool-desc">Global rules — positive and negative patterns</td></tr>
+    </table>
+    <div class="callout" style="margin-top:10px;">
+      <strong>Lint rule:</strong> <code>section-order</code> (warning) — sections out of canonical order are flagged.
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 2 — INSTALLATION
+══════════════════════════════════════ -->
+<section>
+
+  <section>
+    <div class="slide-label">Section 2 — Installation</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Installation</div>
+    <p class="section-desc">Install the CLI globally via npm. One command, then you have lint, diff, export, and spec.</p>
+    <div class="nav-hint">↓ install → verify → Windows note</div>
+  </section>
+
+  <section>
+    <div class="slide-label">Installation · npm</div>
+    <h2>Install globally</h2>
+    <div class="code">
+<span class="c"># Install globally (recommended)</span><br/>
+npm install -g @google/design.md<br/><br/>
+<span class="c"># Or run one-off without installing</span><br/>
+npx @google/design.md lint DESIGN.md
+    </div>
+    <div class="workflow-step" style="margin-top:16px;">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Run the install command above</div>
+        <div class="step-sub">npm install -g @google/design.md → adds 92 packages</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Verify the CLI is available</div>
+        <div class="step-sub">designmd --version</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Create your first DESIGN.md and lint it</div>
+        <div class="step-sub">designmd lint DESIGN.md</div>
+      </div>
+    </div>
+    <div class="callout blue" style="margin-top:10px;">
+      <strong>npm fund message:</strong> You'll see "74 packages looking for funding" after install.
+      This is informational only — maintainers requesting optional support. Safe to ignore.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">Installation · Windows</div>
+    <h2>Windows — use the <code>designmd</code> alias</h2>
+    <p style="font-size:0.76em; color:#aaa; margin-bottom:12px;">
+      On Windows PowerShell, <code>.md</code> file extension conflicts with file association.
+      Use <code>designmd</code> instead of <code>@google/design.md</code> for all commands.
+    </p>
+    <div class="code">
+<span class="c"># ❌ This may fail on Windows PowerShell:</span><br/>
+npx @google/design.md lint DESIGN.md<br/><br/>
+<span class="c"># ✅ Use the alias instead:</span><br/>
+designmd lint DESIGN.md<br/>
+designmd diff DESIGN.md DESIGN-v2.md<br/>
+designmd export --format css-tailwind DESIGN.md<br/>
+designmd spec --rules
+    </div>
+    <div class="callout">
+      <strong>All examples in this guide</strong> use the <code>designmd</code> alias.
+      On Mac/Linux, both forms work identically.
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 3 — TOKEN SCHEMA
+══════════════════════════════════════ -->
+<section>
+
+  <section>
+    <div class="slide-label">Section 3 — Token Schema</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Token Schema</div>
+    <p class="section-desc">
+      The YAML front matter supports 5 token types: colors, typography, spacing, rounded, components.
+    </p>
+    <div class="nav-hint">↓ each token type</div>
+  </section>
+
+  <section>
+    <div class="slide-label">Token Schema · Colors & Dimensions</div>
+    <h2>Colors, Spacing & Rounded</h2>
+    <div class="code">
+<span class="k">colors:</span><br/>
+&nbsp;&nbsp;<span class="k">primary:</span>   <span class="s">"#f5a623"</span>         <span class="c">← hex</span><br/>
+&nbsp;&nbsp;<span class="k">surface:</span>   <span class="s">"oklch(98% 0.01 240)"</span> <span class="c">← oklch</span><br/>
+&nbsp;&nbsp;<span class="k">overlay:</span>   <span class="s">"rgba(0,0,0,0.5)"</span>   <span class="c">← rgba</span><br/>
+&nbsp;&nbsp;<span class="k">danger:</span>    <span class="s">"red"</span>               <span class="c">← named color</span><br/><br/>
+<span class="k">spacing:</span><br/>
+&nbsp;&nbsp;<span class="k">sm:</span>  <span class="s">"8px"</span>    <span class="c">← number + unit (px, rem, em)</span><br/>
+&nbsp;&nbsp;<span class="k">md:</span>  <span class="s">"16px"</span><br/>
+&nbsp;&nbsp;<span class="k">lg:</span>  <span class="s">"32px"</span><br/><br/>
+<span class="k">rounded:</span><br/>
+&nbsp;&nbsp;<span class="k">sm:</span>   <span class="s">"4px"</span><br/>
+&nbsp;&nbsp;<span class="k">md:</span>   <span class="s">"8px"</span><br/>
+&nbsp;&nbsp;<span class="k">full:</span> <span class="s">"9999px"</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">Token Schema · Typography</div>
+    <h2>Typography tokens</h2>
+    <div class="code">
+<span class="k">typography:</span><br/>
+&nbsp;&nbsp;<span class="k">body:</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontFamily:</span>   <span class="s">"Inter, sans-serif"</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontSize:</span>     <span class="s">"16px"</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontWeight:</span>   <span class="hl">400</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">lineHeight:</span>   <span class="hl">1.5</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">letterSpacing:</span> <span class="s">"0px"</span>    <span class="c">← optional</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontFeature:</span>  <span class="s">"normal"</span> <span class="c">← optional</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontVariation:</span> <span class="s">"normal"</span> <span class="c">← optional</span><br/>
+&nbsp;&nbsp;<span class="k">heading:</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontFamily:</span>   <span class="s">"Inter, sans-serif"</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontSize:</span>     <span class="s">"24px"</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontWeight:</span>   <span class="hl">700</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">lineHeight:</span>   <span class="hl">1.2</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">Token Schema · Components</div>
+    <h2>Component tokens — valid sub-tokens only</h2>
+    <p style="font-size:0.74em; color:var(--red); margin-bottom:8px;">
+      ⚠ Only these 8 sub-token keys are accepted. All others produce warnings.
+    </p>
+    <table class="tool-table">
+      <tr><th>Sub-token</th><th>Accepts</th><th>Example</th></tr>
+      <tr><td class="tool-name">backgroundColor</td><td class="tool-desc">Color value or token ref</td><td class="tool-note"><code class="ref">"{colors.primary}"</code></td></tr>
+      <tr><td class="tool-name">textColor</td><td class="tool-desc">Color value or token ref</td><td class="tool-note"><code class="ref">"{colors.text}"</code></td></tr>
+      <tr><td class="tool-name">typography</td><td class="tool-desc">Typography token ref</td><td class="tool-note"><code class="ref">"{typography.body}"</code></td></tr>
+      <tr><td class="tool-name">rounded</td><td class="tool-desc">Dimension value or token ref</td><td class="tool-note"><code class="ref">"{rounded.md}"</code></td></tr>
+      <tr><td class="tool-name">padding</td><td class="tool-desc">Dimension value or token ref</td><td class="tool-note"><code class="ref">"{spacing.md}"</code></td></tr>
+      <tr><td class="tool-name">size</td><td class="tool-desc">Dimension value</td><td class="tool-note"><code class="s">"48px"</code></td></tr>
+      <tr><td class="tool-name">height</td><td class="tool-desc">Dimension value</td><td class="tool-note"><code class="s">"40px"</code></td></tr>
+      <tr><td class="tool-name">width</td><td class="tool-desc">Dimension value</td><td class="tool-note"><code class="s">"100%"</code></td></tr>
+    </table>
+    <div class="callout red" style="margin-top:10px;">
+      <strong>Common mistake:</strong> Using <code>background</code>, <code>color</code>, <code>border</code>, or <code>radius</code>
+      instead of their valid equivalents. The linter flags these as warnings.
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 4 — CLI COMMANDS
+══════════════════════════════════════ -->
+<section>
+
+  <section>
+    <div class="slide-label">Section 4 — CLI Commands</div>
+    <p class="section-number">04</p>
+    <div class="section-title">CLI Commands</div>
+    <p class="section-desc">Four commands: lint, diff, export, spec.</p>
+    <div class="nav-hint">↓ command by command</div>
+  </section>
+
+  <section>
+    <div class="slide-label">CLI · lint</div>
+    <h2>lint — validate your file</h2>
+    <div class="code">
+designmd lint DESIGN.md<br/>
+designmd lint --format json DESIGN.md <span class="c">← machine-readable output</span>
+    </div>
+    <h3 style="margin-top:14px;">9 lint rules</h3>
+    <table class="tool-table">
+      <tr><th>Rule</th><th>Severity</th><th>Checks</th></tr>
+      <tr><td class="tool-name">broken-ref</td><td><span class="sev-error">error</span></td><td class="tool-desc">Token references like <code>{colors.x}</code> that don't resolve</td></tr>
+      <tr><td class="tool-name">missing-primary</td><td><span class="sev-warning">warning</span></td><td class="tool-desc">No <code>primary</code> color defined — agents may auto-generate one</td></tr>
+      <tr><td class="tool-name">contrast-ratio</td><td><span class="sev-warning">warning</span></td><td class="tool-desc">Color pairs that fail WCAG AA (4.5:1 text, 3:1 UI)</td></tr>
+      <tr><td class="tool-name">orphaned-tokens</td><td><span class="sev-warning">warning</span></td><td class="tool-desc">Colors defined but never referenced by any component</td></tr>
+      <tr><td class="tool-name">missing-typography</td><td><span class="sev-warning">warning</span></td><td class="tool-desc">No typography tokens defined at all</td></tr>
+      <tr><td class="tool-name">section-order</td><td><span class="sev-warning">warning</span></td><td class="tool-desc">Markdown sections out of canonical order</td></tr>
+      <tr><td class="tool-name">unknown-key</td><td><span class="sev-warning">warning</span></td><td class="tool-desc">Unrecognized keys — likely typos in sub-token names</td></tr>
+      <tr><td class="tool-name">missing-sections</td><td><span class="sev-info">info</span></td><td class="tool-desc">Optional Markdown sections absent</td></tr>
+      <tr><td class="tool-name">token-summary</td><td><span class="sev-info">info</span></td><td class="tool-desc">Count of colors, typography scales, components defined</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">CLI · diff & spec</div>
+    <h2>diff — compare versions</h2>
+    <div class="code">
+designmd diff DESIGN.md DESIGN-v2.md<br/>
+<span class="c">↳ token-level diff: what changed between versions</span><br/>
+<span class="c">↳ catches color regressions before they reach production</span>
+    </div>
+    <h2 style="margin-top:18px;">spec — dump the format spec</h2>
+    <div class="code">
+designmd spec          <span class="c"># full spec output</span><br/>
+designmd spec --rules  <span class="c"># lint rules only — paste into agent system prompt</span>
+    </div>
+    <div class="callout blue" style="margin-top:10px;">
+      <strong>Use spec --rules</strong> when setting up a new AI agent.
+      Paste the output into your system prompt so the agent understands the DESIGN.md format.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">CLI · export</div>
+    <h2>export — convert tokens to target format</h2>
+    <table class="tool-table">
+      <tr><th>Command</th><th>Output</th></tr>
+      <tr>
+        <td class="tool-name">export --format css-tailwind</td>
+        <td class="tool-desc">Tailwind v4 CSS <code>@theme</code> block with CSS custom properties</td>
+      </tr>
+      <tr>
+        <td class="tool-name">export --format json-tailwind</td>
+        <td class="tool-desc">Tailwind v3 <code>theme.extend</code> JSON object</td>
+      </tr>
+      <tr>
+        <td class="tool-name">export --format dtcg</td>
+        <td class="tool-desc">W3C Design Token Community Group standard <code>tokens.json</code></td>
+      </tr>
+    </table>
+    <div class="code" style="margin-top:12px;">
+<span class="c"># Export Tailwind v4 CSS → redirect to file</span><br/>
+designmd export --format css-tailwind DESIGN.md > src/tokens.css<br/><br/>
+<span class="c"># Export Tailwind v3 JSON</span><br/>
+designmd export --format json-tailwind DESIGN.md > tailwind.tokens.json<br/><br/>
+<span class="c"># Export W3C DTCG</span><br/>
+designmd export --format dtcg DESIGN.md > tokens.json
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 5 — WORKFLOWS
+══════════════════════════════════════ -->
+<section>
+
+  <section>
+    <div class="slide-label">Section 5 — Workflows</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Workflows</div>
+    <p class="section-desc">Create · Validate · Export · Use with AI agents · Version control</p>
+    <div class="nav-hint">↓ workflow by workflow</div>
+  </section>
+
+  <section>
+    <div class="slide-label">Workflows · Create from Scratch</div>
+    <h2>Workflow 1 — Create DESIGN.md for a project</h2>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Identify your existing design tokens</div>
+        <div class="step-sub">Check existing CSS variables, Figma Variables, Tailwind config, or HTML files</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Create DESIGN.md in your project root</div>
+        <div class="step-sub">Add version, name, colors, typography, spacing, rounded, components in YAML front matter</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Add Markdown rationale sections below the front matter</div>
+        <div class="step-sub">## Overview, ## Colors, ## Components — document usage rules</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Lint and fix</div>
+        <div class="step-sub">designmd lint DESIGN.md → fix all errors → target 0 errors, minimal warnings</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Commit to repo root</div>
+        <div class="step-sub">AI agents discover DESIGN.md automatically when it's at project root</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">Workflows · Validate & Export</div>
+    <h2>Workflow 2 — Validate and export tokens</h2>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Run lint to catch all issues</div>
+        <div class="step-sub">designmd lint DESIGN.md → review errors first, then warnings</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Fix errors (broken refs, unknown keys)</div>
+        <div class="step-sub">Check token reference paths — {colors.x} must match a key in colors:</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Re-lint until 0 errors</div>
+        <div class="step-sub">Warnings on orphaned palette tokens are acceptable — they're palette reference colors</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Export to your target format</div>
+        <div class="step-sub">designmd export --format css-tailwind DESIGN.md > src/tokens.css</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Import exported file in your build system</div>
+        <div class="step-sub">@import './tokens.css' in your main CSS / extend tailwind.config.js</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">Workflows · Version Control</div>
+    <h2>Workflow 3 — Version control design changes</h2>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Save the current DESIGN.md as a versioned copy before updating</div>
+        <div class="step-sub">cp DESIGN.md DESIGN-v1.md</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Make your token changes in DESIGN.md</div>
+        <div class="step-sub">Update colors, spacing scale, component tokens as needed</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Run diff to see exactly what changed</div>
+        <div class="step-sub">designmd diff DESIGN-v1.md DESIGN.md</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Review diff in PR — catch regressions before merging</div>
+        <div class="step-sub">Changed primary color? Removed a token still used in components? diff catches it.</div>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 6 — LIMITS & TIPS
+══════════════════════════════════════ -->
+<section>
+
+  <section>
+    <div class="slide-label">Section 6 — Limits & Tips</div>
+    <p class="section-number">06</p>
+    <div class="section-title">Limits & Tips</div>
+    <p class="section-desc">Alpha-stage caveats and patterns that produce the best results.</p>
+    <div class="nav-hint">↓ limits → tips</div>
+  </section>
+
+  <section>
+    <div class="slide-label">Limits & Tips · Limits</div>
+    <h2>Known limits <span class="badge badge-alpha">alpha</span></h2>
+    <table class="tool-table">
+      <tr><th>Limit</th><th>Detail</th></tr>
+      <tr>
+        <td style="color:var(--red); font-size:0.72em; white-space:nowrap;">Component sub-tokens restricted</td>
+        <td class="tool-desc">Only 8 sub-tokens accepted: backgroundColor, textColor, typography, rounded, padding, size, height, width. All other CSS properties produce unknown-key warnings.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--red); font-size:0.72em; white-space:nowrap;">Windows alias required</td>
+        <td class="tool-desc">PowerShell conflicts with .md extension. Always use <code>designmd</code> alias, never <code>@google/design.md</code> directly in PowerShell.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--yellow); font-size:0.72em; white-space:nowrap;">Alpha spec — breaking changes possible</td>
+        <td class="tool-desc">Token schema and lint rules may change between releases. Pin your version in package.json for production use.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--yellow); font-size:0.72em; white-space:nowrap;">Orphaned color warnings expected</td>
+        <td class="tool-desc">Palette colors not referenced in any component trigger warnings. Acceptable for colors used only in Markdown rationale (status colors, data-vis palette, etc.).</td>
+      </tr>
+      <tr>
+        <td style="color:var(--yellow); font-size:0.72em; white-space:nowrap;">No hover / state variants</td>
+        <td class="tool-desc">Components can't express hover, focus, disabled, or active states in the token schema. Document these in the Markdown ## Components section instead.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">Limits & Tips · Tips</div>
+    <h2>Tips for best results</h2>
+    <ul>
+      <li>Always define <strong style="color:var(--accent);">primary</strong> in colors — agents use it as the default focal color</li>
+      <li>Use <strong style="color:var(--accent);">token references</strong> in components (<code>{colors.primary}</code>) not raw hex — keeps tokens consistent and refactor-safe</li>
+      <li>Run <strong style="color:var(--accent);">lint in CI</strong> — add <code>designmd lint DESIGN.md</code> as a pre-commit hook or CI step</li>
+      <li>Use <strong style="color:var(--accent);">diff in PRs</strong> — any design token change should include a <code>designmd diff</code> output in the PR description</li>
+      <li>Extract from <strong style="color:var(--accent);">existing files first</strong> — read your CSS variables or Figma file before writing tokens manually</li>
+      <li>Pair with <strong style="color:var(--accent);">Figma MCP</strong> — use <code>get_variable_defs</code> to pull live Figma Variables and auto-populate DESIGN.md</li>
+      <li><code>designmd spec --rules</code> → paste into agent system prompt for any LLM that writes DESIGN.md files</li>
+    </ul>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     QUICK REFERENCE
+══════════════════════════════════════ -->
+<section>
+  <div class="slide-label">Quick Reference</div>
+  <h2>Quick Reference Card</h2>
+  <div class="two-col">
+    <div>
+      <h3>CLI commands</h3>
+      <div class="pill blue">designmd lint DESIGN.md</div>
+      <div class="pill blue">designmd lint --format json</div>
+      <div class="pill blue">designmd diff A.md B.md</div>
+      <div class="pill blue">designmd export --format css-tailwind</div>
+      <div class="pill blue">designmd export --format json-tailwind</div>
+      <div class="pill blue">designmd export --format dtcg</div>
+      <div class="pill blue">designmd spec</div>
+      <div class="pill blue">designmd spec --rules</div>
+
+      <h3 style="margin-top:14px;">Token sections</h3>
+      <div class="pill amber">colors</div>
+      <div class="pill amber">typography</div>
+      <div class="pill amber">spacing</div>
+      <div class="pill amber">rounded</div>
+      <div class="pill amber">components</div>
+
+      <h3 style="margin-top:14px;">Valid component sub-tokens</h3>
+      <div class="pill green">backgroundColor</div>
+      <div class="pill green">textColor</div>
+      <div class="pill green">typography</div>
+      <div class="pill green">rounded</div>
+      <div class="pill green">padding</div>
+      <div class="pill green">size</div>
+      <div class="pill green">height</div>
+      <div class="pill green">width</div>
+    </div>
+    <div>
+      <h3>Minimal valid DESIGN.md</h3>
+      <div class="code" style="font-size:0.62em; margin-top:6px;">
+<span class="dim">---</span><br/>
+<span class="k">version:</span> <span class="s">"alpha"</span><br/>
+<span class="k">name:</span> <span class="s">"My Project"</span><br/>
+<span class="k">colors:</span><br/>
+&nbsp;&nbsp;<span class="k">primary:</span> <span class="s">"#your-brand-color"</span><br/>
+<span class="k">typography:</span><br/>
+&nbsp;&nbsp;<span class="k">body:</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontFamily:</span> <span class="s">"Your Font, sans-serif"</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontSize:</span> <span class="s">"16px"</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">fontWeight:</span> <span class="hl">400</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">lineHeight:</span> <span class="hl">1.5</span><br/>
+<span class="dim">---</span><br/><br/>
+<span class="c">## Overview</span><br/>
+One-line description of your design system.
+      </div>
+
+      <h3 style="margin-top:12px;">Severity levels</h3>
+      <div style="font-size:0.68em; margin-top:6px;">
+        <span class="sev-error">error</span> &nbsp;→ must fix (broken refs)<br/>
+        <span class="sev-warning">warning</span> → should fix (contrast, orphans)<br/>
+        <span class="sev-info">info</span> &nbsp;&nbsp;&nbsp;→ informational (counts)
+      </div>
+
+      <h3 style="margin-top:12px;">Markdown section order</h3>
+      <div style="font-size:0.62em; color:#666; font-family:monospace; margin-top:4px; line-height:1.8;">
+        1. Overview &nbsp; 2. Colors &nbsp; 3. Typography<br/>
+        4. Layout &nbsp; 5. Elevation &amp; Depth &nbsp; 6. Shapes<br/>
+        7. Components &nbsp; 8. Do's and Don'ts
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

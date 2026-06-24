@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DESIGN.md — El archivo que guarda tu marca</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root { --accent: #f5a623; --accent2: #4fc3f7; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--accent2); font-size: 1em; margin-bottom: 16px; }
+    .reveal .slides section { text-align: left; }
+    .slide-label {
+      position: absolute; top: -40px; right: 0;
+      font-size: 0.45em; color: #666; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .emoji-anchor { font-size: 2.2em; display: block; margin-bottom: 8px; }
+    .metaphor {
+      background: rgba(245,166,35,0.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px; font-size: 0.78em;
+      margin-top: 16px; font-style: italic; color: #ddd;
+    }
+    .metaphor strong { color: var(--accent); font-style: normal; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    ul li { padding: 5px 0; font-size: 0.78em; line-height: 1.4; }
+    ul li::before { content: "▸ "; color: var(--accent); font-size: 1em; }
+    .example-box {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      border-radius: 8px; padding: 16px 20px;
+      font-size: 0.78em; line-height: 1.7;
+    }
+    .example-box .label {
+      font-size: 0.75em; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 10px; display: block;
+    }
+    .code-peek {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.72em; line-height: 1.8;
+      margin-top: 14px; color: #ccc;
+    }
+    .code-peek .key { color: var(--accent2); }
+    .code-peek .val { color: #81c784; }
+    .code-peek .comment { color: #555; font-style: italic; }
+    .quiz-question {
+      font-size: 0.85em; font-weight: bold;
+      color: #eee; margin-bottom: 18px; line-height: 1.4;
+    }
+    .quiz-options { list-style: none; padding: 0; }
+    .quiz-options li {
+      padding: 8px 14px; margin: 6px 0;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px; font-size: 0.75em; cursor: default;
+    }
+    .quiz-options li::before { content: none; }
+    .quiz-answer {
+      background: rgba(76,175,80,0.2);
+      border: 1px solid #81c784 !important; color: #81c784;
+    }
+    .reveal-hint { font-size: 0.55em; color: #666; margin-top: 10px; font-style: italic; }
+    .remember {
+      background: rgba(245,166,35,0.15);
+      border-radius: 6px; padding: 12px 16px;
+      font-size: 0.75em; margin-top: 20px;
+      color: var(--accent); font-weight: bold;
+    }
+    .remember span { color: #aaa; font-weight: normal; }
+    .nav-hint { font-size: 0.42em; color: #444; text-align: center; margin-top: 30px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- SLIDE 1: HOOK -->
+  <section>
+    <div class="slide-label">Lección · Slide 1 de 5</div>
+    <span class="emoji-anchor">📄</span>
+    <h2>¿Sabés exactamente qué colores tiene tu marca?</h2>
+    <p style="font-size:0.82em; line-height:1.6; color:#ccc;">
+      Vos sí. Pero la IA que usás para programar, <strong style="color:var(--accent);">no</strong>.
+      Cada vez que le pedís un botón, una tarjeta o una pantalla, inventa colores, inventa fuentes,
+      inventa espaciados. El resultado nunca parece tuyo.
+      <br/><br/>
+      <strong style="color:var(--accent);">DESIGN.md</strong> es un archivo de texto simple
+      que le da esa memoria a la IA — una vez, para siempre.
+    </p>
+    <div class="nav-hint">Presioná → para continuar</div>
+  </section>
+
+  <!-- SLIDE 2: THE BIG IDEA -->
+  <section>
+    <div class="slide-label">Lección · Slide 2 de 5</div>
+    <h2>Un archivo, toda tu marca</h2>
+    <p style="font-size:0.85em; line-height:1.5; color:#ddd;">
+      Creás un archivo llamado <strong style="color:var(--accent);">DESIGN.md</strong>
+      en tu proyecto con tus colores exactos, tus fuentes y tus medidas.
+      Desde ahí, cualquier IA que trabaje en ese proyecto los usa automáticamente.
+    </p>
+    <div class="metaphor">
+      <strong>Metáfora:</strong> Es como pegarle en la heladera la lista de ingredientes
+      y cantidades exactas de tu receta familiar. Cualquiera que cocine en esa cocina
+      la va a preparar igual — sin improvisar.
+    </div>
+  </section>
+
+  <!-- SLIDE 3: WHAT'S INSIDE -->
+  <section>
+    <div class="slide-label">Lección · Slide 3 de 5</div>
+    <h2>¿Qué hay adentro del archivo?</h2>
+    <ul>
+      <li><strong style="color:var(--accent);">Colores</strong> — los códigos exactos de tu paleta (primario, fondo, texto, acento)</li>
+      <li><strong style="color:var(--accent);">Tipografía</strong> — familia de fuente, tamaño, peso, interlineado</li>
+      <li><strong style="color:var(--accent);">Espaciados y bordes</strong> — una escala consistente para padding, márgenes y radios</li>
+      <li><strong style="color:var(--accent);">Componentes</strong> — cómo debe verse un botón, una card, un header</li>
+    </ul>
+    <div class="code-peek">
+      <span class="comment"># Ejemplo real del DESIGN.md de ayayai</span><br/>
+      <span class="key">colors:</span><br/>
+      &nbsp;&nbsp;<span class="key">primary:</span> <span class="val">"#f5a623"</span> &nbsp;<span class="comment"># amber dorado</span><br/>
+      &nbsp;&nbsp;<span class="key">bg:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">"#0f0f1a"</span> &nbsp;<span class="comment"># fondo oscuro</span><br/>
+      &nbsp;&nbsp;<span class="key">blue:</span> &nbsp;&nbsp;&nbsp;<span class="val">"#4fc3f7"</span> &nbsp;<span class="comment"># acento secundario</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: REAL EXAMPLE -->
+  <section>
+    <div class="slide-label">Lección · Slide 4 de 5</div>
+    <h2>Lo hicimos en ayayai hoy</h2>
+    <div class="example-box">
+      <span class="label">Caso real — proyecto ayayai</span>
+      <strong style="color:var(--accent2);">Cómo lo creamos:</strong><br/>
+      Leímos los archivos HTML existentes de ayayai → encontramos los colores reales
+      que Edgar usaba en todos los proyectos → los pusimos en DESIGN.md.<br/><br/>
+      <strong style="color:var(--accent2);">Qué logramos:</strong><br/>
+      Ahora Claude conoce el amber <span style="color:var(--accent);">#f5a623</span>,
+      el azul <span style="color:var(--accent2);">#4fc3f7</span> y el fondo oscuro
+      <span style="color:#888;">#0f0f1a</span> de ayayai.
+      Cada componente nuevo que genere va a usar esos colores exactos —
+      sin que nadie se los tenga que recordar.
+    </div>
+  </section>
+
+  <!-- SLIDE 5: QUIZ + TAKEAWAY -->
+  <section>
+    <div class="slide-label">Lección · Slide 5 de 5</div>
+    <h2>🧠 ¿Lo entendiste?</h2>
+    <p class="quiz-question">¿Dónde se guarda el archivo DESIGN.md para que los agentes de IA lo lean automáticamente?</p>
+    <ul class="quiz-options">
+      <li>A) En una carpeta especial de configuración del sistema operativo</li>
+      <li>B) En la raíz del proyecto — la carpeta principal donde está todo el código</li>
+      <li>C) En la nube, en los servidores de Google Labs</li>
+    </ul>
+    <p class="reveal-hint">Presioná → para ver la respuesta</p>
+    <div class="fragment">
+      <ul class="quiz-options">
+        <li class="quiz-answer">✓ Correcto: B — en la raíz del proyecto. La IA lo encuentra sola.</li>
+      </ul>
+      <div class="remember">
+        💡 Recordá: <span>DESIGN.md va en la carpeta principal de tu proyecto. Un archivo, y la IA ya conoce tu marca.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

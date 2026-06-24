@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub — Usar proyectos de otros con Claude</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root { --accent: #f5a623; --accent2: #4fc3f7; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--accent2); font-size: 1em; margin-bottom: 16px; }
+    .reveal .slides section { text-align: left; }
+    .slide-label {
+      position: absolute; top: -40px; right: 0;
+      font-size: 0.45em; color: #666; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .emoji-anchor { font-size: 2.2em; display: block; margin-bottom: 8px; }
+    .metaphor {
+      background: rgba(245,166,35,0.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px; font-size: 0.78em;
+      margin-top: 16px; font-style: italic; color: #ddd;
+    }
+    .metaphor strong { color: var(--accent); font-style: normal; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    ul li { padding: 5px 0; font-size: 0.78em; line-height: 1.4; }
+    ul li::before { content: "▸ "; color: var(--accent); font-size: 1em; }
+    .example-box {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      border-radius: 8px; padding: 16px 20px;
+      font-size: 0.78em; line-height: 1.7;
+    }
+    .example-box .label {
+      font-size: 0.75em; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 6px; display: block;
+    }
+    .quiz-question {
+      font-size: 0.85em; font-weight: bold;
+      color: #eee; margin-bottom: 18px; line-height: 1.4;
+    }
+    .quiz-options { list-style: none; padding: 0; }
+    .quiz-options li {
+      padding: 8px 14px; margin: 6px 0;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px; font-size: 0.75em; cursor: default;
+    }
+    .quiz-options li::before { content: none; }
+    .quiz-answer {
+      background: rgba(76,175,80,0.2);
+      border: 1px solid #81c784 !important; color: #81c784;
+    }
+    .reveal-hint { font-size: 0.55em; color: #666; margin-top: 10px; font-style: italic; }
+    .remember {
+      background: rgba(245,166,35,0.15);
+      border-radius: 6px; padding: 12px 16px;
+      font-size: 0.75em; margin-top: 20px;
+      color: var(--accent); font-weight: bold;
+    }
+    .remember span { color: #aaa; font-weight: normal; }
+    .nav-hint { font-size: 0.42em; color: #444; text-align: center; margin-top: 30px; }
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 14px;
+    }
+    .compare-col {
+      border-radius: 8px; padding: 14px; font-size: 0.72em; line-height: 1.6;
+    }
+    .compare-col.bad  { background: rgba(244,67,54,0.08); border: 1px solid rgba(244,67,54,0.25); }
+    .compare-col.good { background: rgba(76,175,80,0.08); border: 1px solid rgba(76,175,80,0.25); }
+    .compare-col strong { display: block; margin-bottom: 6px; font-size: 1.05em; }
+    .compare-col.bad  strong { color: #e57373; }
+    .compare-col.good strong { color: #81c784; }
+    .compare-col span { color: #aaa; display: block; padding: 3px 0; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- SLIDE 1: HOOK -->
+  <section>
+    <div class="slide-label">Lección · Slide 1 de 5</div>
+    <span class="emoji-anchor">🐙</span>
+    <h2>¿Sabías que hay millones de proyectos gratis que podés usar hoy?</h2>
+    <p style="font-size:0.82em; line-height:1.6; color:#ccc;">
+      GitHub tiene más de 300 millones de proyectos públicos y gratuitos.<br/>
+      Apps, herramientas, plantillas, automatizaciones — todo disponible.<br/><br/>
+      El problema: están escritos en código. Nadie sin conocimientos puede entenderlos.<br/><br/>
+      <strong style="color:var(--accent);">Claude los lee, los entiende y te ayuda a usarlos — sin que vos sepas programar.</strong>
+    </p>
+    <div class="nav-hint">Presioná → para continuar</div>
+  </section>
+
+  <!-- SLIDE 2: THE BIG IDEA -->
+  <section>
+    <div class="slide-label">Lección · Slide 2 de 5</div>
+    <h2>GitHub es una biblioteca. Claude es tu guía.</h2>
+    <p style="font-size:0.85em; line-height:1.5; color:#ddd;">
+      No tenés que empezar de cero.<br/>
+      Alguien ya construyó algo parecido a lo que querés — y lo puso <strong style="color:var(--accent);">gratis en GitHub</strong>.<br/>
+      Claude lo descarga, lo lee y lo adapta a tu idea.
+    </p>
+    <div class="metaphor">
+      <strong>Metáfora:</strong> Es como una biblioteca pública enorme donde todos los libros son recetas. Vos entrás, elegís una receta parecida a lo que querés cocinar, y Claude la adapta con los ingredientes que vos tenés.
+    </div>
+  </section>
+
+  <!-- SLIDE 3: HOW IT WORKS -->
+  <section>
+    <div class="slide-label">Lección · Slide 3 de 5</div>
+    <h2>¿Cómo funciona el proceso?</h2>
+
+    <div class="compare-grid">
+      <div class="compare-col bad">
+        <strong>❌ Sin GitHub + Claude</strong>
+        <span>Empezás de cero, todo desde nada</span>
+        <span>Claude construye todo desde el primer ladrillo</span>
+        <span>Más tiempo, más esfuerzo, más errores</span>
+        <span>Como construir una casa sin planos</span>
+      </div>
+      <div class="compare-col good">
+        <strong>✅ Con GitHub + Claude</strong>
+        <span>Buscás un proyecto parecido en GitHub</span>
+        <span>Claude lo descarga y lo entiende por vos</span>
+        <span>Solo ajustás lo que necesitás cambiar</span>
+        <span>Como comprar una casa y redecorarla</span>
+      </div>
+    </div>
+
+    <div class="metaphor" style="margin-top:14px;">
+      <strong>El comando mágico:</strong> "Clonar" un repo es copiarlo a tu computadora. Un solo comando. Claude lo hace él mismo.
+    </div>
+  </section>
+
+  <!-- SLIDE 4: REAL EXAMPLE -->
+  <section>
+    <div class="slide-label">Lección · Slide 4 de 5</div>
+    <h2>Ejemplo real — app para Parkinson</h2>
+    <div class="example-box">
+      <span class="label">Caso práctico · Nersy · Fitness para Parkinson</span>
+
+      <strong style="color:var(--accent2);">La situación:</strong><br/>
+      Nersy quiere una app de ejercicios para sus pacientes con Parkinson. Con temporizador, instrucciones claras, colores grandes.<br/><br/>
+
+      <strong style="color:var(--accent);">Lo que hace Claude Code con GitHub:</strong><br/>
+      1. Busca en GitHub: "exercise timer app" — encuentra 3 opciones gratuitas<br/>
+      2. Descarga la mejor con un comando: <code style="color:#81c784; font-size:0.9em;">git clone [url]</code><br/>
+      3. Lee todo el proyecto y le explica a Nersy cómo está organizado<br/>
+      4. Cambia colores, agrega ejercicios específicos para Parkinson, adapta los tiempos<br/><br/>
+
+      <strong style="color:#81c784;">Resultado:</strong> App personalizada en horas, no semanas. Base de un proyecto probado por miles de personas.
+    </div>
+  </section>
+
+  <!-- SLIDE 5: QUIZ + TAKEAWAY -->
+  <section>
+    <div class="slide-label">Lección · Slide 5 de 5</div>
+    <h2>🧠 ¿Lo entendiste?</h2>
+    <p class="quiz-question">¿Para qué sirve GitHub cuando trabajás con Claude Code?</p>
+    <ul class="quiz-options">
+      <li>A) Solo para programadores expertos que escriben código todos los días</li>
+      <li>B) Para encontrar proyectos que ya existen, que Claude puede leer, entender y adaptar a tu idea</li>
+      <li>C) Para guardar fotos, videos y documentos en la nube</li>
+    </ul>
+    <p class="reveal-hint">Presioná → para ver la respuesta</p>
+    <div class="fragment">
+      <ul class="quiz-options">
+        <li class="quiz-answer">✓ Correcto: B — GitHub es la biblioteca. Claude es tu guía adentro.</li>
+      </ul>
+      <div class="remember">
+        💡 Recordá: <span>GitHub tiene millones de proyectos gratis. Claude los lee por vos. No empezás de cero.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
