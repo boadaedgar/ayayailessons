@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Figma MCP — User Guide</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+
+    /* ── BASE ── */
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+    .reveal a { color: var(--blue); }
+
+    /* ── SLIDE LABELS ── */
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    /* ── COVER ── */
+    .cover-title {
+      font-size: 1.6em; font-weight: 800;
+      color: var(--accent); margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+    .cover-sub {
+      font-size: 0.8em; color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .cover-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1);
+      border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    /* ── SECTION COVER ── */
+    .section-cover {
+      display: flex; flex-direction: column;
+      justify-content: center; min-height: 400px;
+    }
+    .section-number {
+      font-size: 0.6em; color: var(--muted);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 1.4em; font-weight: 700;
+      color: var(--accent); line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .section-desc { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    /* ── CODE ── */
+    .code {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8;
+      color: #ccc; margin: 10px 0; overflow: hidden;
+    }
+    .code .k  { color: var(--blue); }
+    .code .s  { color: var(--green); }
+    .code .c  { color: #444; font-style: italic; }
+    .code .hl { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: rgba(245,166,35,0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px; font-size: 0.74em;
+      margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue {
+      background: rgba(79,195,247,0.08);
+      border-left-color: var(--blue);
+    }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green {
+      background: rgba(129,199,132,0.08);
+      border-left-color: var(--green);
+    }
+    .callout.green strong { color: var(--green); }
+
+    /* ── TOOL TABLE ── */
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1px;
+      padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td {
+      padding: 7px 10px; font-size: 0.68em;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: top;
+    }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name {
+      font-family: 'Courier New', monospace;
+      color: var(--blue); white-space: nowrap;
+    }
+    .tool-desc { color: #bbb; }
+    .tool-returns { color: var(--muted); font-style: italic; font-size: 0.92em; }
+
+    /* ── WORKFLOW ── */
+    .workflow-step {
+      display: flex; align-items: flex-start;
+      gap: 14px; margin: 10px 0;
+    }
+    .step-num {
+      min-width: 28px; height: 28px;
+      background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex;
+      align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    /* ── TWO-COL ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px;
+    }
+    .col-card h4 {
+      font-size: 0.72em; color: var(--accent);
+      margin-bottom: 8px; text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── BADGE ── */
+    .badge {
+      display: inline-block; border-radius: 4px;
+      padding: 1px 7px; font-size: 0.6em;
+      font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle;
+      margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red); border: 1px solid rgba(229,115,115,0.3); }
+
+    /* ── PILL ── */
+    .pill {
+      display: inline-block;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 2px 10px;
+      font-size: 0.62em; color: #aaa;
+      margin: 2px;
+    }
+
+    /* ── NAV HINT ── */
+    .nav-hint {
+      font-size: 0.4em; color: #333;
+      text-align: center; margin-top: 20px;
+    }
+    .nav-hint-corner {
+      position: absolute; bottom: -36px; right: 0;
+      font-size: 0.4em; color: #333;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ══════════════════════════════════════
+     COVER
+══════════════════════════════════════ -->
+<section>
+  <p class="section-number">User Guide</p>
+  <div class="cover-title">Figma MCP</div>
+  <p class="cover-sub">Connect AI agents directly to your Figma files</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>Read design context, tokens, and components without copy-paste</li>
+    <li>Generate code that matches your actual design — first try</li>
+    <li>Write back to Figma: create frames, components, diagrams</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Model Context Protocol</span>
+    <span class="tag">Claude Code</span>
+    <span class="tag">Cursor</span>
+    <span class="tag">Windsurf</span>
+    <span class="tag">19 tools</span>
+  </div>
+  <div class="nav-hint">→ next section &nbsp;·&nbsp; ↓ sub-slides within section</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 1 — WHAT IS IT
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 1a: section cover -->
+  <section>
+    <div class="slide-label">Section 1 — What Is It</div>
+    <p class="section-number">01</p>
+    <div class="section-title">What is Figma MCP?</div>
+    <p class="section-desc">
+      Model Context Protocol is an open standard for exposing tools to AI agents.
+      Figma implements it so agents can call your design files like any other API.
+    </p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <!-- 1b: how it works conceptually -->
+  <section>
+    <div class="slide-label">What Is It · Concept</div>
+    <h2>MCP in one diagram</h2>
+    <div class="code">
+      <span class="c">── Without MCP ──────────────────────────────────</span><br/>
+      You → copy hex from inspector → paste into prompt → AI guesses layout<br/>
+      <span class="dim">Result: wrong padding, wrong font weight, three correction rounds</span><br/><br/>
+      <span class="c">── With Figma MCP ───────────────────────────────</span><br/>
+      Agent → <span class="hl">get_design_context</span>(fileKey, nodeId) → receives full token tree<br/>
+      Agent → generates component with <span class="hl">exact</span> values from your file<br/>
+      <span class="s">Result: pixel-perfect code, first attempt</span>
+    </div>
+    <div class="callout">
+      <strong>Key point:</strong> The agent calls Figma's API directly through MCP tools.
+      No screenshots, no manual context transfer, no prompt stuffing.
+    </div>
+  </section>
+
+  <!-- 1c: remote vs desktop -->
+  <section>
+    <div class="slide-label">What Is It · Variants</div>
+    <h2>Remote vs. Desktop MCP</h2>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>🌐 Remote (recommended)</h4>
+        <ul>
+          <li>Hosted by Figma — no local process</li>
+          <li>Broadest feature set</li>
+          <li>Works without the desktop app</li>
+          <li>Config-only setup</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h4>🖥 Desktop</h4>
+        <ul>
+          <li>Runs via Figma desktop app</li>
+          <li>Enterprise / org-specific needs</li>
+          <li>Requires app running locally</li>
+          <li>Subset of features</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout blue" style="margin-top:14px;">
+      <strong>Approved clients only.</strong> Figma limits which MCP clients can connect.
+      Claude Code, Cursor, Windsurf, Zed are on the approved list.
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 2 — SETUP
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 2a: section cover -->
+  <section>
+    <div class="slide-label">Section 2 — Setup</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Setup in 3 steps</div>
+    <p class="section-desc">Get your Personal Access Token, add the config, restart your client.</p>
+    <div class="nav-hint">↓ step by step</div>
+  </section>
+
+  <!-- 2b: get PAT -->
+  <section>
+    <div class="slide-label">Setup · Step 1 — PAT</div>
+    <h2>Step 1 — Get your Figma token</h2>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Open Figma → top-left menu → Settings</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Go to Security → Personal access tokens → Generate new token</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Name it (e.g. "claude-mcp"), set expiry, copy the token</div>
+        <div class="step-sub">Starts with: figd_...</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:10px;">
+      <strong>Note:</strong> Token is shown once. Save it immediately — you can't retrieve it again.
+    </div>
+  </section>
+
+  <!-- 2c: config -->
+  <section>
+    <div class="slide-label">Setup · Step 2 — Config</div>
+    <h2>Step 2 — Add MCP config</h2>
+    <h3>Claude Code — settings.json</h3>
+    <div class="code">
+{<br/>
+&nbsp;&nbsp;<span class="k">"mcpServers"</span>: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"figma"</span>: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"command"</span>: <span class="s">"npx"</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"args"</span>: [<span class="s">"figma-mcp"</span>],<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"env"</span>: {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"FIGMA_ACCESS_TOKEN"</span>: <span class="s">"figd_your_token_here"</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;}<br/>
+}
+    </div>
+    <h3 style="margin-top:10px;">Cursor / Windsurf — .cursor/mcp.json or .windsurf/mcp.json</h3>
+    <div class="callout blue">
+      <strong>Same JSON structure.</strong> File location differs per client — check their docs.
+    </div>
+  </section>
+
+  <!-- 2d: verify -->
+  <section>
+    <div class="slide-label">Setup · Step 3 — Verify</div>
+    <h2>Step 3 — Verify connection</h2>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Restart your MCP client (Claude Code, Cursor, etc.)</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Ask the agent: "Who am I in Figma?"</div>
+        <div class="step-sub">Agent calls: whoami()</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Agent returns your Figma username and email</div>
+        <div class="step-sub">✓ Connection confirmed — all 19 tools are live</div>
+      </div>
+    </div>
+    <div class="callout green">
+      <strong>Tip:</strong> Install the Figma skills for your client before using write-to-canvas tools.
+      Skills are required for <code>use_figma</code> and <code>generate_figma_design</code>.
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 3 — TOOLS
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 3a: section cover -->
+  <section>
+    <div class="slide-label">Section 3 — Tools</div>
+    <p class="section-number">03</p>
+    <div class="section-title">19 Tools — Full Reference</div>
+    <p class="section-desc">
+      Grouped into three categories: Read (9), Write (5), Code Connect (5).
+    </p>
+    <div class="nav-hint">↓ read → write → code connect</div>
+  </section>
+
+  <!-- 3b: read tools -->
+  <section>
+    <div class="slide-label">Tools · Read (9 tools)</div>
+    <h2>Read tools — extract from Figma</h2>
+    <table class="tool-table">
+      <tr>
+        <th>Tool</th>
+        <th>Returns</th>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_design_context</span></td>
+        <td class="tool-desc">Full node tree: layout, styles, components, constraints. Core tool for design-to-code.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_variable_defs</span></td>
+        <td class="tool-desc">Figma Variables as structured tokens — colors, spacing, typography.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_screenshot</span></td>
+        <td class="tool-desc">Renders a frame as PNG — visual reference for the agent.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_metadata</span></td>
+        <td class="tool-desc">File name, pages, last modified, collaborators, version.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_libraries</span></td>
+        <td class="tool-desc">Shared component libraries linked to the file.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">search_design_system</span></td>
+        <td class="tool-desc">Search components and styles by name or description.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_figjam</span></td>
+        <td class="tool-desc">Reads FigJam board content (sticky notes, connectors, shapes).</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">download_assets</span></td>
+        <td class="tool-desc">Exports icons and images from the file without manual export.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">whoami</span></td>
+        <td class="tool-desc">Returns authenticated user name and email — use to verify setup.</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- 3c: write tools -->
+  <section>
+    <div class="slide-label">Tools · Write (5 tools)</div>
+    <h2>Write tools — create and modify in Figma <span class="badge badge-beta">beta</span> <span class="badge badge-free">free now</span></h2>
+    <table class="tool-table">
+      <tr>
+        <th>Tool</th>
+        <th>What it does</th>
+      </tr>
+      <tr>
+        <td><span class="tool-name">use_figma</span></td>
+        <td class="tool-desc">Master canvas tool. Creates frames, components, auto layouts, text. <strong style="color:var(--accent);">Requires /figma-use skill first.</strong></td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">generate_figma_design</span></td>
+        <td class="tool-desc">Translates a page or layout description into native Figma frames. Higher-level than use_figma.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">create_new_file</span></td>
+        <td class="tool-desc">Opens a new blank Figma file in your workspace.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">generate_diagram</span></td>
+        <td class="tool-desc">Creates flowcharts and diagrams in FigJam from text or code.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">upload_assets</span></td>
+        <td class="tool-desc">Pushes local images, icons, or SVGs into a Figma file.</td>
+      </tr>
+    </table>
+    <div class="callout" style="margin-top:10px;">
+      <strong>Pricing note:</strong> Write-to-canvas is free during beta. Will become usage-based paid.
+    </div>
+  </section>
+
+  <!-- 3d: code connect tools -->
+  <section>
+    <div class="slide-label">Tools · Code Connect (5 tools)</div>
+    <h2>Code Connect — map design to codebase</h2>
+    <table class="tool-table">
+      <tr>
+        <th>Tool</th>
+        <th>What it does</th>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_code_connect_map</span></td>
+        <td class="tool-desc">Shows current mappings: which Figma component → which code component.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_code_connect_suggestions</span></td>
+        <td class="tool-desc">AI scans your codebase and suggests component mappings automatically.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">get_context_for_code_connect</span></td>
+        <td class="tool-desc">Gets the Figma component context needed to create a mapping.</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">add_code_connect_map</span></td>
+        <td class="tool-desc">Adds a new mapping (Figma component → your actual code component).</td>
+      </tr>
+      <tr>
+        <td><span class="tool-name">send_code_connect_mappings</span></td>
+        <td class="tool-desc">Pushes all pending mappings to Figma — makes them available to all agents on the project.</td>
+      </tr>
+    </table>
+    <div class="callout blue" style="margin-top:10px;">
+      <strong>Why this matters:</strong> Without Code Connect, the agent generates a generic &lt;Button&gt;.
+      With it, it uses <em>your</em> <code>&lt;Button variant="primary"&gt;</code> from your component library.
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 4 — WORKFLOWS
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 4a: section cover -->
+  <section>
+    <div class="slide-label">Section 4 — Workflows</div>
+    <p class="section-number">04</p>
+    <div class="section-title">3 Core Workflows</div>
+    <p class="section-desc">Design → Code · Code → Design · Token Extraction</p>
+    <div class="nav-hint">↓ workflow by workflow</div>
+  </section>
+
+  <!-- 4b: design to code -->
+  <section>
+    <div class="slide-label">Workflows · Design → Code</div>
+    <h2>Workflow 1 — Design to Code</h2>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Copy the Figma frame/node URL or file key</div>
+        <div class="step-sub">Right-click frame → Copy link → paste into your prompt</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Agent calls get_design_context + get_variable_defs</div>
+        <div class="step-sub">Reads all tokens, component tree, spacing, constraints</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Agent generates component code</div>
+        <div class="step-sub">Exact hex values, exact spacing, exact font weights — not guesses</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">(Optional) Code Connect ensures your actual components are used</div>
+        <div class="step-sub">get_code_connect_suggestions → add_code_connect_map → send_code_connect_mappings</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4c: code to design -->
+  <section>
+    <div class="slide-label">Workflows · Code → Design</div>
+    <h2>Workflow 2 — Code to Design</h2>
+    <div class="callout blue" style="margin-bottom:12px;">
+      <strong>Prerequisite:</strong> Run <code>/figma-use</code> skill before using <code>use_figma</code>.
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Describe what you want, or point to existing code</div>
+        <div class="step-sub">"Create a login card with our design system tokens in Figma"</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Agent reads get_variable_defs + get_libraries for context</div>
+        <div class="step-sub">Picks up your actual tokens before drawing anything</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Agent calls use_figma or generate_figma_design</div>
+        <div class="step-sub">Creates native Figma frames, auto-layout, components</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Frame appears in your open Figma file</div>
+        <div class="step-sub">Editable like anything you'd draw manually</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4d: token extraction -->
+  <section>
+    <div class="slide-label">Workflows · Token Extraction</div>
+    <h2>Workflow 3 — Token Extraction</h2>
+    <p style="font-size:0.76em; color:#aaa; margin-bottom:12px;">
+      Pull design tokens from Figma Variables into your codebase — no manual copy-paste.
+    </p>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Agent calls get_variable_defs(fileKey)</div>
+        <div class="step-sub">Returns all Figma Variable collections (colors, spacing, typography...)</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Agent transforms output to your target format</div>
+        <div class="step-sub">CSS custom properties · Tailwind config · DESIGN.md · tokens.json (DTCG)</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Agent writes the file to your repo</div>
+        <div class="step-sub">Tokens are now in code — single source of truth from Figma</div>
+      </div>
+    </div>
+    <div class="callout green" style="margin-top:10px;">
+      <strong>Combine with DESIGN.md:</strong> Extract tokens from Figma → populate DESIGN.md automatically.
+      Figma stays the live source; DESIGN.md becomes the offline cache for agents.
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 5 — LIMITS & TIPS
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 5a: section cover -->
+  <section>
+    <div class="slide-label">Section 5 — Limits & Tips</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Limits, Gotchas & Tips</div>
+    <p class="section-desc">What works, what doesn't, what to watch out for.</p>
+    <div class="nav-hint">↓ details</div>
+  </section>
+
+  <!-- 5b: limits -->
+  <section>
+    <div class="slide-label">Limits & Tips · Limits</div>
+    <h2>Known limits</h2>
+    <table class="tool-table">
+      <tr><th>Issue</th><th>Detail</th></tr>
+      <tr>
+        <td style="color:var(--red); font-size:0.72em;">Large files are slow</td>
+        <td class="tool-desc">Heavy frames with many nested components increase response time. Work with specific node IDs, not entire pages.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--red); font-size:0.72em;">Approved clients only</td>
+        <td class="tool-desc">Only clients on Figma's MCP Catalog can connect. Building a custom client requires joining the waitlist.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--red); font-size:0.72em;">use_figma needs a skill</td>
+        <td class="tool-desc">Must run /figma-use skill before calling use_figma. Skipping it causes tool errors.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--yellow); font-size:0.72em;">Write is beta → paid</td>
+        <td class="tool-desc">Canvas writing is free during beta. Pricing model TBD — plan for usage-based billing.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--yellow); font-size:0.72em;">Alpha spec</td>
+        <td class="tool-desc">Tool signatures and behavior may change. Pin your figma-mcp version in production.</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- 5c: tips -->
+  <section>
+    <div class="slide-label">Limits & Tips · Tips</div>
+    <h2>Tips for best results</h2>
+    <ul>
+      <li>Pass <strong style="color:var(--accent);">node IDs, not full page URLs</strong> — narrows context, faster responses</li>
+      <li>Set up <strong style="color:var(--accent);">Code Connect before</strong> any design-to-code runs — ensures your real components are used</li>
+      <li>Run <strong style="color:var(--accent);">get_variable_defs first</strong> on any new file — gives the agent full token awareness before it generates anything</li>
+      <li>Use <strong style="color:var(--accent);">get_screenshot</strong> to give the agent a visual sanity check alongside get_design_context</li>
+      <li>Pair with <strong style="color:var(--accent);">DESIGN.md</strong> — Figma MCP for live reads, DESIGN.md as offline token cache</li>
+      <li>Keep your PAT scoped to <strong style="color:var(--accent);">read-only</strong> unless you're using write tools — reduces risk</li>
+    </ul>
+    <div class="callout" style="margin-top:10px;">
+      <strong>Workflow shortcut:</strong> "Read my Figma file [URL] and generate a DESIGN.md from its variables"
+      — chains get_variable_defs → DESIGN.md in one prompt.
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     QUICK REFERENCE
+══════════════════════════════════════ -->
+<section>
+  <div class="slide-label">Quick Reference</div>
+  <h2>Quick Reference Card</h2>
+  <div class="two-col">
+    <div>
+      <h3>Read tools</h3>
+      <div class="pill">get_design_context</div>
+      <div class="pill">get_variable_defs</div>
+      <div class="pill">get_screenshot</div>
+      <div class="pill">get_metadata</div>
+      <div class="pill">get_libraries</div>
+      <div class="pill">search_design_system</div>
+      <div class="pill">get_figjam</div>
+      <div class="pill">download_assets</div>
+      <div class="pill">whoami</div>
+      <h3 style="margin-top:12px;">Write tools</h3>
+      <div class="pill">use_figma</div>
+      <div class="pill">generate_figma_design</div>
+      <div class="pill">create_new_file</div>
+      <div class="pill">generate_diagram</div>
+      <div class="pill">upload_assets</div>
+    </div>
+    <div>
+      <h3>Code Connect</h3>
+      <div class="pill">get_code_connect_map</div>
+      <div class="pill">get_code_connect_suggestions</div>
+      <div class="pill">get_context_for_code_connect</div>
+      <div class="pill">add_code_connect_map</div>
+      <div class="pill">send_code_connect_mappings</div>
+      <h3 style="margin-top:12px;">Key prompts</h3>
+      <div class="code" style="font-size:0.6em; margin-top:6px;">
+        "Who am I in Figma?"<br/>
+        <span class="dim">→ verify setup</span><br/><br/>
+        "Read [Figma URL] and generate code"<br/>
+        <span class="dim">→ design-to-code</span><br/><br/>
+        "Extract tokens from [file] to DESIGN.md"<br/>
+        <span class="dim">→ token extraction</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

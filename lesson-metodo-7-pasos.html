@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Método — 7 Pasos con Claude Code</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root { --accent: #f5a623; --accent2: #4fc3f7; --green: #81c784; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--accent2); font-size: 1em; margin-bottom: 16px; }
+    .reveal .slides section { text-align: left; }
+    .slide-label {
+      position: absolute; top: -40px; right: 0;
+      font-size: 0.45em; color: #666; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .emoji-anchor { font-size: 2.2em; display: block; margin-bottom: 8px; }
+    .metaphor {
+      background: rgba(245,166,35,0.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px; font-size: 0.78em;
+      margin-top: 16px; font-style: italic; color: #ddd;
+    }
+    .metaphor strong { color: var(--accent); font-style: normal; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    ul li { padding: 5px 0; font-size: 0.78em; line-height: 1.4; }
+    ul li::before { content: "▸ "; color: var(--accent); font-size: 1em; }
+    .example-box {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      border-radius: 8px; padding: 16px 20px;
+      font-size: 0.78em; line-height: 1.7;
+    }
+    .example-box .label {
+      font-size: 0.75em; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 6px; display: block;
+    }
+    .quiz-question {
+      font-size: 0.85em; font-weight: bold;
+      color: #eee; margin-bottom: 18px; line-height: 1.4;
+    }
+    .quiz-options { list-style: none; padding: 0; }
+    .quiz-options li {
+      padding: 8px 14px; margin: 6px 0;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px; font-size: 0.75em; cursor: default;
+    }
+    .quiz-options li::before { content: none; }
+    .quiz-answer {
+      background: rgba(76,175,80,0.2);
+      border: 1px solid #81c784 !important; color: #81c784;
+    }
+    .reveal-hint { font-size: 0.55em; color: #666; margin-top: 10px; font-style: italic; }
+    .remember {
+      background: rgba(245,166,35,0.15);
+      border-radius: 6px; padding: 12px 16px;
+      font-size: 0.75em; margin-top: 20px;
+      color: var(--accent); font-weight: bold;
+    }
+    .remember span { color: #aaa; font-weight: normal; }
+    .nav-hint { font-size: 0.42em; color: #444; text-align: center; margin-top: 30px; }
+    .step-row { display: flex; align-items: flex-start; gap: 12px; margin: 7px 0; }
+    .step-num {
+      min-width: 28px; height: 28px;
+      background: var(--accent); color: #1a1a2e;
+      border-radius: 50%; display: flex;
+      align-items: center; justify-content: center;
+      font-weight: bold; font-size: 0.78em; flex-shrink: 0;
+    }
+    .step-text { font-size: 0.76em; line-height: 1.4; padding-top: 4px; color: #ddd; }
+    .step-text strong { color: #fff; }
+    .phase-title {
+      font-size: 0.6em; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--accent2);
+      margin-bottom: 10px; display: block;
+    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
+    .col-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 14px;
+    }
+    .cycle-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; flex-wrap: wrap; }
+    .cycle-pill {
+      background: rgba(245,166,35,0.15);
+      border: 1px solid rgba(245,166,35,0.4);
+      border-radius: 20px; padding: 6px 14px;
+      font-size: 0.68em; color: #eee;
+    }
+    .cycle-arrow { color: #555; font-size: 0.9em; }
+    .register-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .register-pill {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      border-radius: 6px; padding: 5px 12px;
+      font-size: 0.65em; color: var(--accent2);
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- SLIDE 1: HOOK -->
+  <section>
+    <div class="slide-label">Lección · Slide 1 de 5</div>
+    <span class="emoji-anchor">💡</span>
+    <h2>Tengo una idea. ¿Y ahora qué?</h2>
+    <p style="font-size:0.82em; line-height:1.6; color:#ccc;">
+      La mayoría de las ideas mueren porque no sabemos cómo empezarlas.<br/>
+      O las empezamos sin plan y nos perdemos en el camino.<br/><br/>
+      <strong style="color:var(--accent);">Con Claude Code hay un método de 7 pasos</strong> que convierte cualquier idea — aunque esté incompleta — en algo real y terminado.
+    </p>
+    <div class="nav-hint">Presioná → para continuar</div>
+  </section>
+
+  <!-- SLIDE 2: THE BIG IDEA -->
+  <section>
+    <div class="slide-label">Lección · Slide 2 de 5</div>
+    <h2>El método en una idea</h2>
+    <p style="font-size:0.82em; line-height:1.5; color:#ddd;">
+      No hace falta tener todo claro antes de empezar.<br/>
+      El método <strong style="color:var(--accent);">va de lo vago a lo concreto</strong> — paso a paso, con Claude como copiloto.
+    </p>
+    <div class="metaphor">
+      <strong>Metáfora:</strong> Es como armar un rompecabezas con alguien que ya vio la caja. Vos ponés las piezas que tenés. Él te dice cuáles faltan y dónde van.
+    </div>
+    <div style="margin-top:18px;">
+      <ul>
+        <li>📝 <strong>Fase 1 — Pensar y clarificar</strong> (Pasos 1 al 4)</li>
+        <li>🔨 <strong>Fase 2 — Ejecutar y aprender</strong> (Pasos 5 al 7)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: PASOS 1-4 -->
+  <section>
+    <div class="slide-label">Lección · Slide 3 de 5</div>
+    <h2>Fase 1 — Pensar y clarificar</h2>
+    <span class="phase-title">Pasos 1 al 4</span>
+
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Escribo mi idea</strong> — aunque esté incompleta. Sin miedo a que sea vaga.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Claude la expande</strong> — le pido ideas, ángulos que yo no vi, preguntas para aclarar.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Mejoro la idea</strong> — con lo que Claude sugirió, aclaro qué quiero exactamente.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Pido opciones de ejecución</strong> — herramientas, técnicas, alternativas. Claude explica cada una.</div>
+    </div>
+
+    <div class="metaphor">
+      <strong>En este punto:</strong> Tu idea ya está clara y sabés cómo la vas a hacer. Recién ahí pasás a ejecutar.
+    </div>
+  </section>
+
+  <!-- SLIDE 4: PASOS 5-7 -->
+  <section>
+    <div class="slide-label">Lección · Slide 4 de 5</div>
+    <h2>Fase 2 — Ejecutar y registrar</h2>
+    <span class="phase-title">Pasos 5 al 7</span>
+
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div class="step-text"><strong>Pido el plan</strong> — Claude arma un plan paso a paso. Lo revisamos y aclaramos juntos antes de empezar.</div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-num">6</div>
+      <div class="step-text"><strong>Ciclo de ejecución</strong></div>
+    </div>
+    <div class="cycle-row" style="margin-left:40px;">
+      <div class="cycle-pill">⚡ Ejecutar</div>
+      <div class="cycle-arrow">→</div>
+      <div class="cycle-pill">🔍 Ver resultado</div>
+      <div class="cycle-arrow">→</div>
+      <div class="cycle-pill">🔧 Corregir</div>
+      <div class="cycle-arrow">→</div>
+      <div class="cycle-pill">📚 Aprender</div>
+      <div class="cycle-arrow">→</div>
+      <div class="cycle-pill">✨ Mejorar</div>
+    </div>
+
+    <div class="step-row" style="margin-top:12px;">
+      <div class="step-num">7</div>
+      <div class="step-text"><strong>Registro y conclusión</strong> — guardamos lo que hicimos y aprendimos.</div>
+    </div>
+    <div class="register-row" style="margin-left:40px;">
+      <div class="register-pill">📒 Notion</div>
+      <div class="register-pill">🌐 HTML mini-lesson</div>
+      <div class="register-pill">🔮 Obsidian</div>
+      <div class="register-pill">🧠 Memory de Claude</div>
+      <div class="register-pill">📄 Doc / archivo</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: QUIZ + TAKEAWAY -->
+  <section>
+    <div class="slide-label">Lección · Slide 5 de 5</div>
+    <h2>🧠 ¿Lo entendiste?</h2>
+    <p class="quiz-question">¿En qué momento del método empezás a ejecutar con Claude Code?</p>
+    <ul class="quiz-options">
+      <li>A) En el paso 1, apenas tenés la idea</li>
+      <li>B) Recién en el paso 5, después de clarificar, pedir opciones y tener un plan</li>
+      <li>C) Cuando Claude Code te lo indica automáticamente</li>
+    </ul>
+    <p class="reveal-hint">Presioná → para ver la respuesta</p>
+    <div class="fragment">
+      <ul class="quiz-options">
+        <li class="quiz-answer">✓ Correcto: B — Primero pensás y clarificás. Después ejecutás.</li>
+      </ul>
+      <div class="remember">
+        💡 Recordá: <span>Una idea vaga bien trabajada con Claude se convierte en un resultado real. El método es: clarificar → planificar → ejecutar → registrar.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

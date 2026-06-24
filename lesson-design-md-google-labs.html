@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DESIGN.md — El archivo que le explica tu marca a la IA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root { --accent: #f5a623; --accent2: #4fc3f7; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--accent2); font-size: 1em; margin-bottom: 16px; }
+    .reveal .slides section { text-align: left; }
+    .slide-label {
+      position: absolute; top: -40px; right: 0;
+      font-size: 0.45em; color: #666; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .emoji-anchor { font-size: 2.2em; display: block; margin-bottom: 8px; }
+    .metaphor {
+      background: rgba(245,166,35,0.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px; font-size: 0.78em;
+      margin-top: 16px; font-style: italic; color: #ddd;
+    }
+    .metaphor strong { color: var(--accent); font-style: normal; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    ul li { padding: 5px 0; font-size: 0.78em; line-height: 1.4; }
+    ul li::before { content: "▸ "; color: var(--accent); font-size: 1em; }
+    .example-box {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      border-radius: 8px; padding: 16px 20px;
+      font-size: 0.78em; line-height: 1.7;
+    }
+    .example-box .label {
+      font-size: 0.75em; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 10px; display: block;
+    }
+    .quiz-question {
+      font-size: 0.85em; font-weight: bold;
+      color: #eee; margin-bottom: 18px; line-height: 1.4;
+    }
+    .quiz-options { list-style: none; padding: 0; }
+    .quiz-options li {
+      padding: 8px 14px; margin: 6px 0;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px; font-size: 0.75em; cursor: default;
+    }
+    .quiz-options li::before { content: none; }
+    .quiz-answer {
+      background: rgba(76,175,80,0.2);
+      border: 1px solid #81c784 !important; color: #81c784;
+    }
+    .reveal-hint { font-size: 0.55em; color: #666; margin-top: 10px; font-style: italic; }
+    .remember {
+      background: rgba(245,166,35,0.15);
+      border-radius: 6px; padding: 12px 16px;
+      font-size: 0.75em; margin-top: 20px;
+      color: var(--accent); font-weight: bold;
+    }
+    .remember span { color: #aaa; font-weight: normal; }
+    .nav-hint { font-size: 0.42em; color: #444; text-align: center; margin-top: 30px; }
+    .before-after {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;
+    }
+    .before-after .col {
+      border-radius: 8px; padding: 14px; font-size: 0.76em; line-height: 1.6;
+    }
+    .col-bad {
+      background: rgba(244,67,54,0.08);
+      border: 1px solid rgba(229,115,115,0.35);
+    }
+    .col-good {
+      background: rgba(76,175,80,0.08);
+      border: 1px solid rgba(129,199,132,0.35);
+    }
+    .col-bad strong { color: #e57373; }
+    .col-good strong { color: #81c784; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- SLIDE 1: HOOK -->
+  <section>
+    <div class="slide-label">Lección · Slide 1 de 5</div>
+    <span class="emoji-anchor">🎨</span>
+    <h2>¿Por qué la IA siempre elige los colores equivocados?</h2>
+    <p style="font-size:0.82em; line-height:1.6; color:#ccc;">
+      Cada vez que le pedís a una IA que cree un botón, una página o un componente,
+      empieza <strong style="color:var(--accent);">desde cero</strong>. No sabe tu marca.
+      No sabe tus colores. Inventa. Resultado: código que no parece tuyo.
+      <br/><br/>
+      <strong style="color:var(--accent);">DESIGN.md</strong> es el archivo que le da esa memoria.
+    </p>
+    <div class="nav-hint">Presioná → para continuar</div>
+  </section>
+
+  <!-- SLIDE 2: THE BIG IDEA -->
+  <section>
+    <div class="slide-label">Lección · Slide 2 de 5</div>
+    <h2>La gran idea</h2>
+    <p style="font-size:0.85em; line-height:1.5; color:#ddd;">
+      <strong style="color:var(--accent);">DESIGN.md</strong> es un archivo de texto
+      que guarda tus colores exactos, tus fuentes y tus espaciados —
+      para que cualquier IA los use siempre igual, en cada componente que genere.
+    </p>
+    <div class="metaphor">
+      <strong>Metáfora:</strong> Es como darle a un empleado nuevo el manual de identidad
+      de tu marca antes de que empiece a trabajar. Sin ese manual, inventa. Con él, aplica lo tuyo.
+    </div>
+  </section>
+
+  <!-- SLIDE 3: HOW IT WORKS -->
+  <section>
+    <div class="slide-label">Lección · Slide 3 de 5</div>
+    <h2>¿Cómo funciona?</h2>
+    <ul>
+      <li>Creás un archivo <strong style="color:var(--accent);">DESIGN.md</strong> en la raíz de tu proyecto con tus colores, fuentes y componentes</li>
+      <li>La IA lo lee automáticamente cuando trabaja en ese proyecto — sin que vos le aclarés nada</li>
+      <li>Validás el archivo con <strong style="color:var(--accent2);">designmd lint</strong> para detectar errores de contraste o referencias rotas</li>
+      <li>Exportás tus tokens a Tailwind o CSS con un solo comando — sin copiar y pegar</li>
+    </ul>
+  </section>
+
+  <!-- SLIDE 4: REAL EXAMPLE -->
+  <section>
+    <div class="slide-label">Lección · Slide 4 de 5</div>
+    <h2>Ejemplo real: "Creá un botón"</h2>
+    <div class="before-after">
+      <div class="col col-bad">
+        <strong>❌ Sin DESIGN.md</strong><br/><br/>
+        La IA elige un azul genérico <span style="color:#888;">#3B82F6</span><br/>
+        Padding inventado: 10px 20px<br/>
+        Border-radius al azar: 4px<br/>
+        <span style="color:#e57373;">Resultado: no es tu marca.</span>
+      </div>
+      <div class="col col-good">
+        <strong>✅ Con DESIGN.md</strong><br/><br/>
+        Usa tu amber exacto <span style="color:var(--accent);">#f5a623</span><br/>
+        Tu padding definido: 8px 20px<br/>
+        Tu radio de esquina: 6px<br/>
+        <span style="color:#81c784;">Resultado: siempre coherente.</span>
+      </div>
+    </div>
+    <p style="font-size:0.65em; color:#666; margin-top:14px;">
+      Funciona con Claude, Gemini, Copilot — cualquier IA que lea tu carpeta de proyecto.
+    </p>
+  </section>
+
+  <!-- SLIDE 5: QUIZ + TAKEAWAY -->
+  <section>
+    <div class="slide-label">Lección · Slide 5 de 5</div>
+    <h2>🧠 ¿Lo entendiste?</h2>
+    <p class="quiz-question">¿Cuál es el propósito principal de DESIGN.md?</p>
+    <ul class="quiz-options">
+      <li>A) Escribir documentación técnica del código</li>
+      <li>B) Darle a la IA tus colores, fuentes y tokens para que los use siempre igual</li>
+      <li>C) Crear páginas web automáticamente sin intervención humana</li>
+    </ul>
+    <p class="reveal-hint">Presioná → para ver la respuesta</p>
+    <div class="fragment">
+      <ul class="quiz-options">
+        <li class="quiz-answer">✓ Correcto: B — DESIGN.md le da memoria de marca a la IA.</li>
+      </ul>
+      <div class="remember">
+        💡 Recordá: <span>Un archivo DESIGN.md en tu proyecto hace que la IA siempre use tus colores y fuentes exactos — sin adivinar.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
