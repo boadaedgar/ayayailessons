@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cómo se hizo la tarea HTML</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root { --accent: #f5a623; --accent2: #4fc3f7; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--accent2); font-size: 1em; margin-bottom: 16px; }
+    .reveal .slides section { text-align: left; }
+    .slide-label {
+      position: absolute; top: -40px; right: 0;
+      font-size: 0.45em; color: #666; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .emoji-anchor { font-size: 2.2em; display: block; margin-bottom: 8px; }
+    .metaphor {
+      background: rgba(245,166,35,0.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px; font-size: 0.78em;
+      margin-top: 16px; font-style: italic; color: #ddd;
+    }
+    .metaphor strong { color: var(--accent); font-style: normal; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    ul li { padding: 5px 0; font-size: 0.78em; line-height: 1.4; }
+    ul li::before { content: "▸ "; color: var(--accent); font-size: 1em; }
+    .example-box {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      border-radius: 8px; padding: 16px 20px;
+      font-size: 0.78em; line-height: 1.6;
+    }
+    .example-box .label {
+      font-size: 0.75em; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 6px; display: block;
+    }
+    .quiz-question {
+      font-size: 0.85em; font-weight: bold;
+      color: #eee; margin-bottom: 18px; line-height: 1.4;
+    }
+    .quiz-options { list-style: none; padding: 0; }
+    .quiz-options li {
+      padding: 8px 14px; margin: 6px 0;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px; font-size: 0.75em; cursor: default;
+    }
+    .quiz-options li::before { content: none; }
+    .quiz-answer {
+      background: rgba(76,175,80,0.2);
+      border: 1px solid #81c784 !important; color: #81c784;
+    }
+    .reveal-hint { font-size: 0.55em; color: #666; margin-top: 10px; font-style: italic; }
+    .remember {
+      background: rgba(245,166,35,0.15);
+      border-radius: 6px; padding: 12px 16px;
+      font-size: 0.75em; margin-top: 20px;
+      color: var(--accent); font-weight: bold;
+    }
+    .remember span { color: #aaa; font-weight: normal; }
+    .nav-hint { font-size: 0.42em; color: #444; text-align: center; margin-top: 30px; }
+    .step-row {
+      display: flex; align-items: flex-start; gap: 14px; margin: 10px 0;
+    }
+    .step-num {
+      min-width: 32px; height: 32px;
+      background: var(--accent); color: #1a1a2e;
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-weight: bold; font-size: 0.85em;
+      flex-shrink: 0;
+    }
+    .step-text { font-size: 0.78em; margin: 4px 0; line-height: 1.4; color: #ccc; }
+    .before-after {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px;
+    }
+    .ba-box {
+      border-radius: 8px; padding: 14px; font-size: 0.75em; line-height: 1.6;
+    }
+    .ba-before {
+      background: rgba(244,67,54,0.08);
+      border: 1px solid rgba(244,67,54,0.25);
+    }
+    .ba-before strong { color: #e57373; }
+    .ba-after {
+      background: rgba(76,175,80,0.08);
+      border: 1px solid rgba(76,175,80,0.25);
+    }
+    .ba-after strong { color: #81c784; }
+    .ba-box p { color: #bbb; margin-top: 6px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- SLIDE 1: HOOK -->
+  <section>
+    <div class="slide-label">Lección · Slide 1 de 5</div>
+    <span class="emoji-anchor">🧱</span>
+    <h2>¿Sabías que una página web es solo texto?</h2>
+    <p style="font-size:0.82em; line-height:1.5; color:#ccc;">
+      La tarea que vas a usar en clase — con ese diseño oscuro, los ejemplos desplegables y los colores — es un archivo de texto. Un solo archivo. Nada más.<br/><br/>
+      No se usó Photoshop. No se contrató un diseñador. No se escribió una sola línea de código a mano.
+    </p>
+    <div class="nav-hint">Presioná → para continuar</div>
+  </section>
+
+  <!-- SLIDE 2: BIG IDEA -->
+  <section>
+    <div class="slide-label">Lección · Slide 2 de 5</div>
+    <h2>La gran idea</h2>
+    <p style="font-size:0.85em; line-height:1.5; color:#ddd;">
+      Describís qué querés, la IA escribe el código, vos revisás en el browser y pedís ajustes. Eso es todo el proceso.
+    </p>
+    <div class="metaphor">
+      <strong>Metáfora:</strong> Es como pedirle a un carpintero muy hábil que haga un mueble. Vos describís el estilo, el color, si tiene cajones o no. Él construye. Vos aprobás o pedís cambios. No necesitás saber carpintería.
+    </div>
+  </section>
+
+  <!-- SLIDE 3: CÓMO SE HIZO (pasos) -->
+  <section>
+    <div class="slide-label">Lección · Slide 3 de 5</div>
+    <h2>¿Cómo se hizo paso a paso?</h2>
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <p class="step-text"><strong style="color:#eee;">Borrador en texto plano.</strong> Se escribió el contenido en Markdown — como un documento de Word pero más simple. Solo el texto, sin diseño.</p>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <p class="step-text"><strong style="color:#eee;">Pedido de conversión.</strong> Se le dijo a Claude: "convertí esto a HTML con el mismo estilo oscuro de las otras lecciones." Claude vio los archivos existentes y copió el estilo.</p>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <p class="step-text"><strong style="color:#eee;">Revisión y ajustes.</strong> Se abrió en el browser, se pidieron cambios: nuevo título, más ejemplos, ejemplos colapsables, campo de tono/estilo. Cada pedido en lenguaje natural.</p>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <p class="step-text"><strong style="color:#eee;">Deploy a GitHub.</strong> Un comando y el archivo quedó publicado en internet con una URL para compartir.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: EJEMPLO REAL (antes / después) -->
+  <section>
+    <div class="slide-label">Lección · Slide 4 de 5</div>
+    <h2>Antes y después</h2>
+    <div class="before-after">
+      <div class="ba-box ba-before">
+        <strong>❌ Antes — texto plano</strong>
+        <p>Un archivo .md con el título, las preguntas y las secciones escritas en texto sin ningún formato. Legible, pero no presentable.</p>
+      </div>
+      <div class="ba-box ba-after">
+        <strong>✅ Después — HTML diseñado</strong>
+        <p>Mismo contenido. Dark theme, colores, checkboxes, 7 ejemplos desplegables, tabla de dominios, responsive en mobile, listo para imprimir.</p>
+      </div>
+    </div>
+    <div class="example-box" style="margin-top:14px;">
+      <span class="label">Lo que se le pidió a la IA</span>
+      "Convertilo a HTML. Mismo estilo oscuro de las otras lecciones. Agregá más ejemplos, uno para ingeniero agrónomo con invernaderos, uno para app fitnessparkinson, uno para agente inmobiliario…"
+    </div>
+  </section>
+
+  <!-- SLIDE 5: QUIZ + RECORDÁ -->
+  <section>
+    <div class="slide-label">Lección · Slide 5 de 5</div>
+    <h2>🧠 ¿Lo entendiste?</h2>
+    <p class="quiz-question">Para crear un archivo HTML con IA, lo más importante es…</p>
+    <ul class="quiz-options">
+      <li>A) Saber programar HTML y CSS en detalle</li>
+      <li>B) Describir qué querés, revisar en el browser y pedir ajustes</li>
+      <li>C) Usar un software de diseño como Figma o Photoshop</li>
+    </ul>
+    <p class="reveal-hint">Presioná → para ver la respuesta</p>
+    <div class="fragment">
+      <ul class="quiz-options">
+        <li class="quiz-answer">✓ Correcto: B — describir, revisar, ajustar. La IA escribe el código.</li>
+      </ul>
+      <div class="remember">
+        💡 Recordá: <span>No necesitás saber código. Necesitás saber qué querés y reconocer cuándo está bien.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
