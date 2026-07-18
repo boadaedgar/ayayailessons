@@ -52,7 +52,7 @@ Letra grande, botones grandes, un ejercicio a la vez. Hecho para personas mayore
 Tu código de activación: **NTBH8462**
 
 Cómo activar:
-1. Abre NeuroFit: [URL de la app]
+1. Abre NeuroFit: https://boadaedgar.github.io/ayayailessons/neurofitness/
 2. Baja hasta "¿Ya compraste? Ingresa tu código"
 3. Escribe tu código y presiona Activar
 
