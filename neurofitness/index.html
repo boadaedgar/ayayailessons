@@ -9,37 +9,58 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #FAF6EF;          /* crema cálido */
-      --card: #FFFFFF;
-      --border: #E5DCC9;
-      --accent: #2E7D5B;      /* verde confianza */
-      --accent-soft: #E7F2EC;
-      --blue: #2C5F8A;
-      --blue-soft: #E8F0F7;
-      --warn: #B26A00;
-      --warn-soft: #FCF3E3;
-      --success: #2E7D5B;
-      --text: #2B2B2B;
-      --dim: #6B6355;
-      --gold: #C9971C;
-      --gold-soft: #FBF4DF;
+      /* ---- LOCKED Planetario3 brand colors ---- */
+      --p3-blue:   #0B1C2D;   /* Deep Space Blue  — primary   */
+      --p3-cyan:   #1ECAD3;   /* Orbital Cyan     — secondary */
+      --p3-amber:  #F4B400;   /* Solar Amber      — accent    */
+      --p3-carbon: #121212;   /* Carbon Black     — body text */
+      --p3-white:  #FFFFFF;   /* Stellar White    — bg        */
+      --p3-gray:   #E5E7EB;   /* Orbit Gray       — borders/cards */
+
+      /* derived utility tints (opacity of locked colors only) */
+      --p3-cyan-10:  rgba(30,202,211,0.10);
+      --p3-cyan-15:  rgba(30,202,211,0.15);
+      --p3-amber-12: rgba(244,180,0,0.12);
+      --p3-ink-soft: #3A4653;   /* muted body on light */
+      --p3-ink-mute: #6B7683;   /* captions/labels on light */
+
+      /* aliases kept so component rules read cleanly */
+      --bg: var(--p3-white);
+      --card: var(--p3-white);
+      --border: var(--p3-gray);
+      --accent: var(--p3-cyan);
+      --accent-soft: var(--p3-cyan-10);
+      --blue: var(--p3-blue);
+      --blue-soft: var(--p3-cyan-10);
+      --warn: #8A6A00;
+      --warn-soft: var(--p3-amber-12);
+      --success: var(--p3-cyan);
+      --text: var(--p3-carbon);
+      --dim: var(--p3-ink-mute);
+      --gold: var(--p3-amber);
+      --gold-soft: var(--p3-amber-12);
       --r: 20px;
+
+      --p3-font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 'Segoe UI', "Helvetica Neue", Arial, sans-serif;
+      --shadow-md: 0 20px 40px rgba(11,28,45,0.08);
     }
 
     html { font-size: 21px; }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Segoe UI', Verdana, Arial, sans-serif;
+      background: var(--p3-white);
+      color: var(--p3-carbon);
+      font-family: var(--p3-font);
       min-height: 100vh;
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ── HEADER ── */
     header {
-      background: var(--card);
-      border-bottom: 2px solid var(--border);
+      background: var(--p3-white);
+      border-bottom: 1px solid var(--p3-gray);
       padding: 14px 20px;
       display: flex;
       justify-content: space-between;
@@ -48,13 +69,13 @@
       top: 0;
       z-index: 10;
     }
-    .app-name { font-size: 1.3rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
-    .app-name span { color: var(--blue); }
+    .app-name { font-size: 1.3rem; font-weight: 800; color: var(--p3-blue); letter-spacing: -0.02em; }
+    .app-name span { color: var(--p3-cyan); }
     .session-badge {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      border-radius: 22px;
+      background: var(--p3-cyan-10);
+      color: var(--p3-blue);
+      border: 1px solid var(--p3-cyan);
+      border-radius: 999px;
       padding: 5px 16px;
       font-size: 0.75rem;
       font-weight: 700;
@@ -69,40 +90,40 @@
       display: flex;
       justify-content: space-between;
       font-size: 0.8rem;
-      color: var(--dim);
+      color: var(--p3-ink-mute);
       margin-bottom: 8px;
       font-weight: 600;
     }
-    .bar-bg { background: #EDE6D6; border-radius: 8px; height: 14px; overflow: hidden; border: 1px solid var(--border); }
+    .bar-bg { background: var(--p3-gray); border-radius: 999px; height: 14px; overflow: hidden; border: 1px solid var(--p3-gray); }
     .bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--accent), #4BA47E);
-      border-radius: 8px;
+      background: var(--p3-cyan);
+      border-radius: 999px;
       transition: width 0.6s ease;
     }
-    .queue-info { text-align: center; font-size: 0.75rem; color: var(--dim); margin-bottom: 18px; }
+    .queue-info { text-align: center; font-size: 0.75rem; color: var(--p3-ink-mute); margin-bottom: 18px; }
 
     /* ── EXERCISE CARD ── */
     .ex-card {
-      background: var(--card);
-      border: 2px solid var(--border);
+      background: var(--p3-white);
+      border: 1px solid var(--p3-gray);
       border-radius: var(--r);
       padding: 24px 22px;
       margin-bottom: 16px;
-      box-shadow: 0 3px 14px rgba(90,70,40,0.07);
+      box-shadow: var(--shadow-md);
     }
     .cat-badge {
       display: inline-block;
-      background: var(--blue-soft);
-      color: var(--blue);
-      border: 2px solid var(--blue);
-      border-radius: 22px;
-      padding: 4px 16px;
-      font-size: 0.7rem;
-      font-weight: 700;
+      background: transparent;
+      color: var(--p3-cyan);
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      font-size: 0.72rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 16px;
+      letter-spacing: 0.14em;
+      margin-bottom: 14px;
     }
     .ex-illustration {
       display: block;
@@ -111,16 +132,17 @@
       margin: 0 auto 16px;
     }
     .ex-name {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--text);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--p3-blue);
+      letter-spacing: -0.02em;
       margin-bottom: 12px;
-      line-height: 1.25;
+      line-height: 1.1;
       text-align: center;
     }
     .ex-desc {
       font-size: 1rem;
-      color: #3D3830;
+      color: var(--p3-ink-soft);
       line-height: 1.7;
       margin-bottom: 18px;
     }
@@ -131,68 +153,69 @@
       gap: 10px;
       width: 100%;
       padding: 14px;
-      background: var(--blue-soft);
-      color: var(--blue);
-      border: 2px solid var(--blue);
-      border-radius: 14px;
+      background: transparent;
+      color: var(--p3-blue);
+      border: 1px solid var(--p3-gray);
+      border-radius: 999px;
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       margin-bottom: 18px;
       font-family: inherit;
+      transition: transform .15s ease;
     }
     .btn-listen:active { transform: scale(0.98); }
     .ex-chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 14px; }
     .chip {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      border-radius: 10px;
+      background: var(--p3-gray);
+      color: var(--p3-blue);
+      border: 1px solid var(--p3-gray);
+      border-radius: 999px;
       padding: 6px 14px;
       font-size: 0.78rem;
       font-weight: 700;
     }
-    .chip.hard { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
-    .chip.obj { background: var(--gold-soft); color: #8A6A10; border-color: var(--gold); }
-    .chip.prem { background: var(--gold-soft); color: #8A6A10; border-color: var(--gold); }
+    .chip.hard { background: var(--p3-amber-12); color: var(--warn); border-color: var(--p3-amber); }
+    .chip.obj { background: var(--p3-cyan-10); color: var(--p3-blue); border-color: var(--p3-cyan); }
+    .chip.prem { background: var(--p3-amber-12); color: var(--warn); border-color: var(--p3-amber); }
     .evidence-bar {
-      background: var(--accent-soft);
-      border-left: 5px solid var(--accent);
+      background: var(--p3-cyan-10);
+      border-left: 4px solid var(--p3-cyan);
       border-radius: 0 10px 10px 0;
       padding: 12px 14px;
       font-size: 0.78rem;
-      color: #4A5A50;
+      color: var(--p3-ink-soft);
       line-height: 1.55;
     }
-    .evidence-bar strong { color: var(--accent); }
+    .evidence-bar strong { color: var(--p3-blue); }
 
     /* ── COUNTER ── */
     .counter-card {
-      background: var(--card);
-      border: 2px solid var(--border);
+      background: var(--p3-white);
+      border: 1px solid var(--p3-gray);
       border-radius: var(--r);
       padding: 24px 22px;
       margin-bottom: 16px;
       text-align: center;
-      box-shadow: 0 3px 14px rgba(90,70,40,0.07);
+      box-shadow: var(--shadow-md);
     }
-    .counter-label { font-size: 0.95rem; color: var(--dim); margin-bottom: 18px; font-weight: 600; }
+    .counter-label { font-size: 0.95rem; color: var(--p3-ink-mute); margin-bottom: 18px; font-weight: 600; }
     .dots { display: flex; justify-content: center; gap: 22px; margin-bottom: 24px; }
     .dot {
       width: 64px; height: 64px;
       border-radius: 50%;
-      border: 3px solid var(--border);
+      border: 2px solid var(--p3-gray);
       display: flex; align-items: center; justify-content: center;
       font-size: 1.6rem;
       transition: all 0.25s;
       color: transparent;
-      background: #F6F1E6;
+      background: var(--p3-white);
     }
-    .dot.active { border-color: var(--accent); background: var(--accent-soft); }
+    .dot.active { border-color: var(--p3-cyan); background: var(--p3-cyan-10); }
     .dot.done {
-      background: var(--success);
-      border-color: var(--success);
-      color: white;
+      background: var(--p3-cyan);
+      border-color: var(--p3-cyan);
+      color: var(--p3-blue);
       animation: pop 0.3s ease;
     }
     @keyframes pop {
@@ -204,31 +227,32 @@
     .btn-hecho {
       width: 100%;
       padding: 26px 16px;
-      background: var(--accent);
-      color: white;
+      background: var(--p3-cyan);
+      color: var(--p3-blue);
       border: none;
-      border-radius: var(--r);
+      border-radius: 999px;
       font-size: 1.6rem;
       font-weight: 800;
       cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: transform 0.1s, box-shadow 0.2s;
+      letter-spacing: -0.01em;
+      transition: transform 0.1s, opacity 0.2s;
       -webkit-tap-highlight-color: transparent;
-      box-shadow: 0 5px 20px rgba(46,125,91,0.35);
       font-family: inherit;
     }
+    .btn-hecho:hover { transform: translateY(-1px); }
     .btn-hecho:active { transform: scale(0.97); }
-    .btn-hecho:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+    .btn-hecho:disabled { opacity: 0.35; cursor: not-allowed; }
 
     /* ── CELEBRATION ── */
     #celebration {
       display: none;
-      background: var(--card);
-      border: 3px solid var(--success);
+      background: var(--p3-white);
+      border: 1px solid var(--p3-cyan);
       border-radius: var(--r);
       padding: 38px 22px;
       margin-bottom: 16px;
       text-align: center;
+      box-shadow: var(--shadow-md);
     }
     #celebration.show { display: block; animation: fadeUp 0.4s ease; }
     @keyframes fadeUp {
@@ -236,30 +260,31 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .cel-emoji { font-size: 3.4rem; margin-bottom: 10px; }
-    .cel-title { font-size: 1.5rem; font-weight: 800; color: var(--success); margin-bottom: 8px; }
-    .cel-sub { color: var(--dim); margin-bottom: 28px; font-size: 0.95rem; }
+    .cel-title { font-size: 1.5rem; font-weight: 700; color: var(--p3-blue); letter-spacing: -0.02em; margin-bottom: 8px; }
+    .cel-sub { color: var(--p3-ink-mute); margin-bottom: 28px; font-size: 0.95rem; }
     .btn-sig {
       width: 100%;
       padding: 24px 16px;
-      background: var(--blue);
-      color: white;
+      background: var(--p3-blue);
+      color: var(--p3-white);
       border: none;
-      border-radius: var(--r);
+      border-radius: 999px;
       font-size: 1.4rem;
       font-weight: 800;
       cursor: pointer;
       transition: transform 0.1s;
       -webkit-tap-highlight-color: transparent;
-      box-shadow: 0 5px 18px rgba(44,95,138,0.3);
       font-family: inherit;
     }
+    .btn-sig:hover { transform: translateY(-1px); }
     .btn-sig:active { transform: scale(0.97); }
 
     /* ── SESSION DONE ── */
     #session-done {
       display: none;
-      background: var(--card);
-      border: 3px solid var(--accent);
+      background: var(--p3-blue);
+      color: var(--p3-white);
+      border: none;
       border-radius: var(--r);
       padding: 42px 22px;
       text-align: center;
@@ -267,17 +292,17 @@
     }
     #session-done.show { display: block; animation: fadeUp 0.4s ease; }
     .done-emoji { font-size: 4rem; margin-bottom: 12px; }
-    .done-title { font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; }
-    .done-sub { color: var(--dim); font-size: 0.95rem; line-height: 1.7; }
+    .done-title { font-size: 1.6rem; font-weight: 700; color: var(--p3-white); letter-spacing: -0.02em; margin-bottom: 10px; }
+    .done-sub { color: rgba(255,255,255,0.72); font-size: 0.95rem; line-height: 1.7; }
 
     /* ── HISTORY ── */
     #history { margin-top: 10px; }
-    .hist-title { font-size: 0.8rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; font-weight: 700; }
+    .hist-title { font-size: 0.72rem; color: var(--p3-ink-mute); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 10px; font-weight: 600; }
     .hist-list { display: flex; flex-direction: column; gap: 8px; }
     .hist-item {
-      background: var(--card);
-      border: 2px solid var(--border);
-      border-radius: 13px;
+      background: var(--p3-white);
+      border: 1px solid var(--p3-gray);
+      border-radius: 16px;
       padding: 12px 16px;
       display: flex;
       align-items: center;
@@ -285,29 +310,29 @@
       font-size: 0.88rem;
     }
     .hist-icon { font-size: 1.3rem; }
-    .hist-name { font-weight: 700; color: var(--text); }
-    .hist-cat { color: var(--dim); font-size: 0.8rem; }
-    .hist-check { margin-left: auto; color: var(--success); font-size: 1.2rem; font-weight: 800; }
+    .hist-name { font-weight: 700; color: var(--p3-blue); }
+    .hist-cat { color: var(--p3-ink-mute); font-size: 0.8rem; }
+    .hist-check { margin-left: auto; color: var(--p3-cyan); font-size: 1.2rem; font-weight: 800; }
 
     /* ── PREMIUM ── */
     #premium {
       margin-top: 34px;
-      background: var(--gold-soft);
-      border: 2px solid var(--gold);
+      background: var(--p3-blue);
+      border: none;
       border-radius: var(--r);
       padding: 26px 22px;
     }
-    .prem-title { font-size: 1.2rem; font-weight: 800; color: #8A6A10; margin-bottom: 6px; }
-    .prem-sub { font-size: 0.88rem; color: #6B5B2A; margin-bottom: 18px; line-height: 1.6; }
+    .prem-title { font-size: 1.2rem; font-weight: 700; color: var(--p3-white); letter-spacing: -0.02em; margin-bottom: 6px; }
+    .prem-sub { font-size: 0.88rem; color: rgba(255,255,255,0.72); margin-bottom: 18px; line-height: 1.6; }
     .prem-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
     .prem-item {
-      background: rgba(255,255,255,0.7);
-      border: 1px solid var(--gold);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 11px;
       padding: 10px 14px;
       font-size: 0.85rem;
       font-weight: 600;
-      color: #6B5B2A;
+      color: rgba(255,255,255,0.72);
       display: flex;
       align-items: center;
       gap: 10px;
@@ -316,10 +341,10 @@
       display: block;
       width: 100%;
       padding: 20px 16px;
-      background: var(--gold);
-      color: white;
+      background: var(--p3-cyan);
+      color: var(--p3-blue);
       border: none;
-      border-radius: 16px;
+      border-radius: 999px;
       font-size: 1.1rem;
       font-weight: 800;
       cursor: pointer;
@@ -327,16 +352,17 @@
       text-decoration: none;
       margin-bottom: 14px;
       font-family: inherit;
-      box-shadow: 0 4px 16px rgba(201,151,28,0.3);
+      transition: transform .15s ease;
     }
+    .btn-buy:hover { transform: translateY(-1px); }
     .btn-code {
       display: block;
       width: 100%;
       padding: 14px;
       background: transparent;
-      color: #8A6A10;
-      border: 2px solid var(--gold);
-      border-radius: 14px;
+      color: var(--p3-white);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
       font-size: 0.9rem;
       font-weight: 700;
       cursor: pointer;
@@ -347,16 +373,17 @@
     #code-input {
       flex: 1;
       padding: 14px;
-      border: 2px solid var(--gold);
+      border: 1px solid var(--p3-gray);
       border-radius: 12px;
       font-size: 1rem;
       font-family: inherit;
       text-transform: uppercase;
     }
+    #code-input:focus { outline: none; border-color: var(--p3-cyan); }
     .btn-code-ok {
       padding: 14px 22px;
-      background: var(--gold);
-      color: white;
+      background: var(--p3-cyan);
+      color: var(--p3-blue);
       border: none;
       border-radius: 12px;
       font-size: 1rem;
@@ -370,7 +397,7 @@
       text-align: center;
       padding: 30px 20px 50px;
       font-size: 0.72rem;
-      color: var(--dim);
+      color: var(--p3-ink-mute);
       line-height: 1.7;
       max-width: 640px;
       margin: 0 auto;
@@ -441,7 +468,7 @@
   <!-- PREMIUM -->
   <div id="premium">
     <div class="prem-title">🌟 NeuroFit Completo</div>
-    <div class="prem-sub">Desbloquea <strong>20 ejercicios adicionales</strong> con un solo pago. Sin suscripción, tuyo para siempre.</div>
+    <div class="prem-sub">Desbloquea <strong>20 ejercicios adicionales</strong> con un solo pago. Sin suscripción, tuyo por un año.</div>
     <div class="prem-list" id="prem-list"></div>
     <a class="btn-buy" id="btn-buy" href="#" target="_blank" rel="noopener">Desbloquear todo — pago único</a>
     <button class="btn-code" onclick="toggleCodeForm()">¿Ya compraste? Ingresa tu código</button>
@@ -464,50 +491,50 @@
 // Estilo consistente: fondo circular crema, figura trazo grueso, camisa verde, acentos dorado/azul.
 const S = {
   head: (x, y) => `<circle cx="${x}" cy="${y}" r="14" fill="#F5D5B8" stroke="#3A3A3A" stroke-width="4"/>`,
-  bgc: `<circle cx="100" cy="100" r="95" fill="#F3E9D7"/>`,
+  bgc: `<circle cx="100" cy="100" r="95" fill="#E5E7EB"/>`,
 };
 
 const SVGS = {
   pasos: `${S.bgc}
     ${S.head(88,52)}
-    <path d="M88 66 L88 110" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M88 78 L62 100 M88 78 L118 62" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M88 110 L56 152 M88 110 L128 148" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>
+    <path d="M88 66 L88 110" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M88 78 L62 100 M88 78 L118 62" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M88 110 L56 152 M88 110 L128 148" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>
     <path d="M50 158 L64 158 M122 154 L138 154" stroke="#3A3A3A" stroke-width="7" stroke-linecap="round"/>
-    <path d="M60 172 Q95 160 132 168" stroke="#E8A13D" stroke-width="4" stroke-dasharray="2 8" stroke-linecap="round" fill="none"/>`,
+    <path d="M60 172 Q95 160 132 168" stroke="#F4B400" stroke-width="4" stroke-dasharray="2 8" stroke-linecap="round" fill="none"/>`,
   globo: `${S.bgc}
     <ellipse cx="128" cy="52" rx="24" ry="28" fill="#D66A5A" stroke="#3A3A3A" stroke-width="4"/>
     <path d="M128 80 L124 92" stroke="#3A3A3A" stroke-width="3"/>
     ${S.head(80,84)}
-    <path d="M80 98 L80 140" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M80 108 L110 84 M80 108 L52 90" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M80 140 L64 172 M80 140 L98 172" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M80 98 L80 140" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M80 108 L110 84 M80 108 L52 90" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M80 140 L64 172 M80 140 L98 172" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   marcha: `${S.bgc}
-    <path d="M138 46 Q140 38 148 40 M148 40 L148 62 M138 46 L138 68 M138 68 a5 5 0 1 1 0.1 0 M148 62 a5 5 0 1 1 0.1 0" stroke="#E8A13D" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M138 46 Q140 38 148 40 M148 40 L148 62 M138 46 L138 68 M138 68 a5 5 0 1 1 0.1 0 M148 62 a5 5 0 1 1 0.1 0" stroke="#F4B400" stroke-width="4" fill="none" stroke-linecap="round"/>
     ${S.head(84,58)}
-    <path d="M84 72 L84 116" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M84 84 L58 104 M84 84 L112 100" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M84 116 L62 150 L62 166 M84 116 L106 132 L106 166" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round" fill="none"/>`,
+    <path d="M84 72 L84 116" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M84 84 L58 104 M84 84 L112 100" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M84 116 L62 150 L62 166 M84 116 L106 132 L106 166" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round" fill="none"/>`,
   director: `${S.bgc}
     ${S.head(92,72)}
-    <path d="M92 86 L92 132" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M92 96 L128 60 M92 96 L60 84" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
+    <path d="M92 86 L92 132" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M92 96 L128 60 M92 96 L60 84" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
     <path d="M128 60 L146 42" stroke="#8A5A2B" stroke-width="5" stroke-linecap="round"/>
-    <path d="M40 52 Q42 44 50 46 M50 46 L50 66 M40 52 L40 72 M40 72 a4 4 0 1 1 0.1 0 M50 66 a4 4 0 1 1 0.1 0" stroke="#E8A13D" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-    <path d="M92 132 L76 166 M92 132 L108 166" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M40 52 Q42 44 50 46 M50 46 L50 66 M40 52 L40 72 M40 72 a4 4 0 1 1 0.1 0 M50 66 a4 4 0 1 1 0.1 0" stroke="#F4B400" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <path d="M92 132 L76 166 M92 132 L108 166" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   arbol: `${S.bgc}
     <path d="M162 30 L162 176" stroke="#C9B99A" stroke-width="8" stroke-linecap="round"/>
     ${S.head(88,50)}
-    <path d="M88 64 L88 116" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M88 76 L64 56 M88 76 L112 56" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M88 116 L88 168 M88 116 L112 132 L96 140" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M88 64 L88 116" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M88 76 L64 56 M88 76 L112 56" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M88 116 L88 168 M88 116 L112 132 L96 140" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round" fill="none"/>
     <path d="M78 174 L98 174" stroke="#3A3A3A" stroke-width="7" stroke-linecap="round"/>`,
   monedas: `${S.bgc}
     <path d="M30 128 L170 128" stroke="#8A5A2B" stroke-width="6" stroke-linecap="round"/>
-    <circle cx="70" cy="120" r="9" fill="#E8C13D" stroke="#3A3A3A" stroke-width="3"/>
-    <circle cx="95" cy="121" r="9" fill="#E8C13D" stroke="#3A3A3A" stroke-width="3"/>
-    <circle cx="120" cy="120" r="9" fill="#E8C13D" stroke="#3A3A3A" stroke-width="3"/>
-    <path d="M140 128 L140 96 L164 96 L164 128" stroke="#3A5B8C" stroke-width="5" fill="#DCE8F5"/>
+    <circle cx="70" cy="120" r="9" fill="#F4B400" stroke="#3A3A3A" stroke-width="3"/>
+    <circle cx="95" cy="121" r="9" fill="#F4B400" stroke="#3A3A3A" stroke-width="3"/>
+    <circle cx="120" cy="120" r="9" fill="#F4B400" stroke="#3A3A3A" stroke-width="3"/>
+    <path d="M140 128 L140 96 L164 96 L164 128" stroke="#0B1C2D" stroke-width="5" fill="#DCE8F5"/>
     <path d="M60 60 Q78 52 88 68 L96 92 M88 68 L80 90 M96 78 L88 100" stroke="#3A3A3A" stroke-width="5" fill="none" stroke-linecap="round"/>
     <path d="M52 96 a8 8 0 1 1 16 4" stroke="#F5D5B8" stroke-width="10" stroke-linecap="round" fill="none"/>`,
   voz: `${S.bgc}
@@ -515,42 +542,42 @@ const SVGS = {
     <circle cx="70" cy="86" r="4" fill="#3A3A3A"/>
     <circle cx="94" cy="86" r="4" fill="#3A3A3A"/>
     <ellipse cx="82" cy="112" rx="12" ry="14" fill="#8C3A3A"/>
-    <path d="M128 78 Q140 96 128 114" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path d="M142 66 Q160 96 142 126" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path d="M156 56 Q178 96 156 136" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>`,
+    <path d="M128 78 Q140 96 128 114" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M142 66 Q160 96 142 126" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M156 56 Q178 96 156 136" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>`,
   contar: `${S.bgc}
-    <rect x="108" y="34" width="64" height="44" rx="12" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <text x="140" y="64" font-size="20" font-weight="bold" fill="#3A5B8C" text-anchor="middle" font-family="Verdana">100, 97…</text>
+    <rect x="108" y="34" width="64" height="44" rx="12" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <text x="140" y="64" font-size="20" font-weight="bold" fill="#0B1C2D" text-anchor="middle" font-family="Verdana">100, 97…</text>
     ${S.head(72,72)}
-    <path d="M72 86 L72 126" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M72 96 L50 116 M72 96 L96 112" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M72 126 L52 158 L52 172 M72 126 L94 142 L94 172" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round" fill="none"/>`,
+    <path d="M72 86 L72 126" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M72 96 L50 116 M72 96 L96 112" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M72 126 L52 158 L52 172 M72 126 L94 142 L94 172" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round" fill="none"/>`,
   espiral: `${S.bgc}
-    <path d="M100 100 a6 6 0 0 1 12 0 a12 12 0 0 1 -24 2 a20 20 0 0 1 36 -6 a28 28 0 0 1 -48 14 a36 36 0 0 1 60 -22 a44 44 0 0 1 -72 30" stroke="#3A5B8C" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path d="M148 148 L166 130 L172 138 L154 156 Z" fill="#E8A13D" stroke="#3A3A3A" stroke-width="3"/>
+    <path d="M100 100 a6 6 0 0 1 12 0 a12 12 0 0 1 -24 2 a20 20 0 0 1 36 -6 a28 28 0 0 1 -48 14 a36 36 0 0 1 60 -22 a44 44 0 0 1 -72 30" stroke="#0B1C2D" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M148 148 L166 130 L172 138 L154 156 Z" fill="#F4B400" stroke="#3A3A3A" stroke-width="3"/>
     <path d="M148 148 L143 153 L154 156" fill="#F5D5B8" stroke="#3A3A3A" stroke-width="2"/>`,
   boxeo: `${S.bgc}
     <path d="M56 118 L56 172 M56 145 L96 145 L96 172" stroke="#8A5A2B" stroke-width="7" fill="none" stroke-linecap="round"/>
     ${S.head(80,62)}
-    <path d="M80 76 L80 118 L96 145" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round" fill="none"/>
-    <path d="M80 88 L124 74 M80 92 L116 106" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
+    <path d="M80 76 L80 118 L96 145" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <path d="M80 88 L124 74 M80 92 L116 106" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
     <circle cx="132" cy="72" r="11" fill="#D66A5A" stroke="#3A3A3A" stroke-width="4"/>
     <circle cx="124" cy="110" r="11" fill="#D66A5A" stroke="#3A3A3A" stroke-width="4"/>
-    <path d="M150 62 L166 56 M152 76 L170 76" stroke="#E8A13D" stroke-width="4" stroke-linecap="round"/>`,
+    <path d="M150 62 L166 56 M152 76 L170 76" stroke="#F4B400" stroke-width="4" stroke-linecap="round"/>`,
   cielo: `${S.bgc}
-    <circle cx="146" cy="44" r="14" fill="#E8C13D" stroke="#E8A13D" stroke-width="4"/>
-    <path d="M146 22 L146 14 M164 30 L170 24 M168 44 L178 44" stroke="#E8A13D" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="146" cy="44" r="14" fill="#F4B400" stroke="#F4B400" stroke-width="4"/>
+    <path d="M146 22 L146 14 M164 30 L170 24 M168 44 L178 44" stroke="#F4B400" stroke-width="4" stroke-linecap="round"/>
     ${S.head(88,66)}
-    <path d="M88 80 L88 126" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M88 90 L126 54 M88 94 L58 112" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M88 126 L70 166 M88 126 L106 166" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M88 80 L88 126" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M88 90 L126 54 M88 94 L58 112" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M88 126 L70 166 M88 126 L106 166" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   silla: `${S.bgc}
     <path d="M124 96 L124 170 M124 130 L162 130 L162 170" stroke="#8A5A2B" stroke-width="7" fill="none" stroke-linecap="round"/>
     ${S.head(76,54)}
-    <path d="M76 68 L80 112" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M78 82 L44 70 M78 82 L110 70" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M80 112 L70 144 L70 168 M80 112 L96 140 L96 168" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <path d="M52 44 L52 28 M52 28 L44 36 M52 28 L60 36" stroke="#E8A13D" stroke-width="5" stroke-linecap="round" fill="none"/>`,
+    <path d="M76 68 L80 112" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M78 82 L44 70 M78 82 L110 70" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M80 112 L70 144 L70 168 M80 112 L96 140 L96 168" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M52 44 L52 28 M52 28 L44 36 M52 28 L60 36" stroke="#F4B400" stroke-width="5" stroke-linecap="round" fill="none"/>`,
   caras: `${S.bgc}
     <circle cx="64" cy="90" r="30" fill="#F5D5B8" stroke="#3A3A3A" stroke-width="5"/>
     <circle cx="54" cy="82" r="4" fill="#3A3A3A"/>
@@ -563,27 +590,27 @@ const SVGS = {
     <path d="M120 64 Q128 58 136 64 M140 64 Q148 58 156 64" stroke="#3A3A3A" stroke-width="3" fill="none"/>`,
   letras: `${S.bgc}
     <rect x="46" y="46" width="108" height="108" rx="8" fill="#FFFFFF" stroke="#C9B99A" stroke-width="4"/>
-    <text x="100" y="118" font-size="56" font-weight="bold" fill="#3A5B8C" text-anchor="middle" font-family="Verdana">AB</text>
-    <path d="M132 140 L150 122 L156 130 L138 148 Z" fill="#E8A13D" stroke="#3A3A3A" stroke-width="3"/>`,
+    <text x="100" y="118" font-size="56" font-weight="bold" fill="#0B1C2D" text-anchor="middle" font-family="Verdana">AB</text>
+    <path d="M132 140 L150 122 L156 130 L138 148 Z" fill="#F4B400" stroke="#3A3A3A" stroke-width="3"/>`,
   peso: `${S.bgc}
     ${S.head(100,54)}
-    <path d="M100 68 Q112 90 108 116" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round" fill="none"/>
-    <path d="M102 84 L74 100 M102 84 L134 96" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M108 116 L120 164 M108 116 L84 150" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>
+    <path d="M100 68 Q112 90 108 116" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <path d="M102 84 L74 100 M102 84 L134 96" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M108 116 L120 164 M108 116 L84 150" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>
     <path d="M112 170 L130 170" stroke="#3A3A3A" stroke-width="7" stroke-linecap="round"/>
-    <path d="M56 132 L40 132 M44 126 L36 132 L44 138" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path d="M148 132 L164 132 M156 126 L164 132 L156 138" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>`,
+    <path d="M56 132 L40 132 M44 126 L36 132 L44 138" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M148 132 L164 132 M156 126 L164 132 L156 138" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>`,
   piano: `${S.bgc}
     <path d="M36 120 L164 120 L164 140 L36 140 Z" fill="#FFFFFF" stroke="#3A3A3A" stroke-width="4"/>
     <path d="M56 120 L56 140 M76 120 L76 140 M96 120 L96 140 M116 120 L116 140 M136 120 L136 140" stroke="#3A3A3A" stroke-width="3"/>
     <path d="M64 80 Q70 100 66 116 M84 76 Q88 98 86 116 M104 76 Q108 98 106 116 M124 80 Q128 100 126 116" stroke="#F5D5B8" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <path d="M148 56 Q150 48 158 50 M158 50 L158 72 M148 56 L148 78 M148 78 a4 4 0 1 1 0.1 0 M158 72 a4 4 0 1 1 0.1 0" stroke="#E8A13D" stroke-width="3.5" fill="none" stroke-linecap="round"/>`,
+    <path d="M148 56 Q150 48 158 50 M158 50 L158 72 M148 56 L148 78 M148 78 a4 4 0 1 1 0.1 0 M158 72 a4 4 0 1 1 0.1 0" stroke="#F4B400" stroke-width="3.5" fill="none" stroke-linecap="round"/>`,
   toalla: `${S.bgc}
     ${S.head(100,66)}
-    <path d="M100 80 L100 128" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M100 90 L68 52 M100 90 L132 52" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
+    <path d="M100 80 L100 128" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M100 90 L68 52 M100 90 L132 52" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
     <rect x="58" y="34" width="84" height="18" rx="9" fill="#6AA7D6" stroke="#3A3A3A" stroke-width="4"/>
-    <path d="M100 128 L82 168 M100 128 L118 168" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M100 128 L82 168 M100 128 L118 168" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   burbujas: `${S.bgc}
     <circle cx="76" cy="98" r="30" fill="#F5D5B8" stroke="#3A3A3A" stroke-width="5"/>
     <circle cx="66" cy="90" r="4" fill="#3A3A3A"/>
@@ -596,60 +623,60 @@ const SVGS = {
     <circle cx="142" cy="140" r="7" fill="none" stroke="#6AA7D6" stroke-width="3"/>`,
   animales: `${S.bgc}
     ${S.head(64,104)}
-    <path d="M64 118 L64 156" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <rect x="88" y="38" width="80" height="52" rx="14" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <path d="M100 90 L96 104 L114 90" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
+    <path d="M64 118 L64 156" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <rect x="88" y="38" width="80" height="52" rx="14" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <path d="M100 90 L96 104 L114 90" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
     <text x="128" y="74" font-size="26" text-anchor="middle" font-family="Verdana">🐱 🐘</text>`,
   tango: `${S.bgc}
     ${S.head(84,56)}
-    <path d="M84 70 L88 114" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M86 82 L116 66 M86 82 L56 96" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M88 114 L66 148 M88 114 L122 134" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>
-    <ellipse cx="58" cy="156" rx="10" ry="5" fill="#E8A13D"/>
-    <ellipse cx="130" cy="142" rx="10" ry="5" fill="#E8A13D"/>
+    <path d="M84 70 L88 114" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M86 82 L116 66 M86 82 L56 96" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M88 114 L66 148 M88 114 L122 134" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>
+    <ellipse cx="58" cy="156" rx="10" ry="5" fill="#F4B400"/>
+    <ellipse cx="130" cy="142" rx="10" ry="5" fill="#F4B400"/>
     <ellipse cx="96" cy="170" rx="10" ry="5" fill="#D66A5A" opacity="0.6"/>
     <ellipse cx="140" cy="168" rx="10" ry="5" fill="#D66A5A" opacity="0.6"/>
-    <path d="M148 52 Q150 44 158 46 M158 46 L158 66 M148 52 L148 72 M148 72 a4 4 0 1 1 0.1 0 M158 66 a4 4 0 1 1 0.1 0" stroke="#E8A13D" stroke-width="3.5" fill="none" stroke-linecap="round"/>`,
+    <path d="M148 52 Q150 44 158 46 M158 46 L158 66 M148 52 L148 72 M148 72 a4 4 0 1 1 0.1 0 M158 66 a4 4 0 1 1 0.1 0" stroke="#F4B400" stroke-width="3.5" fill="none" stroke-linecap="round"/>`,
   // ── PREMIUM ──
   palmadas: `${S.bgc}
     ${S.head(78,52)}
-    <path d="M78 66 L78 110" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M78 78 L112 66 M78 82 L110 74" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
+    <path d="M78 66 L78 110" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M78 78 L112 66 M78 82 L110 74" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
     <circle cx="118" cy="70" r="9" fill="#F5D5B8" stroke="#3A3A3A" stroke-width="3"/>
-    <path d="M134 58 L144 50 M136 70 L150 70 M134 82 L144 90" stroke="#E8A13D" stroke-width="4" stroke-linecap="round"/>
-    <path d="M78 110 L78 164 M78 110 L108 122 L104 146" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M134 58 L144 50 M136 70 L150 70 M134 82 L144 90" stroke="#F4B400" stroke-width="4" stroke-linecap="round"/>
+    <path d="M78 110 L78 164 M78 110 L108 122 L104 146" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round" fill="none"/>
     <path d="M68 170 L88 170" stroke="#3A3A3A" stroke-width="7" stroke-linecap="round"/>`,
   patrones: `${S.bgc}
     <text x="100" y="104" font-size="62" text-anchor="middle">👏</text>
-    <circle cx="64" cy="140" r="14" fill="#E8A13D"/>
+    <circle cx="64" cy="140" r="14" fill="#F4B400"/>
     <circle cx="98" cy="140" r="8" fill="#C9B99A"/>
     <circle cx="124" cy="140" r="8" fill="#C9B99A"/>
     <text x="100" y="172" font-size="15" font-weight="bold" fill="#6B6355" text-anchor="middle" font-family="Verdana">FUERTE · suave · suave</text>`,
   talon: `${S.bgc}
     <path d="M100 32 L100 168" stroke="#C9B99A" stroke-width="4" stroke-dasharray="8 6"/>
-    <ellipse cx="100" cy="150" rx="9" ry="15" fill="#3A5B8C"/>
-    <ellipse cx="100" cy="118" rx="9" ry="15" fill="#E8A13D"/>
-    <ellipse cx="100" cy="86" rx="9" ry="15" fill="#3A5B8C"/>
-    <ellipse cx="100" cy="54" rx="9" ry="15" fill="#E8A13D"/>`,
+    <ellipse cx="100" cy="150" rx="9" ry="15" fill="#0B1C2D"/>
+    <ellipse cx="100" cy="118" rx="9" ry="15" fill="#F4B400"/>
+    <ellipse cx="100" cy="86" rx="9" ry="15" fill="#0B1C2D"/>
+    <ellipse cx="100" cy="54" rx="9" ry="15" fill="#F4B400"/>`,
   atras: `${S.bgc}
     <path d="M162 30 L162 176" stroke="#C9B99A" stroke-width="8" stroke-linecap="round"/>
     ${S.head(104,54)}
-    <path d="M104 68 L104 114" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M104 80 L82 100 M104 80 L128 96" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M104 114 L120 150 L120 168 M104 114 L82 140 L82 168" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <path d="M64 96 L36 96 M44 88 L34 96 L44 104" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>`,
+    <path d="M104 68 L104 114" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M104 80 L82 100 M104 80 L128 96" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M104 114 L120 150 L120 168 M104 114 L82 140 L82 168" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M64 96 L36 96 M44 88 L34 96 L44 104" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>`,
   botones: `${S.bgc}
-    <path d="M72 46 L128 46 L138 158 L62 158 Z" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <path d="M84 46 L100 62 L116 46" stroke="#3A5B8C" stroke-width="4" fill="none"/>
-    <path d="M100 62 L100 158" stroke="#3A5B8C" stroke-width="3" stroke-dasharray="5 5"/>
-    <circle cx="100" cy="86" r="7" fill="#E8C13D" stroke="#3A3A3A" stroke-width="3"/>
-    <circle cx="100" cy="112" r="7" fill="#E8C13D" stroke="#3A3A3A" stroke-width="3"/>
-    <circle cx="100" cy="138" r="7" fill="#E8C13D" stroke="#3A3A3A" stroke-width="3"/>
+    <path d="M72 46 L128 46 L138 158 L62 158 Z" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <path d="M84 46 L100 62 L116 46" stroke="#0B1C2D" stroke-width="4" fill="none"/>
+    <path d="M100 62 L100 158" stroke="#0B1C2D" stroke-width="3" stroke-dasharray="5 5"/>
+    <circle cx="100" cy="86" r="7" fill="#F4B400" stroke="#3A3A3A" stroke-width="3"/>
+    <circle cx="100" cy="112" r="7" fill="#F4B400" stroke="#3A3A3A" stroke-width="3"/>
+    <circle cx="100" cy="138" r="7" fill="#F4B400" stroke="#3A3A3A" stroke-width="3"/>
     <path d="M128 96 Q146 88 152 104 L144 120 M146 100 L138 116" stroke="#3A3A3A" stroke-width="4" fill="none" stroke-linecap="round"/>`,
   mano: `${S.bgc}
     <circle cx="56" cy="100" r="21" fill="#F5D5B8" stroke="#3A3A3A" stroke-width="5"/>
     <path d="M44 96 L68 96 M44 106 L68 106" stroke="#3A3A3A" stroke-width="3"/>
-    <path d="M88 100 L112 100 M104 92 L114 100 L104 108" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M88 100 L112 100 M104 92 L114 100 L104 108" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>
     <circle cx="146" cy="104" r="15" fill="#F5D5B8" stroke="#3A3A3A" stroke-width="4"/>
     <path d="M146 86 L146 62 M132 90 L118 74 M160 90 L174 74 M136 98 L114 92 M156 98 L178 92" stroke="#F5D5B8" stroke-width="9" stroke-linecap="round"/>`,
   trabadas: `${S.bgc}
@@ -657,67 +684,67 @@ const SVGS = {
     <circle cx="57" cy="104" r="4" fill="#3A3A3A"/>
     <circle cx="75" cy="104" r="4" fill="#3A3A3A"/>
     <ellipse cx="66" cy="125" rx="9" ry="11" fill="#8C3A3A"/>
-    <rect x="96" y="44" width="80" height="52" rx="14" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <path d="M108 96 L104 112 L122 96" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <text x="136" y="66" font-size="17" font-weight="bold" fill="#3A5B8C" text-anchor="middle" font-family="Verdana">BA·PA</text>
-    <text x="136" y="86" font-size="17" font-weight="bold" fill="#3A5B8C" text-anchor="middle" font-family="Verdana">MA·TA</text>`,
+    <rect x="96" y="44" width="80" height="52" rx="14" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <path d="M108 96 L104 112 L122 96" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <text x="136" y="66" font-size="17" font-weight="bold" fill="#0B1C2D" text-anchor="middle" font-family="Verdana">BA·PA</text>
+    <text x="136" y="86" font-size="17" font-weight="bold" fill="#0B1C2D" text-anchor="middle" font-family="Verdana">MA·TA</text>`,
   restar: `${S.bgc}
-    <rect x="44" y="48" width="112" height="84" rx="8" fill="#3E6B58" stroke="#8A5A2B" stroke-width="6"/>
+    <rect x="44" y="48" width="112" height="84" rx="8" fill="#0B1C2D" stroke="#8A5A2B" stroke-width="6"/>
     <text x="100" y="86" font-size="22" font-weight="bold" fill="#FFFFFF" text-anchor="middle" font-family="Verdana">100 − 7</text>
-    <text x="100" y="116" font-size="22" font-weight="bold" fill="#E8C13D" text-anchor="middle" font-family="Verdana">= 93…</text>
+    <text x="100" y="116" font-size="22" font-weight="bold" fill="#F4B400" text-anchor="middle" font-family="Verdana">= 93…</text>
     <path d="M62 132 L54 166 M138 132 L146 166" stroke="#8A5A2B" stroke-width="6" stroke-linecap="round"/>`,
   lista: `${S.bgc}
     <rect x="48" y="42" width="80" height="104" rx="7" fill="#FFFFFF" stroke="#C9B99A" stroke-width="4"/>
-    <circle cx="62" cy="66" r="4" fill="#2E7D5B"/><path d="M72 66 L114 66" stroke="#6B6355" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="62" cy="90" r="4" fill="#2E7D5B"/><path d="M72 90 L114 90" stroke="#6B6355" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="62" cy="114" r="4" fill="#2E7D5B"/><path d="M72 114 L114 114" stroke="#6B6355" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="154" cy="70" r="24" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <text x="154" y="80" font-size="26" font-weight="bold" fill="#3A5B8C" text-anchor="middle" font-family="Verdana">?</text>
-    <circle cx="140" cy="100" r="6" fill="none" stroke="#3A5B8C" stroke-width="3"/>
-    <circle cx="132" cy="114" r="4" fill="none" stroke="#3A5B8C" stroke-width="3"/>`,
+    <circle cx="62" cy="66" r="4" fill="#1ECAD3"/><path d="M72 66 L114 66" stroke="#6B6355" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="62" cy="90" r="4" fill="#1ECAD3"/><path d="M72 90 L114 90" stroke="#6B6355" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="62" cy="114" r="4" fill="#1ECAD3"/><path d="M72 114 L114 114" stroke="#6B6355" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="154" cy="70" r="24" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <text x="154" y="80" font-size="26" font-weight="bold" fill="#0B1C2D" text-anchor="middle" font-family="Verdana">?</text>
+    <circle cx="140" cy="100" r="6" fill="none" stroke="#0B1C2D" stroke-width="3"/>
+    <circle cx="132" cy="114" r="4" fill="none" stroke="#0B1C2D" stroke-width="3"/>`,
   reloj: `${S.bgc}
     <circle cx="100" cy="100" r="54" fill="#FFFFFF" stroke="#3A3A3A" stroke-width="5"/>
     <path d="M100 52 L100 60 M100 140 L100 148 M52 100 L60 100 M140 100 L148 100" stroke="#3A3A3A" stroke-width="4" stroke-linecap="round"/>
-    <path d="M100 100 L66 100" stroke="#3A5B8C" stroke-width="5" stroke-linecap="round"/>
-    <path d="M100 100 L120 114" stroke="#E8A13D" stroke-width="6" stroke-linecap="round"/>
+    <path d="M100 100 L66 100" stroke="#0B1C2D" stroke-width="5" stroke-linecap="round"/>
+    <path d="M100 100 L120 114" stroke="#F4B400" stroke-width="6" stroke-linecap="round"/>
     <circle cx="100" cy="100" r="5" fill="#3A3A3A"/>`,
   puerta: `${S.bgc}
     <path d="M56 172 L56 36 L144 36 L144 172" stroke="#8A5A2B" stroke-width="8" fill="none" stroke-linecap="round"/>
     ${S.head(100,74)}
-    <path d="M100 88 L100 130" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M100 96 L62 78 M100 96 L138 78" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M100 130 L86 168 M100 130 L114 168" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M100 88 L100 130" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M100 96 L62 78 M100 96 L138 78" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M100 130 L86 168 M100 130 L114 168" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   estrella: `${S.bgc}
     ${S.head(100,52)}
-    <path d="M100 66 L100 116" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M100 78 L60 46 M100 78 L140 46" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M100 116 L62 164 M100 116 L138 164" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>
-    <path d="M42 96 L54 96 M48 90 L48 102 M152 96 L164 96 M158 90 L158 102 M96 174 L108 174 M102 168 L102 180" stroke="#E8A13D" stroke-width="4" stroke-linecap="round"/>`,
+    <path d="M100 66 L100 116" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M100 78 L60 46 M100 78 L140 46" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M100 116 L62 164 M100 116 L138 164" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>
+    <path d="M42 96 L54 96 M48 90 L48 102 M152 96 L164 96 M158 90 L158 102 M96 174 L108 174 M102 168 L102 180" stroke="#F4B400" stroke-width="4" stroke-linecap="round"/>`,
   sillaabc: `${S.bgc}
-    <rect x="28" y="30" width="70" height="42" rx="11" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <text x="63" y="58" font-size="20" font-weight="bold" fill="#3A5B8C" text-anchor="middle" font-family="Verdana">A·B·C</text>
+    <rect x="28" y="30" width="70" height="42" rx="11" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <text x="63" y="58" font-size="20" font-weight="bold" fill="#0B1C2D" text-anchor="middle" font-family="Verdana">A·B·C</text>
     <path d="M128 96 L128 170 M128 130 L166 130 L166 170" stroke="#8A5A2B" stroke-width="7" fill="none" stroke-linecap="round"/>
     ${S.head(82,88)}
-    <path d="M82 102 L86 134" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M84 112 L54 102 M84 112 L112 102" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M86 134 L74 158 L74 172 M86 134 L100 156 L100 172" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round" fill="none"/>`,
+    <path d="M82 102 L86 134" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M84 112 L54 102 M84 112 L112 102" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M86 134 L74 158 L74 172 M86 134 L100 156 L100 172" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round" fill="none"/>`,
   categorias: `${S.bgc}
-    <rect x="102" y="36" width="72" height="46" rx="13" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <path d="M114 82 L110 96 L128 82" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
+    <rect x="102" y="36" width="72" height="46" rx="13" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <path d="M114 82 L110 96 L128 82" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
     <text x="138" y="68" font-size="24" text-anchor="middle">🐶 🍎</text>
     ${S.head(70,72)}
-    <path d="M70 86 L70 126" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M70 96 L48 114 M70 96 L94 110" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M70 126 L70 168 M70 126 L98 138 L94 160" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round" fill="none"/>`,
+    <path d="M70 86 L70 126" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M70 96 L48 114 M70 96 L94 110" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M70 126 L70 168 M70 126 L98 138 L94 160" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round" fill="none"/>`,
   lectura: `${S.bgc}
     ${S.head(80,54)}
-    <path d="M80 68 L80 112" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M80 80 L58 102 M80 80 L104 102" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M52 104 L80 96 L108 104 L108 130 L80 122 L52 130 Z" fill="#FFFFFF" stroke="#3A5B8C" stroke-width="4"/>
-    <path d="M80 96 L80 122" stroke="#3A5B8C" stroke-width="3"/>
-    <path d="M124 70 Q136 88 124 106" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path d="M140 58 Q158 88 140 118" stroke="#E8A13D" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path d="M80 112 L66 160 M80 112 L94 160" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M80 68 L80 112" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M80 80 L58 102 M80 80 L104 102" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M52 104 L80 96 L108 104 L108 130 L80 122 L52 130 Z" fill="#FFFFFF" stroke="#0B1C2D" stroke-width="4"/>
+    <path d="M80 96 L80 122" stroke="#0B1C2D" stroke-width="3"/>
+    <path d="M124 70 Q136 88 124 106" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M140 58 Q158 88 140 118" stroke="#F4B400" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M80 112 L66 160 M80 112 L94 160" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   naipes: `${S.bgc}
     <path d="M30 138 L170 138" stroke="#8A5A2B" stroke-width="6" stroke-linecap="round"/>
     <rect x="56" y="76" width="36" height="52" rx="5" fill="#FFFFFF" stroke="#3A3A3A" stroke-width="3" transform="rotate(-14 74 102)"/>
@@ -728,37 +755,37 @@ const SVGS = {
     <circle cx="140" cy="98" r="6" fill="#2B2B2B" transform="rotate(14 138 102)"/>`,
   ropa: `${S.bgc}
     <path d="M28 58 L172 46" stroke="#6B6355" stroke-width="4"/>
-    <path d="M118 52 L112 62 L124 61 Z" fill="#E8A13D"/>
+    <path d="M118 52 L112 62 L124 61 Z" fill="#F4B400"/>
     <path d="M112 62 L104 74 L112 86 L108 112 L136 112 L132 86 L140 72 L124 61 Z" fill="#6AA7D6" stroke="#3A3A3A" stroke-width="3"/>
     ${S.head(60,80)}
-    <path d="M60 94 L60 138" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M60 100 L84 62 M60 106 L40 124" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M60 138 L48 172 M60 138 L74 172" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M60 94 L60 138" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M60 100 L84 62 M60 106 L40 124" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M60 138 L48 172 M60 138 L74 172" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   botellas: `${S.bgc}
     ${S.head(100,60)}
-    <path d="M100 74 L100 122" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M100 86 L58 72 M100 86 L142 72" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
+    <path d="M100 74 L100 122" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M100 86 L58 72 M100 86 L142 72" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
     <rect x="44" y="42" width="18" height="32" rx="7" fill="#6AA7D6" stroke="#3A3A3A" stroke-width="3"/>
-    <rect x="49" y="32" width="8" height="12" rx="3" fill="#3A5B8C"/>
+    <rect x="49" y="32" width="8" height="12" rx="3" fill="#0B1C2D"/>
     <rect x="138" y="42" width="18" height="32" rx="7" fill="#6AA7D6" stroke="#3A3A3A" stroke-width="3"/>
-    <rect x="143" y="32" width="8" height="12" rx="3" fill="#3A5B8C"/>
-    <path d="M100 122 L82 166 M100 122 L118 166" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <rect x="143" y="32" width="8" height="12" rx="3" fill="#0B1C2D"/>
+    <path d="M100 122 L82 166 M100 122 L118 166" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   cruce: `${S.bgc}
     ${S.head(96,56)}
-    <path d="M96 70 L96 120" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M96 82 C118 96 84 100 62 84" stroke="#4E8D7C" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M96 70 L96 120" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M96 82 C118 96 84 100 62 84" stroke="#1ECAD3" stroke-width="8" fill="none" stroke-linecap="round"/>
     <circle cx="62" cy="84" r="9" fill="#F5D5B8" stroke="#3A3A3A" stroke-width="3"/>
-    <path d="M96 86 L122 106" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
-    <path d="M134 62 Q106 40 74 58 M80 52 L72 60 L82 64" stroke="#E8A13D" stroke-width="4" fill="none" stroke-linecap="round"/>
-    <path d="M96 120 L80 164 M96 120 L112 164" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M96 86 L122 106" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M134 62 Q106 40 74 58 M80 52 L72 60 L82 64" stroke="#F4B400" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M96 120 L80 164 M96 120 L112 164" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
   pelota: `${S.bgc}
     <path d="M158 28 L158 172" stroke="#C9B99A" stroke-width="10" stroke-linecap="round"/>
     ${S.head(58,64)}
-    <path d="M58 78 L58 124" stroke="#4E8D7C" stroke-width="10" stroke-linecap="round"/>
-    <path d="M58 90 L92 74 M58 94 L80 112" stroke="#4E8D7C" stroke-width="8" stroke-linecap="round"/>
+    <path d="M58 78 L58 124" stroke="#1ECAD3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M58 90 L92 74 M58 94 L80 112" stroke="#1ECAD3" stroke-width="8" stroke-linecap="round"/>
     <circle cx="118" cy="60" r="11" fill="#D66A5A" stroke="#3A3A3A" stroke-width="4"/>
-    <path d="M92 74 Q120 44 150 66 M150 80 Q120 110 92 96" stroke="#E8A13D" stroke-width="4" stroke-dasharray="3 7" fill="none" stroke-linecap="round"/>
-    <path d="M58 124 L44 166 M58 124 L74 166" stroke="#3A5B8C" stroke-width="9" stroke-linecap="round"/>`,
+    <path d="M92 74 Q120 44 150 66 M150 80 Q120 110 92 96" stroke="#F4B400" stroke-width="4" stroke-dasharray="3 7" fill="none" stroke-linecap="round"/>
+    <path d="M58 124 L44 166 M58 124 L74 166" stroke="#0B1C2D" stroke-width="9" stroke-linecap="round"/>`,
 };
 
 function svgWrap(inner) {
@@ -767,86 +794,92 @@ function svgWrap(inner) {
 
 // ─── EXERCISE POOL — 20 GRATIS ──────────────────────────────────────────────
 const POOL = [
-  { id:'f01', cat:'Amplitud Motora', svg:'pasos', icon:'🦶', diff:'Moderado',
-    name:'Pasos Gigantes', dur:'1 min', reps:'10 pasos', obj:null,
-    desc:'Camina 10 pasos con zancadas lo más GRANDES que puedas. Balancea los brazos con energía. Cuenta cada paso en voz alta: uno, dos, tres…',
-    ev:'LSVT BIG — protocolo validado clínicamente para recuperar amplitud de movimiento en Parkinson.' },
-  { id:'f02', cat:'Coordinación y Juego', svg:'globo', icon:'🎈', diff:'Fácil',
-    name:'Voleibol de Globo', dur:'2 min', reps:'20 toques', obj:'un globo',
-    desc:'Infla un globo. Golpéalo hacia arriba con las manos sin dejarlo caer. Cuenta los toques en voz alta. ¿Puedes llegar a 20 seguidos?',
-    ev:'Coordinación ojo-mano + reacción + diversión — el juego libera dopamina y motiva la repetición.' },
-  { id:'f03', cat:'Ritmo', svg:'marcha', icon:'🎵', diff:'Moderado',
-    name:'Marcha con Música', dur:'2 min', reps:'2 minutos seguidos', obj:'radio o celular con música',
-    desc:'Pon una canción con ritmo marcado (marcha, cumbia, rock lento). Marcha en el lugar al compás. Levanta bien las rodillas. No pares hasta que termine.',
-    ev:'Estimulación Auditiva Rítmica (RAS) — mejora velocidad, cadencia y simetría de la marcha en Parkinson.' },
-  { id:'f04', cat:'Brazos y Emoción', svg:'director', icon:'🎼', diff:'Fácil',
-    name:'Director de Orquesta', dur:'2 min', reps:'1 canción', obj:'cuchara de palo (batuta)',
-    desc:'Pon tu música favorita. Toma una cuchara de palo como batuta y dirige la orquesta con movimientos GRANDES de ambos brazos. ¡Con emoción!',
-    ev:'Movimiento amplio de brazos + música + emoción — combinación que refuerza circuitos motores y estado de ánimo.' },
-  { id:'f05', cat:'Equilibrio', svg:'arbol', icon:'🌳', diff:'Moderado',
-    name:'Postura del Árbol', dur:'1 min', reps:'20 seg por pierna', obj:'una pared cerca',
-    desc:'Párate CERCA DE UNA PARED por seguridad. Levanta un pie y apóyalo en el tobillo de la otra pierna. Mira un punto fijo. Aguanta 20 segundos. Cambia de pierna.',
-    ev:'Tai Chi adaptado — evidencia Clase A para mejorar equilibrio y reducir caídas (Li et al., NEJM 2012).' },
-  { id:'f06', cat:'Motricidad Fina', svg:'monedas', icon:'🪙', diff:'Difícil',
-    name:'Recoger Monedas', dur:'2 min', reps:'10 monedas por mano', obj:'10 monedas y un vaso',
-    desc:'Esparce 10 monedas en la mesa. Recógelas UNA POR UNA con la mano que más te cuesta y ponlas en un vaso. Después con la otra mano.',
-    ev:'Tarea de destreza clínicamente validada — practicar mejora la coordinación de los dedos.' },
-  { id:'f07', cat:'Voz', svg:'voz', icon:'📢', diff:'Moderado',
-    name:'"AAA" Fuerte y Larga', dur:'2 min', reps:'10 veces', obj:null,
-    desc:'Toma aire profundo. Di "AAAAA" lo más FUERTE y LARGO que puedas. Imagina que tu voz debe llegar al fondo de la casa. Debe sentirse demasiado fuerte.',
-    ev:'LSVT LOUD — único tratamiento de voz con Nivel A de evidencia para la voz débil en Parkinson.' },
-  { id:'f08', cat:'Doble Tarea', svg:'contar', icon:'🧠', diff:'Difícil',
+  // AMPLITUD MOTORA
+  { id:'ma1', cat:'Amplitud Motora', svg:'pasos', icon:'🦾', diff:'Moderado',
+    name:'Pasos Gigantes', dur:'30 seg', reps:'10 pasos', obj:null,
+    desc:'Camina 10 pasos con zancadas lo más grandes que puedas. Balancea los brazos con energía. Cuenta cada paso en voz alta.',
+    ev:'LSVT BIG — protocolo validado clínicamente para amplitud de movimiento en Parkinson.' },
+  { id:'ma2', cat:'Amplitud Motora', svg:'cielo', icon:'🙌', diff:'Fácil',
+    name:'Alcanzar el Cielo', dur:'30 seg', reps:'10 por lado', obj:null,
+    desc:'Parado, extiende cada brazo hacia arriba lo más alto posible. Alterna: derecho arriba, izquierdo arriba. Movimientos deliberadamente grandes y lentos.',
+    ev:'Entrenamiento de amplitud — contraresta la hipocinesia característica del Parkinson.' },
+  { id:'ma3', cat:'Amplitud Motora', svg:'estrella', icon:'🔄', diff:'Fácil',
+    name:'Giro de Tronco Grande', dur:'45 seg', reps:'10 por lado', obj:null,
+    desc:'Sentado o parado, gira el tronco hacia la derecha tanto como puedas, luego hacia la izquierda. Brazos extendidos. Movimiento lento y amplio.',
+    ev:'Mejora rotación espinal y coordinación bilateral — déficits comunes en PD temprano.' },
+  { id:'ma4', cat:'Amplitud Motora', svg:'silla', icon:'🪑', diff:'Moderado',
+    name:'Sentarse y Pararse Grande', dur:'1 min', reps:'10 veces', obj:'una silla firme',
+    desc:'Sube y baja de una silla con movimientos GRANDES y deliberados. Al pararte: extiende brazos al frente. Al sentarte: controla el descenso contando hasta 3.',
+    ev:'Ejercicio base de LSVT BIG — fortalece piernas y entrena amplitud funcional.' },
+  { id:'ma5', cat:'Amplitud Motora', svg:'cruce', icon:'🏋️', diff:'Moderado',
+    name:'Cruce de Brazos Grande', dur:'1 min', reps:'10 por lado', obj:null,
+    desc:'Parado, cruza el brazo derecho frente al cuerpo hasta tocar el hombro izquierdo. Exagera el movimiento. Regresa. Alterna. Mantén tronco erguido.',
+    ev:'Movimiento cruzado activa conexiones interhemisféricas y contraresta hipocinesia.' },
+  // RITMO / RAS
+  { id:'r1', cat:'Ritmo', svg:'palmadas', icon:'🎵', diff:'Moderado',
+    name:'Marcha con Palmadas', dur:'1 min', reps:'1 minuto continuo', obj:null,
+    desc:'Marcha en el lugar marcando 2 palmadas por segundo. Cuenta: "UN-dos, UN-dos" en voz alta. Levanta las rodillas alto.',
+    ev:'Estimulación Auditiva Rítmica (RAS) — mejora cadencia, velocidad y simetría de la marcha en Parkinson.' },
+  { id:'r2', cat:'Ritmo', svg:'patrones', icon:'👐', diff:'Moderado',
+    name:'Patrones de Palmadas', dur:'1 min', reps:'3 patrones distintos', obj:null,
+    desc:'Sigue el patrón: PALM-palm-palm (fuerte-suave-suave). Luego: PALM-PALM-palm-palm. Luego: PALM-palm-PALM-palm. Empieza lento, acelera.',
+    ev:'Entrenamiento rítmico activa los ganglios basales — área central afectada en Parkinson.' },
+  { id:'r3', cat:'Ritmo', svg:'marcha', icon:'🦵', diff:'Moderado',
+    name:'Pasos Laterales Rítmicos', dur:'1 min', reps:'4 viajes ida y vuelta', obj:null,
+    desc:'Paso a la derecha-junto, paso a la derecha-junto. 8 pasos. Regresa. Cuenta en voz alta. Agrega palmada en cada "junto".',
+    ev:'Movimiento lateral + ritmo mejora balance y activa circuitos cerebelares complementarios.' },
+  // DOBLE TAREA
+  { id:'dt1', cat:'Doble Tarea', svg:'contar', icon:'🧠', diff:'Difícil',
     name:'Caminar y Contar al Revés', dur:'1 min', reps:'1 minuto sin parar', obj:null,
-    desc:'Camina por la habitación mientras cuentas hacia atrás de 3 en 3 desde 100, en voz alta: 100, 97, 94… Si te equivocas no importa: sigue caminando y contando.',
-    ev:'Entrenamiento de doble tarea — evidencia fuerte para mantener la marcha automática bajo carga mental.' },
-  { id:'f09', cat:'Escritura', svg:'espiral', icon:'🌀', diff:'Fácil',
-    name:'Espirales que Crecen', dur:'3 min', reps:'5 espirales', obj:'papel y lápiz',
-    desc:'Dibuja una espiral que empiece pequeña en el centro y CREZCA hacia afuera, cada vuelta más grande, hasta llenar la hoja. Repite 5 veces.',
-    ev:'Contrarresta la micrografía (letra cada vez más pequeña) — síntoma típico del Parkinson.' },
-  { id:'f10', cat:'Fuerza y Ánimo', svg:'boxeo', icon:'🥊', diff:'Moderado',
-    name:'Boxeo Sentado', dur:'2 min', reps:'30 golpes', obj:'una silla firme',
-    desc:'Sentado con la espalda recta, lanza golpes al aire: 10 al frente, 10 arriba, 10 cruzados. Con FUERZA y soplando el aire en cada golpe.',
-    ev:'Método Rock Steady Boxing — programas de boxeo sin contacto mejoran fuerza, ánimo y equilibrio en Parkinson.' },
-  { id:'f11', cat:'Amplitud Motora', svg:'cielo', icon:'🙌', diff:'Fácil',
-    name:'Alcanzar el Cielo', dur:'1 min', reps:'10 por brazo', obj:null,
-    desc:'De pie, estira un brazo hacia arriba lo MÁS ALTO posible, como queriendo tocar el techo. Baja despacio. Alterna los brazos. Movimientos grandes y lentos.',
-    ev:'Entrenamiento de amplitud — contrarresta los movimientos pequeños (hipocinesia) del Parkinson.' },
-  { id:'f12', cat:'Fuerza Funcional', svg:'silla', icon:'🪑', diff:'Moderado',
-    name:'Levantarse en Grande', dur:'2 min', reps:'10 veces', obj:'una silla firme',
-    desc:'Siéntate y levántate de la silla 10 veces con movimientos GRANDES. Al pararte, estira los brazos al frente. Al sentarte, baja despacio contando hasta 3.',
-    ev:'Ejercicio base de LSVT BIG — fortalece las piernas y entrena la amplitud en un movimiento de la vida diaria.' },
-  { id:'f13', cat:'Cara y Expresión', svg:'caras', icon:'😄', diff:'Fácil',
-    name:'Caras Exageradas', dur:'2 min', reps:'5 expresiones × 2', obj:'un espejo (opcional)',
-    desc:'Haz cada expresión de forma EXAGERADA y sostenla 5 segundos: sorpresa máxima, sonrisa enorme, tristeza profunda, enojo, alegría total.',
-    ev:'Contrarresta la hipomimia ("cara de máscara") — mejora la expresión y la comunicación social.' },
-  { id:'f14', cat:'Escritura', svg:'letras', icon:'✍️', diff:'Fácil',
-    name:'Letras Gigantes', dur:'3 min', reps:'media hoja', obj:'papel y lápiz',
-    desc:'Escribe tu nombre con letras de al menos 3 centímetros. Luego escribe: "MI LETRA ES GRANDE Y CLARA". Exagera el tamaño de cada letra.',
-    ev:'Entrenamiento contra la micrografía — mantener letra grande conserva la escritura funcional.' },
-  { id:'f15', cat:'Equilibrio', svg:'peso', icon:'⚖️', diff:'Fácil',
-    name:'Balanceo de Peso', dur:'1 min', reps:'10 por lado', obj:'una pared cerca',
-    desc:'De pie, pies al ancho de los hombros. Pasa TODO tu peso a la pierna derecha (el pie izquierdo apenas toca el piso). Aguanta 5 segundos. Cambia de lado.',
-    ev:'Transferencia de peso — mejora la estabilidad lateral y las reacciones que evitan caídas.' },
-  { id:'f16', cat:'Motricidad Fina', svg:'piano', icon:'🎹', diff:'Moderado',
-    name:'Piano en la Mesa', dur:'2 min', reps:'4 escaleras completas', obj:'una mesa',
-    desc:'Apoya los 10 dedos en la mesa como si fuera un piano. "Toca" do-re-mi-fa-sol levantando BIEN ALTO cada dedo, uno por uno. Ida y vuelta, 4 veces.',
-    ev:'Secuencias de dedos — activan la corteza motora y combaten la rigidez de las manos.' },
-  { id:'f17', cat:'Postura', svg:'toalla', icon:'🧻', diff:'Fácil',
-    name:'Toalla al Cielo', dur:'2 min', reps:'10 veces', obj:'una toalla',
-    desc:'Toma una toalla con las dos manos, separadas al ancho de los hombros. Súbela por encima de la cabeza estirando TODO el cuerpo. Aguanta 5 segundos y baja.',
-    ev:'Extensión torácica — contrarresta la postura encorvada típica del Parkinson y abre la respiración.' },
-  { id:'f18', cat:'Respiración y Puntería', svg:'burbujas', icon:'🫧', diff:'Fácil',
-    name:'Burbujas de Jabón', dur:'2 min', reps:'10 sopladas', obj:'burbujero o vaso con agua y jabón',
-    desc:'Sopla burbujas con soplidos LARGOS y controlados. Después intenta reventar 5 burbujas con el dedo índice, una por una.',
-    ev:'Control respiratorio (base de la voz) + puntería ojo-mano — dos sistemas en un juego.' },
-  { id:'f19', cat:'Mente Ágil', svg:'animales', icon:'🐘', diff:'Moderado',
-    name:'Un Minuto de Animales', dur:'1 min', reps:'3 rondas', obj:null,
-    desc:'Durante 60 segundos di en voz alta todos los ANIMALES que se te ocurran. Cuenta cuántos lograste. Ronda 2: frutas. Ronda 3: nombres de personas.',
-    ev:'Fluencia verbal — entrena el acceso rápido a las palabras, función sensible en el Parkinson.' },
-  { id:'f20', cat:'Ritmo y Baile', svg:'tango', icon:'💃', diff:'Moderado',
-    name:'Paso Básico de Tango', dur:'2 min', reps:'8 secuencias', obj:'música (opcional)',
-    desc:'Lento-lento-rápido-rápido-lento. Paso largo adelante, paso largo adelante, dos pasos cortos al lado, junta los pies. Cuenta en voz alta. Con música, mejor.',
-    ev:'El tango mostró mejoras de equilibrio y movilidad superiores al ejercicio tradicional (Hackney & Earhart, 2009).' },
+    desc:'Camina por la habitación mientras cuentas hacia atrás de 3 en 3 desde 100. Voz alta: 100, 97, 94… No pares al equivocarte, continúa.',
+    ev:'Entrenamiento de doble tarea — evidencia fuerte para mejorar la marcha automática bajo carga cognitiva.' },
+  { id:'dt2', cat:'Doble Tarea', svg:'sillaabc', icon:'🔤', diff:'Difícil',
+    name:'Sentarse y Abecedario', dur:'1 min', reps:'10 repeticiones', obj:'una silla firme',
+    desc:'Sube y baja de la silla 10 veces. Mientras: di el abecedario en voz alta — A al sentarte, B al pararte, C al sentarte…',
+    ev:'Combina motor y verbal — reduce la interferencia de doble tarea, problema frecuente en Parkinson.' },
+  { id:'dt3', cat:'Doble Tarea', svg:'categorias', icon:'🌍', diff:'Difícil',
+    name:'Marcha con Categorías', dur:'1 min', reps:'1 minuto continuo', obj:null,
+    desc:'Marcha en el lugar 60 segundos. Mientras: nombra un animal en cada paso. Alternativa: frutas, ciudades, nombres de personas.',
+    ev:'Fluencia verbal + motor simultáneo — entrena la atención dividida que se deteriora con Parkinson.' },
+  // EQUILIBRIO
+  { id:'eq1', cat:'Equilibrio', svg:'arbol', icon:'🌳', diff:'Moderado',
+    name:'Postura del Árbol', dur:'1 min', reps:'30 seg cada lado', obj:'una pared cerca',
+    desc:'Cerca de una pared (seguridad), levanta un pie y apóyalo en el tobillo o pantorrilla. Mantén 20-30 seg. Alterna. Mira un punto fijo al frente.',
+    ev:'Tai Chi para Parkinson — evidencia Clase A para mejora de balance y reducción de caídas (Li et al., NEJM 2012).' },
+  { id:'eq2', cat:'Equilibrio', svg:'talon', icon:'🚶', diff:'Moderado',
+    name:'Talón-Punta en Línea', dur:'30 seg', reps:'3 viajes de 10 pasos', obj:'un pasillo con pared',
+    desc:'Coloca un pie exactamente delante del otro (talón toca punta). Camina 10 pasos en línea recta. Brazos extendidos si necesitas apoyo visual.',
+    ev:'Marcha en tándem — evalúa y mejora la estabilidad postural, déficit clave en Parkinson.' },
+  { id:'eq3', cat:'Equilibrio', svg:'peso', icon:'⚖️', diff:'Fácil',
+    name:'Transferencia de Peso', dur:'45 seg', reps:'10 por lado', obj:'una pared cerca',
+    desc:'Parado con pies al ancho de hombros. Transfiere todo tu peso a la pierna derecha (levanta levemente el pie izquierdo). Mantén 5 seg. Alterna.',
+    ev:'Transferencia de peso — mejora la estabilidad lateral y las reacciones posturales de rescate.' },
+  { id:'eq4', cat:'Equilibrio', svg:'atras', icon:'🔙', diff:'Moderado',
+    name:'Caminar hacia Atrás', dur:'1 min', reps:'4 viajes', obj:'una pared cerca',
+    desc:'Camina 10 pasos hacia atrás, despacio y controlado. Cerca de una pared. Luego 10 pasos hacia adelante. Mira siempre al frente.',
+    ev:'La retromarcha activa circuitos cerebelares distintos y mejora el control anticipatorio.' },
+  // MOTRICIDAD FINA
+  { id:'mf1', cat:'Motricidad Fina', svg:'botones', icon:'🔘', diff:'Moderado',
+    name:'Abotonarse Deliberado', dur:'2 min', reps:'3 ciclos completos', obj:'una camisa con botones',
+    desc:'Abotona y desabotona 3 botones de una camisa. Hazlo lento y conscientemente. Si es fácil: cierra los ojos durante el ejercicio.',
+    ev:'Entrenamiento de motricidad fina funcional — mantiene la independencia en actividades de la vida diaria.' },
+  { id:'mf2', cat:'Motricidad Fina', svg:'monedas', icon:'🪙', diff:'Difícil',
+    name:'Recoger Monedas', dur:'2 min', reps:'2 veces por mano', obj:'10 monedas y un vaso',
+    desc:'Esparce 10 monedas en una mesa. Recoge una a una con la mano más afectada y ponlas en un vaso. Luego con la otra mano. Mide tu tiempo.',
+    ev:'Tarea de destreza clínicamente validada — practicarla mejora la coordinación digital.' },
+  { id:'mf3', cat:'Motricidad Fina', svg:'mano', icon:'✊', diff:'Fácil',
+    name:'Apertura Total de Mano', dur:'1 min', reps:'20 por mano', obj:null,
+    desc:'Aprieta el puño completamente, luego extiende todos los dedos al máximo (abanico total). 20 veces cada mano. Rápido pero con extensión completa.',
+    ev:'Ejercita los circuitos corticoespinales — la rigidez y la bradicinesia mejoran con práctica motora repetitiva.' },
+  { id:'mf4', cat:'Motricidad Fina', svg:'piano', icon:'🖐️', diff:'Moderado',
+    name:'Piano Imaginario', dur:'2 min', reps:'4 escalas completas', obj:'una mesa',
+    desc:'Toca "do-re-mi-fa-sol-la-si-do" en la mesa con los 10 dedos. Exagera el levantamiento de cada dedo. Ida y vuelta. Repite 4 veces.',
+    ev:'Entrenamiento secuencial de dedos — activa la corteza motora primaria y las áreas premotoras.' },
+  // VOZ
+  { id:'vf1', cat:'Voz', svg:'voz', icon:'📢', diff:'Moderado',
+    name:'"AAA" Fuerte y Larga', dur:'2 min', reps:'10 vocalizaciones', obj:null,
+    desc:'Toma aire. Di "AAAAA" lo más fuerte y largo posible. Piensa: "Proyecto mi voz al fondo de la sala". Debe SENTIRSE demasiado fuerte. 10 repeticiones.',
+    ev:'LSVT LOUD — único tratamiento de voz con Nivel A de evidencia para la hipofonía en Parkinson (Fox et al.).' },
 ];
 
 // ─── PREMIUM POOL — 20 EJERCICIOS (desbloqueados con código) ────────────────
@@ -955,12 +988,12 @@ function todayStr() {
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
-function saveState() { localStorage.setItem('nf2_state', JSON.stringify(state)); }
+function saveState() { localStorage.setItem('nf3_state', JSON.stringify(state)); }
 
 function activePool() { return state.premium ? POOL.concat(PREMIUM_POOL) : POOL; }
 
 function loadState() {
-  const raw = localStorage.getItem('nf2_state');
+  const raw = localStorage.getItem('nf3_state');
   if (raw) { try { state = Object.assign(state, JSON.parse(raw)); } catch(e) {} }
   const today = todayStr();
   if (state.todayDate !== today) {
@@ -1108,7 +1141,7 @@ function renderPremium() {
   }
   document.getElementById('btn-buy').href = GUMROAD_URL;
   document.getElementById('prem-list').innerHTML =
-    PREMIUM_POOL.map(e => `<div class="prem-item">🔒 ${e.icon} ${e.name} <span style="color:#A89B6E">· ${e.cat}</span></div>`).join('');
+    PREMIUM_POOL.map(e => `<div class="prem-item">🔒 ${e.icon} ${e.name} <span style="color:rgba(255,255,255,0.5)">· ${e.cat}</span></div>`).join('');
 }
 
 // ─── ACTIONS ────────────────────────────────────────────────────────────────
