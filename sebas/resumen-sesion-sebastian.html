@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sesión Claude — Resumen para Sebastián</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25); color: var(--accent); }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k { color: var(--blue); }
+    .code .s { color: var(--green); }
+    .code .c { color: #444; font-style: italic; }
+    .code .hl { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue  { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.red { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.66em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+    .status-nogo { color: var(--red); font-weight: 700; }
+    .status-ok { color: var(--green); font-weight: 700; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .col-card p, .col-card li { font-size: 0.68em; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red); border: 1px solid rgba(229,115,115,0.3); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- COVER -->
+<section>
+  <p class="section-number">Resumen de sesión</p>
+  <div class="cover-title">Claude en el día a día de Operaciones</div>
+  <p class="cover-sub">De conceptos de IA a dos agentes reales corriendo — para Sebastián</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>Conceptos: chat, skills, hooks, MCP, y la diferencia entre un Project y un agente real</li>
+    <li>Dos subagentes de Claude Code armados y probados: compras y capacidad de línea JIS</li>
+    <li>Análisis real de capacidad para escalar de 120 a 300 autos/turno, sin buffer ni kanban</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Claude Code</span>
+    <span class="tag">Subagentes</span>
+    <span class="tag">MCP</span>
+    <span class="tag amber">JIS</span>
+    <span class="tag">Skills</span>
+  </div>
+  <div class="nav-hint">→ siguiente sección · ↓ sub-slides dentro de cada sección</div>
+</section>
+
+<!-- SECTION 1: CONCEPTOS DE IA -->
+<section>
+  <section>
+    <div class="slide-label">Sección 1 — Conceptos</div>
+    <p class="section-number">01</p>
+    <div class="section-title">Conceptos de IA vistos hoy</div>
+    <p class="section-desc">Las piezas del rompecabezas: tres formas de usar Claude, qué es una skill, qué es MCP, y por qué un "Project" de chat no es lo mismo que un agente real.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — Tres formas de usar Claude</div>
+    <h3>Un Claude, tres maneras de trabajar</h3>
+    <div class="three-col">
+      <div class="col-card">
+        <h4>💬 Chat</h4>
+        <p>Conversación simple. Vos hablás, Claude responde. Nada pasa hasta que escribís.</p>
+        <p style="color:var(--muted);">Para: pensar, decidir, redactar algo corto.</p>
+      </div>
+      <div class="col-card">
+        <h4>🗂️ Cowork</h4>
+        <p>Le das una carpeta y una tarea. Trabaja solo (sub-agentes en paralelo) y entrega el resultado.</p>
+        <p style="color:var(--muted);">Para: reportes, reconciliar planillas, tareas de oficina.</p>
+      </div>
+      <div class="col-card">
+        <h4>💻 Code</h4>
+        <p>Escribe, corrige y corre código real. Acá viven los agentes/skills que armamos hoy.</p>
+        <p style="color:var(--muted);">Para: programar, automatizar, construir herramientas.</p>
+      </div>
+    </div>
+    <div class="callout blue"><strong>Clave:</strong> los tres comparten el mismo modelo — cambia el nivel de autonomía y de acceso a herramientas.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — Skill = receta guardada</div>
+    <h3>Una skill es un instructivo que Claude sigue siempre igual</h3>
+    <p>Un archivo <code>SKILL.md</code> guardado en una carpeta. Escribís su comando (ej. <code>/reveal-minilesson</code>) o una frase parecida, y Claude sigue esos pasos exactos, cada vez.</p>
+    <div class="callout"><strong>Ejemplo de hoy:</strong> creamos <code>/explica-esto-2p</code> — cada vez que la corrés, genera 2 láminas con el mismo estilo visual, sin que expliques de nuevo el formato.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — MCP = enchufe universal</div>
+    <h3>MCP conecta Claude con tus apps reales</h3>
+    <p>Antes: una integración a medida por cada herramienta (Drive, Notion, Figma...). Con MCP, todas hablan el mismo protocolo — un mismo "enchufe" en vez de un cable distinto para cada una.</p>
+    <div class="callout blue"><strong>Vos autorizás</strong> qué puede leer, crear o modificar en cada herramienta conectada.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — Project ≠ agente real</div>
+    <h3>Un Project (chat) no actúa solo</h3>
+    <p>Un Project guarda instrucciones y documentos — memoria persistente. Pero sigue esperando que vos le escribas cada vez, como cualquier chat.</p>
+    <p>Un <strong>agente real</strong> (subagente de Claude Code, o Cowork) recibe una tarea grande, usa herramientas, decide los pasos, y trabaja sin que estés mirando.</p>
+    <div class="callout red"><strong>Diferencia clave:</strong> Project espera tu mensaje cada vez; el agente actúa solo.</div>
+  </section>
+</section>
+
+<!-- SECTION 2: CÓMO SE ARMA UN AGENTE REAL -->
+<section>
+  <section>
+    <div class="slide-label">Sección 2 — Agentes reales</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Cómo armamos agentes reales</div>
+    <p class="section-desc">De la teoría a la práctica: subagentes de Claude Code, con archivos, reglas propias, y acceso controlado a herramientas.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Estructura de un subagente</div>
+    <h3>Un archivo Markdown con reglas</h3>
+    <div class="code">
+<span class="c">// .claude/agents/nombre-del-agente.md</span><br/>
+<span class="hl">---</span><br/>
+<span class="k">name:</span> <span class="s">nombre-del-agente</span><br/>
+<span class="k">description:</span> <span class="s">cuándo usarlo (condición de disparo)</span><br/>
+<span class="k">tools:</span> <span class="s">Read, Bash, Glob</span><br/>
+<span class="hl">---</span><br/>
+<span class="dim">(acá abajo va el system prompt completo del agente)</span>
+    </div>
+    <p><span class="tool-name">description</span> es lo más importante — Claude lo lee para decidir cuándo delegar. <span class="tool-name">tools</span> es tu control de seguridad: lo que no le des, no lo puede hacer.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Regla de oro</div>
+    <h3>Releer siempre, no inventar nunca</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Confirmar que los archivos de entrada existen</div><div class="step-sub">Glob + verificación antes de calcular</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">No confiar en una corrida anterior</div><div class="step-sub">cada ejecución relee todo desde disco</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Si falta un dato, avisar — nunca inventarlo</div><div class="step-sub">crítico cuando el resultado mueve decisiones de compra o producción</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Los dos agentes de hoy</div>
+    <h3>Dos subagentes, dos carpetas</h3>
+    <table class="tool-table">
+      <tr><th>Agente</th><th>Qué hace</th><th>Carpeta</th></tr>
+      <tr><td class="tool-name">recomendacion-compras</td><td class="tool-desc">Lee inventario + BOM + plan + tiempos de entrega → recomienda qué comprar</td><td class="tool-desc">demo-agente-compras/</td></tr>
+      <tr><td class="tool-name">analisis-secuenciado-linea</td><td class="tool-desc">Analiza capacidad de alimentación JIS, 120→300 autos/turno</td><td class="tool-desc">analisis-secuenciado-linea/</td></tr>
+    </table>
+    <div class="callout"><strong>Nota:</strong> ambos son .md en <code>.claude/agents/</code> — Claude Code los detecta automáticamente al abrir el proyecto.</div>
+  </section>
+</section>
+
+<!-- SECTION 3: AGENTE DE COMPRAS -->
+<section>
+  <section>
+    <div class="slide-label">Sección 3 — Agente de compras</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Agente de compras (demo educativa)</div>
+    <p class="section-desc">Punto de reorden + compra periódica, sin adivinar cantidades. Datos inventados para la base de instalación de asientos.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Qué hace</div>
+    <h3>Compara 4 fuentes y arma un Excel de compras</h3>
+    <div class="workflow-step"><div class="step-num">1</div><div><div class="step-title">inventario.xlsx</div><div class="step-sub">stock actual por material</div></div></div>
+    <div class="workflow-step"><div class="step-num">2</div><div><div class="step-title">requerimientos.xlsx (BOM)</div><div class="step-sub">material por unidad de producto</div></div></div>
+    <div class="workflow-step"><div class="step-num">3</div><div><div class="step-title">plan_produccion_mensual.xlsx</div><div class="step-sub">plan a varios meses</div></div></div>
+    <div class="workflow-step"><div class="step-num">4</div><div><div class="step-title">tiempos_entrega.xlsx</div><div class="step-sub">proveedor, lead time, compra por caja, mínimo</div></div></div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — La lógica</div>
+    <h3>Punto de reorden + nivel objetivo</h3>
+    <p><strong>Punto de reorden</strong> = consumo durante (tiempo de entrega + 7 días de colchón). Si el stock cae por debajo, hay que comprar YA.</p>
+    <p><strong>Nivel objetivo</strong> = consumo durante (30 días de ciclo + lead time + colchón). La cantidad recomendada es lo que falta para llegar ahí — redondeado a cajas completas y nunca menor al mínimo del proveedor.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Resultado de la corrida</div>
+    <h3>Reporte generado: recomendación de compras</h3>
+    <table class="tool-table">
+      <tr><th>Material</th><th>Estado</th><th>Cantidad</th></tr>
+      <tr><td class="tool-name">Riel deslizante</td><td class="status-nogo">Urgente hoy</td><td>500 u = 10 cajas</td></tr>
+      <tr><td class="tool-name">Tapiz (funda)</td><td class="status-nogo">Urgente hoy</td><td>150 u = 6 cajas</td></tr>
+      <tr><td class="tool-name">Tornillería</td><td class="status-ok">Programado 07/20</td><td>1500 u = 3 cajas</td></tr>
+      <tr><td class="tool-name">Arnés sensores</td><td class="status-ok">Programado 07/29</td><td>76 u</td></tr>
+      <tr><td class="tool-name">Espuma</td><td class="status-ok">Programado 08/17</td><td>50 u</td></tr>
+    </table>
+  </section>
+</section>
+
+<!-- SECTION 4: ANALISIS DE CAPACIDAD JIS -->
+<section>
+  <section>
+    <div class="slide-label">Sección 4 — Capacidad JIS</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Análisis de capacidad: 120 → 300 autos/turno</div>
+    <p class="section-desc">Alimentación secuenciada a línea — espumas, fundas y cables — sin buffer ni kanban. ¿Aguanta el proceso actual al doble y medio de volumen?</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — El proceso y su restricción</div>
+    <h3>Cinco pasos, un ciclo, cero stock</h3>
+    <p>Picking → Secuenciación → Traslado a línea (troley) → Descarga → Retorno → se repite.</p>
+    <div class="callout red"><strong>Restricción dura:</strong> se respeta siempre la secuencia exacta de modelos que pide la línea. Nada de buffer, nada de kanban.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — El modelo (validado con tus números)</div>
+    <h3>De autos/hora a runners necesarios</h3>
+    <div class="code">
+autos/hora = autos por turno / horas netas<br/>
+piezas/hora = autos/hora × piezas por auto<br/>
+viajes/hora = piezas/hora / capacidad por viaje<br/>
+min. requeridos/hora = viajes/hora × tiempo por viaje<br/>
+<span class="hl">runners necesarios = min. requeridos / 60</span>
+    </div>
+    <div class="callout green"><strong>Validado:</strong> con tus datos reales de fundas (8 fundas/auto, 30/viaje, 10 min/viaje) el modelo reprodujo exacto tu "no go — hacer dos equipos".</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Resultado por familia</div>
+    <h3>¿Quién aguanta 300 y quién no?</h3>
+    <table class="tool-table">
+      <tr><th>Familia</th><th>Actual (120)</th><th>Objetivo (300)</th></tr>
+      <tr><td class="tool-name">Fundas (real)</td><td class="status-ok">OK — 1 runner</td><td class="status-nogo">NO GO — necesita 2</td></tr>
+      <tr><td class="tool-name">Espuma (ejemplo)</td><td class="status-ok">OK — 1 runner</td><td class="status-nogo">NO GO — necesita 2</td></tr>
+      <tr><td class="tool-name">Cable (ejemplo)</td><td class="status-ok">OK — 1 runner</td><td class="status-ok">OK — 1 alcanza</td></tr>
+    </table>
+    <p style="margin-top:10px;"><strong>Total:</strong> 3 runners hoy → 5 runners necesarios a 300/turno, con el diseño actual sin rediseñar nada.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Palancas recomendadas</div>
+    <h3>Cerrar la brecha sin buffer ni kanban</h3>
+    <div class="workflow-step"><div class="step-num">1</div><div class="step-title">Paralelizar por familia (espuma / funda / cable)</div></div>
+    <div class="workflow-step"><div class="step-num">2</div><div class="step-title">Reducir traslado y retorno — acercar secuenciación al punto de uso</div></div>
+    <div class="workflow-step"><div class="step-num">3</div><div class="step-title">Tren logístico (mizusumashi) con mayor capacidad, no más stock</div></div>
+    <div class="workflow-step"><div class="step-num">4</div><div class="step-title">Poka-yoke de secuencia — escaneo en picking + inducción a línea</div></div>
+    <div class="workflow-step"><div class="step-num">5</div><div class="step-title">Automatizar el retorno (AGV/AMR)</div></div>
+    <div class="workflow-step"><div class="step-num">6</div><div class="step-title">Sumar headcount — último recurso, no el primero</div></div>
+  </section>
+</section>
+
+<!-- SECTION 5: ENTREGABLES -->
+<section>
+  <section>
+    <div class="slide-label">Sección 5 — Entregables</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Lo que quedó armado hoy</div>
+    <p class="section-desc">Archivos, agentes y presentaciones — todo corriendo y probado, listo para iterar con datos reales.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 — Archivos generados</div>
+    <table class="tool-table">
+      <tr><th>Archivo</th><th>Qué es</th></tr>
+      <tr><td class="tool-name">.claude/agents/*.md</td><td class="tool-desc">Los dos subagentes (compras y capacidad JIS)</td></tr>
+      <tr><td class="tool-name">demo-agente-compras/*.xlsx</td><td class="tool-desc">Datos de prueba + reporte de recomendación de compras</td></tr>
+      <tr><td class="tool-name">analisis-secuenciado-linea/datos_reales_sebas.xlsx</td><td class="tool-desc">Tus datos reales de fundas + ejemplo de espuma/cable</td></tr>
+      <tr><td class="tool-name">analisis-secuenciado-linea/*.py</td><td class="tool-desc">Scripts que hacen el cálculo real (relee todo cada vez)</td></tr>
+      <tr><td class="tool-name">presentacion analisis secuenciado (apple).pptx</td><td class="tool-desc">PowerPoint estilo apple.com con el diagrama y resultados</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">05 — Cómo correrlo de nuevo</div>
+    <h3>Cuando tengas los datos reales de espuma y cable</h3>
+    <div class="code">
+<span class="c"># actualizar datos_reales_sebas.xlsx con numeros reales, despues:</span><br/>
+cd analisis-secuenciado-linea<br/>
+python calcular_capacidad_secuenciado.py<br/>
+python generar_presentacion.py
+    </div>
+    <div class="callout blue">O simplemente pedime: <strong>"corré el agente de capacidad de línea"</strong> — releo todo fresco cada vez.</div>
+  </section>
+</section>
+
+<!-- SECTION 6: PROXIMOS PASOS -->
+<section>
+  <div class="slide-label">Sección 6 — Próximos pasos</div>
+  <p class="section-number">06</p>
+  <div class="section-title">Recomendaciones y próximos pasos</div>
+  <div class="workflow-step"><div class="step-num">1</div><div class="step-title">Cronometrar espuma y cable con datos reales (hoy son ejemplo)</div></div>
+  <div class="workflow-step"><div class="step-num">2</div><div class="step-title">Responder las preguntas de diagnóstico pendientes: método actual, personal, cantidad de troleys</div></div>
+  <div class="workflow-step"><div class="step-num">3</div><div class="step-title">Pilotar la palanca más barata primero antes de invertir en capital</div></div>
+  <div class="workflow-step"><div class="step-num">4</div><div class="step-title">Evaluar el "mini-buffer por secuencia" como excepción puntual, no como regla general</div></div>
+  <div class="workflow-step"><div class="step-num">5</div><div class="step-title">Para tu rol de PM: Projects para tareas repetitivas de chat, Cowork para reportes de oficina, subagentes de Claude Code para funciones específicas del trabajo</div></div>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section>
+  <div class="slide-label">Referencia rápida</div>
+  <p class="section-number">Cheat sheet</p>
+  <div class="section-title">Referencia rápida</div>
+  <div class="two-col">
+    <div>
+      <p style="color:var(--muted); font-size:0.65em; margin-bottom:6px;">CONCEPTOS</p>
+      <span class="pill">Skill</span><span class="pill">Hook</span><span class="pill">Subagente</span>
+      <span class="pill">MCP</span><span class="pill">Project</span><span class="pill">Cowork</span>
+      <span class="pill">JIS</span><span class="pill">Punto de reorden</span><span class="pill">Takt</span>
+      <span class="pill">Yamazumi</span><span class="pill">Poka-yoke</span>
+    </div>
+    <div>
+      <p style="color:var(--muted); font-size:0.65em; margin-bottom:6px;">COMANDOS CLAVE</p>
+      <div class="code">
+"corré el agente de compras"<br/>
+"corré el agente de capacidad de línea"<br/>
+python calcular_recomendacion_compras.py<br/>
+python calcular_capacidad_secuenciado.py<br/>
+python generar_presentacion.py
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
