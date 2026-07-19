@@ -1029,21 +1029,53 @@ function currentExercise() {
 }
 
 // ─── TTS ────────────────────────────────────────────────────────────────────
+// Elige la mejor voz en español disponible: prioriza acento latino
+// (es-US / es-MX / es-VE…) sobre el castellano y voces de mayor calidad.
+let cachedVoice = null;
+
+function scoreVoice(v) {
+  const lang = (v.lang || '').toLowerCase().replace('_', '-');
+  const name = (v.name || '').toLowerCase();
+  let s = 0;
+  // Acento: latino preferido, castellano como respaldo (nunca cero).
+  if (/^es-(us|mx|419|co|ve|ar|cl|pe)/.test(lang)) s += 100;
+  else if (lang === 'es' || lang.startsWith('es-')) s += 40;
+  // Calidad por nombre.
+  if (/google/.test(name)) s += 40;
+  if (/neural|natural|enhanced|premium/.test(name)) s += 40;
+  if (/sabina|dalia|paulina|jorge|hilda|elena|raul|luciana/.test(name)) s += 25;
+  // Voces no locales (nube) suelen sonar mejor.
+  if (v.localService === false) s += 15;
+  return s;
+}
+
+function pickSpanishVoice() {
+  const voices = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('es'));
+  if (voices.length === 0) return null;
+  return voices.slice().sort((a, b) => scoreVoice(b) - scoreVoice(a))[0];
+}
+
+function loadVoice() { cachedVoice = pickSpanishVoice(); }
+
 function speakExercise() {
   if (!('speechSynthesis' in window)) {
     alert('Tu navegador no permite leer en voz alta.');
     return;
   }
   speechSynthesis.cancel();
+  if (!cachedVoice) loadVoice();  // motor "frío": recalcular al primer toque
   const ex = currentExercise();
   const u = new SpeechSynthesisUtterance(ex.name + '. ' + ex.desc);
-  u.lang = 'es-ES';
+  u.lang = (cachedVoice && cachedVoice.lang) || 'es-US';
   u.rate = 0.85;
-  const esVoice = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('es'));
-  if (esVoice) u.voice = esVoice;
+  if (cachedVoice) u.voice = cachedVoice;
   speechSynthesis.speak(u);
 }
-if ('speechSynthesis' in window) speechSynthesis.getVoices();
+
+if ('speechSynthesis' in window) {
+  loadVoice();
+  speechSynthesis.onvoiceschanged = loadVoice;
+}
 
 // ─── RENDER ─────────────────────────────────────────────────────────────────
 function render() {
