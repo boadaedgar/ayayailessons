@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code — User Guide</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- COVER -->
+<section>
+  <p class="section-number">User Guide</p>
+  <div class="cover-title">Claude Code</div>
+  <p class="cover-sub">Install & start coding with AI — from zero, no jargon</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>Register, subscribe, and install — one path, in order</li>
+    <li>Fixes for the exact errors beginners actually hit</li>
+    <li>A way to verify it worked before you type your first prompt</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Terminal</span>
+    <span class="tag amber">CLI</span>
+    <span class="tag">Node.js</span>
+    <span class="tag">npm</span>
+    <span class="tag">Claude Pro / Max</span>
+    <span class="tag">Anthropic Console</span>
+  </div>
+  <div class="nav-hint">→ next section · ↓ sub-slides within section</div>
+</section>
+
+<!-- SECTION 01: WHAT IS IT -->
+<section>
+  <section>
+    <div class="slide-label">Section 1 — What Is Claude Code</div>
+    <p class="section-number">01</p>
+    <div class="section-title">What Is Claude Code</div>
+    <p class="section-desc">The words and mental model you need before anything else makes sense.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concept</div>
+    <h3>Claude Code, In One Sentence</h3>
+    <p>Claude Code is Anthropic's AI assistant that runs on your computer and works directly with files, folders, and commands — instead of a chat window on a website.</p>
+    <div class="callout blue"><strong>Think of it like:</strong> a very capable assistant sitting at your keyboard, who can read your files, write new ones, and run programs — but only after you type instructions and approve what it does.</div>
+    <div class="callout"><strong>Not just for coders.</strong> People use it to write, organize files, build documents, automate repetitive tasks, and yes, write code — you don't need to know how to program to start.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concept</div>
+    <h3>Terminal & CLI, Explained</h3>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>Terminal</h4>
+        <p>A plain black-and-white window where you type commands instead of clicking icons. On Mac it's called "Terminal," on Windows it's "PowerShell" or "Command Prompt."</p>
+      </div>
+      <div class="col-card">
+        <h4>CLI</h4>
+        <p>"Command-Line Interface" — the fancy name for typing text commands. Claude Code is a CLI tool: you talk to it by typing in the terminal, not by clicking buttons.</p>
+      </div>
+    </div>
+    <div class="callout green"><strong>You will not break anything</strong> by opening a terminal and looking around. Typing a command and pressing Enter is the only way anything happens.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concept</div>
+    <h3>Project Folder, Prompts, Sessions</h3>
+    <ul>
+      <li><strong style="color:var(--blue)">Project folder</strong> — the folder on your computer where Claude Code works. It reads and edits files inside this folder only (unless you tell it otherwise).</li>
+      <li><strong style="color:var(--blue)">Prompt</strong> — the instruction you type, in plain English, describing what you want done.</li>
+      <li><strong style="color:var(--blue)">Session</strong> — one conversation with Claude Code, from the moment you open it to the moment you close the terminal. It remembers everything you said within that session.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concept</div>
+    <h3>Tools & Permissions</h3>
+    <p>Claude Code can read files, edit files, and run commands on your computer — these actions are called <strong style="color:var(--blue)">tools</strong>.</p>
+    <div class="callout amber"><strong>You stay in control.</strong> Before it edits a file or runs something new, Claude Code asks for your permission. You can approve once, approve always for that type of action, or say no.</div>
+  </section>
+</section>
+
+<!-- SECTION 02: ACCOUNT & SUBSCRIPTION -->
+<section>
+  <section>
+    <div class="slide-label">Section 2 — Account & Subscription</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Account & Subscription</div>
+    <p class="section-desc">Register with Anthropic and pick how you'll pay — before you install anything.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Register</div>
+    <h3>Create Your Anthropic Account</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Go to claude.ai in your browser</div><div class="step-sub">claude.ai</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Click "Sign up"</div><div class="step-sub">Use email + password, or "Continue with Google"</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Verify your email</div><div class="step-sub">Click the link Anthropic emails you</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">You now have a free Claude account</div><div class="step-sub">This same login works for Claude Code</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Subscription</div>
+    <h3>Choose How You'll Pay</h3>
+    <table class="tool-table">
+      <tr><th>Option</th><th>What it is</th><th>Good for</th></tr>
+      <tr><td class="tool-name">Claude Pro <span class="badge badge-paid">Paid</span></td><td class="tool-desc">Flat monthly fee, includes Claude Code usage</td><td class="tool-desc">Most beginners — predictable cost</td></tr>
+      <tr><td class="tool-name">Claude Max <span class="badge badge-paid">Paid</span></td><td class="tool-desc">Higher flat fee, much higher usage limits</td><td class="tool-desc">Heavy daily use</td></tr>
+      <tr><td class="tool-name">Anthropic Console <span class="badge badge-paid">Pay-as-you-go</span></td><td class="tool-desc">Add credit, pay per use via API billing</td><td class="tool-desc">Occasional use, no monthly commitment</td></tr>
+    </table>
+    <div class="callout amber"><strong>Pick one before installing.</strong> Claude Code will ask you to log in with whichever account type you choose — mixing them up later is the #1 source of confusion.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Billing FAQ</div>
+    <h3>Payment & Billing FAQ</h3>
+    <ul>
+      <li><strong style="color:var(--blue)">Do I need a credit card?</strong> Yes, for Pro, Max, or Console credit — no free tier covers Claude Code usage.</li>
+      <li><strong style="color:var(--blue)">Which login do I use when Claude Code asks?</strong> The same email/password (or Google account) you registered with in the previous slide.</li>
+      <li><strong style="color:var(--blue)">Can I switch later?</strong> Yes — cancel or change plans anytime from your account settings on claude.ai.</li>
+      <li><strong style="color:var(--blue)">Will I be charged unexpectedly?</strong> Pro/Max are flat monthly fees. Console billing is usage-based — set a spending limit in Console settings if that worries you.</li>
+    </ul>
+  </section>
+</section>
+
+<!-- SECTION 03: INSTALL -->
+<section>
+  <section>
+    <div class="slide-label">Section 3 — Install Claude Code</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Install Claude Code</div>
+    <p class="section-desc">Step by step, for Mac, Windows, and Linux.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Prerequisite</div>
+    <h3>Before You Start — Node.js</h3>
+    <p>Claude Code's standard install method needs <strong style="color:var(--blue)">Node.js</strong> (version 18 or newer) already on your computer.</p>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Check if you already have it</div><div class="step-sub">node --version</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">If you see a version number (e.g. v18.x or higher) — skip ahead</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">If you see "command not found" — download Node.js</div><div class="step-sub">nodejs.org → download the LTS version → run the installer</div></div>
+    </div>
+    <div class="callout blue"><strong>No Node.js? No problem.</strong> Skip to the last slide of this section for an install method that doesn't need it.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Mac / Linux</div>
+    <h3>Install on Mac / Linux</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Open Terminal</div><div class="step-sub">Applications → Utilities → Terminal (Mac)</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Run the install command</div><div class="step-sub">npm install -g @anthropic-ai/claude-code</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Wait for it to finish</div><div class="step-sub">A few lines of text scrolling by is normal</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Start it</div><div class="step-sub">claude</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Windows</div>
+    <h3>Install on Windows</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Open PowerShell</div><div class="step-sub">Start menu → type "PowerShell" → Enter</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Run the install command</div><div class="step-sub">npm install -g @anthropic-ai/claude-code</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Close and reopen PowerShell</div><div class="step-sub">Refreshes the terminal so it recognizes the new command</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Start it</div><div class="step-sub">claude</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Alternative</div>
+    <h3>Alternative — Native Installer (No Node Needed)</h3>
+    <p>If installing Node.js feels like too much, use Anthropic's own installer script instead.</p>
+    <div class="code">
+<span class="c"># Mac / Linux — paste into Terminal</span><br>
+curl -fsSL <span class="s">https://claude.ai/install.sh</span> | bash<br><br>
+<span class="c"># Windows — paste into PowerShell</span><br>
+irm <span class="s">https://claude.ai/install.ps1</span> | iex
+    </div>
+    <div class="callout green"><strong>This downloads Claude Code directly</strong> — no Node.js, no npm, one command, one paste.</div>
+  </section>
+</section>
+
+<!-- SECTION 04: VERIFY -->
+<section>
+  <section>
+    <div class="slide-label">Section 4 — Verify It Worked</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Verify It Worked</div>
+    <p class="section-desc">Three quick checks before you trust the install.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Check</div>
+    <h3>Check the Version</h3>
+    <div class="code">claude --version</div>
+    <div class="callout green"><strong>Success looks like:</strong> a version number printed back, e.g. <em>1.x.x</em>.</div>
+    <div class="callout red"><strong>Failure looks like:</strong> "command not found" or "not recognized" — see the Common Problems section next.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Check</div>
+    <h3>Run It In a Test Folder</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Create a fresh, throwaway folder</div><div class="step-sub">mkdir claude-test  &nbsp;→&nbsp;  cd claude-test</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Launch Claude Code inside it</div><div class="step-sub">claude</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">A browser tab opens — log in</div><div class="step-sub">Use the account from Section 2</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Return to the terminal — you should see a prompt box</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Check</div>
+    <h3>Send Your First Prompt</h3>
+    <div class="code"><span class="hl">&gt;</span> Create a file called hello.txt that says "It works"</div>
+    <div class="callout green"><strong>If it works:</strong> Claude Code asks permission to create the file, you approve, and <code>hello.txt</code> appears in the folder.</div>
+    <div class="callout blue"><strong>That's it</strong> — install confirmed end to end: account, connection, permissions, and file writing all functioning.</div>
+  </section>
+</section>
+
+<!-- SECTION 05: COMMON PROBLEMS -->
+<section>
+  <section>
+    <div class="slide-label">Section 5 — Common Problems & Fixes</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Common Problems & Fixes</div>
+    <p class="section-desc">The errors non-technical users hit most, and the exact fix for each.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Errors</div>
+    <h3>"Command Not Found" Errors</h3>
+    <table class="tool-table">
+      <tr><th>You see</th><th>What it means</th><th>Fix</th></tr>
+      <tr><td class="tool-name">'npm' is not recognized</td><td class="tool-desc">Node.js isn't installed</td><td class="tool-desc">Install Node.js from nodejs.org, restart terminal</td></tr>
+      <tr><td class="tool-name">'claude' is not recognized</td><td class="tool-desc">Install didn't finish, or terminal wasn't restarted</td><td class="tool-desc">Close and reopen the terminal, try again</td></tr>
+      <tr><td class="tool-name">'node' is not recognized</td><td class="tool-desc">Node installed but PATH not updated</td><td class="tool-desc">Restart the computer, not just the terminal</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Errors</div>
+    <h3>Permission Errors (EACCES)</h3>
+    <p>On Mac/Linux, a global npm install can fail with a wall of red text mentioning <strong style="color:var(--red)">EACCES</strong> — a permissions error.</p>
+    <div class="callout amber"><strong>Simplest fix:</strong> skip npm entirely and use the native installer script instead (Section 3, last slide) — it avoids this error completely.</div>
+    <div class="callout blue"><strong>If you want to keep using npm:</strong> avoid <code>sudo npm install</code> — it causes more problems than it fixes. Reconfigure npm's default directory instead, or just switch to the native installer.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Errors</div>
+    <h3>PATH Problems & Terminal Fear</h3>
+    <ul>
+      <li><strong style="color:var(--blue)">"It installed but nothing happens when I type claude"</strong> — almost always fixed by fully closing and reopening the terminal window.</li>
+      <li><strong style="color:var(--blue)">"The terminal looks scary / I might break something"</strong> — you can't damage your computer by typing a command and pressing Enter; at worst you get an error message.</li>
+      <li><strong style="color:var(--blue)">"I don't know what folder I'm in"</strong> — type <code>pwd</code> (Mac/Linux) or <code>cd</code> alone (Windows) to see your current location.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Errors</div>
+    <h3>Login, Antivirus & Account Mix-ups</h3>
+    <table class="tool-table">
+      <tr><th>Problem</th><th>Fix</th></tr>
+      <tr><td class="tool-desc">Browser login window never opens</td><td class="tool-desc">Copy the URL Claude Code prints and paste it into your browser manually</td></tr>
+      <tr><td class="tool-desc">Antivirus blocks the install script</td><td class="tool-desc">Temporarily allow the download, or use the npm method instead of the curl/irm script</td></tr>
+      <tr><td class="tool-desc">Logged in but usage says "no access"</td><td class="tool-desc">You logged into an account without an active Pro/Max plan or Console credit — check Section 2</td></tr>
+      <tr><td class="tool-desc">Windows blocks the PowerShell script</td><td class="tool-desc">Run: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser, then retry</td></tr>
+    </table>
+  </section>
+</section>
+
+<!-- SECTION 06: TIPS & LIMITS -->
+<section>
+  <section>
+    <div class="slide-label">Section 6 — Tips & Limits</div>
+    <p class="section-number">06</p>
+    <div class="section-title">Tips & Limits</div>
+    <p class="section-desc">What to expect once you're up and running.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">06 · Limits</div>
+    <h3>Good to Know</h3>
+    <ul>
+      <li>Claude Code only touches files inside the folder you launched it from — always run it from your actual project folder.</li>
+      <li>Usage limits reset periodically on Pro/Max; Console billing draws down your credit balance instead.</li>
+      <li>Closing the terminal ends the session — reopen and run <code>claude</code> again to continue, it will remember the project's history.</li>
+    </ul>
+    <div class="callout green"><strong>Tip:</strong> start every new task by describing the goal in one plain sentence — Claude Code will ask before doing anything risky.</div>
+    <div class="callout blue"><strong>Tip:</strong> if you're ever unsure what happened, type <code>/help</code> inside Claude Code for the built-in command list.</div>
+  </section>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section>
+  <div class="slide-label">Quick Reference</div>
+  <p class="section-number">Cheat Sheet</p>
+  <div class="section-title">Quick Reference</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Concepts</h4>
+      <span class="pill">Terminal</span>
+      <span class="pill">CLI</span>
+      <span class="pill">Project folder</span>
+      <span class="pill">Prompt</span>
+      <span class="pill">Session</span>
+      <span class="pill">Tools & permissions</span>
+      <h4 style="margin-top:14px;">Accounts</h4>
+      <span class="pill">claude.ai signup</span>
+      <span class="pill">Claude Pro</span>
+      <span class="pill">Claude Max</span>
+      <span class="pill">Anthropic Console</span>
+    </div>
+    <div class="col-card">
+      <h4>Commands</h4>
+      <div class="code">
+node --version<br>
+npm install -g @anthropic-ai/claude-code<br>
+claude --version<br>
+claude<br>
+<span class="c"># Mac/Linux native installer</span><br>
+curl -fsSL https://claude.ai/install.sh | bash<br>
+<span class="c"># Windows native installer</span><br>
+irm https://claude.ai/install.ps1 | iex
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
