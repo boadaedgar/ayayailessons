@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ayayai — Instalar Claude Code (Windows)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    /* LOGO */
+    .logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .logo-mark {
+      width: 54px; height: 54px; border-radius: 16px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.3em; color: #0f0f1a;
+      box-shadow: 0 4px 18px rgba(245,166,35,0.25);
+    }
+    .logo-word { font-size: 1.5em; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .logo-word span { color: var(--accent); }
+    .logo-slogan { font-size: 0.6em; color: var(--muted); font-style: italic; margin-top: 2px; }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.red    { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+    .badge-rec  { background: rgba(245,166,35,0.18); color: var(--accent); border: 1px solid rgba(245,166,35,0.4); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+
+    /* CONSOLE MOCKUP */
+    .console-mock {
+      border-radius: 8px; overflow: hidden; border: 1px solid #000;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5); margin: 14px 0; max-width: 620px;
+    }
+    .console-titlebar {
+      background: #012456; color: #eee; font-size: 0.62em;
+      padding: 6px 10px; display: flex; align-items: center; gap: 8px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .console-titlebar .dots { display: flex; gap: 6px; margin-left: auto; }
+    .console-titlebar .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .console-body {
+      background: #012456; color: #eee; font-family: 'Courier New', monospace;
+      font-size: 0.6em; line-height: 1.9; padding: 14px 16px; min-height: 140px;
+    }
+    .console-body .prompt { color: #f2f2f2; }
+    .console-body .path { color: #55aaff; }
+    .console-body .win  { color: #eee; }
+    .console-body .cmdtext { color: #fff; }
+    .console-body .ok { color: #7fff7f; }
+    .console-cap { font-size: 0.55em; color: var(--muted); text-align: center; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- PORTADA -->
+<section>
+  <div class="logo-row">
+    <div class="logo-mark">ai</div>
+    <div>
+      <div class="logo-word">aya<span>ya</span>i</div>
+      <div class="logo-slogan">Tecnología moderna para la familia — nadie se queda atrás</div>
+    </div>
+  </div>
+  <p class="section-number">Guía de Usuario · ayayai</p>
+  <div class="cover-title">Instalar Claude Code en Windows</div>
+  <p class="cover-sub">Desde cero, sin experiencia técnica — con Claude Pro</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>Registro, plan recomendado, y la consola de Windows explicada desde el principio</li>
+    <li>Para quien nunca abrió una consola en su vida</li>
+    <li>Verificación final para confirmar que todo funciona</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Windows</span>
+    <span class="tag amber">Consola / PowerShell</span>
+    <span class="tag">Claude Max</span>
+    <span class="tag">npm</span>
+    <span class="tag">Node.js</span>
+  </div>
+  <div class="nav-hint">→ siguiente sección · ↓ sub-diapositivas dentro de la sección</div>
+</section>
+
+<!-- SECCIÓN 01: QUÉ ES -->
+<section>
+  <section>
+    <div class="slide-label">Sección 1 — Qué Es Claude Code</div>
+    <p class="section-number">01</p>
+    <div class="section-title">Qué Es Claude Code</div>
+    <p class="section-desc">Los conceptos básicos antes de tocar nada.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concepto</div>
+    <h3>Claude Code, En Una Frase</h3>
+    <p>Claude Code es el asistente de IA de Anthropic que trabaja directamente con los archivos y carpetas de tu computadora — en vez de un chat en una página web.</p>
+    <div class="callout blue"><strong>Pensalo como:</strong> un asistente sentado en tu teclado que lee, escribe y organiza archivos por vos — pero siempre pide permiso antes de hacer algo.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concepto</div>
+    <h3>Carpeta de Proyecto, Prompts, Sesiones</h3>
+    <ul>
+      <li><strong style="color:var(--blue)">Carpeta de proyecto</strong> — la carpeta donde trabaja Claude Code. Solo toca archivos ahí adentro.</li>
+      <li><strong style="color:var(--blue)">Prompt</strong> — lo que le escribís, en español simple, pidiendo lo que necesitás.</li>
+      <li><strong style="color:var(--blue)">Sesión</strong> — una conversación completa, desde que lo abrís hasta que cerrás la consola.</li>
+    </ul>
+    <div class="callout amber"><strong>Permisos:</strong> antes de editar o crear algo, Claude Code te pregunta. Vos decidís si aprobás.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 02: CUENTA Y PLAN -->
+<section>
+  <section>
+    <div class="slide-label">Sección 2 — Cuenta y Plan</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Cuenta y Plan</div>
+    <p class="section-desc">Registrate y elegí el plan correcto — el plan gratis no alcanza.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Registro</div>
+    <h3>Creá Tu Cuenta</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Andá a claude.ai en tu navegador</div><div class="step-sub">claude.ai</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Hacé clic en "Sign up"</div><div class="step-sub">Email + contraseña, o cuenta de Google</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Verificá tu email</div><div class="step-sub">Link que te manda Anthropic</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Plan</div>
+    <h3>Plan Recomendado: Claude Pro</h3>
+    <table class="tool-table">
+      <tr><th>Plan</th><th>Costo estimado</th><th>Funciona con Claude Code</th></tr>
+      <tr><td class="tool-name">Gratis</td><td class="tool-desc">$0</td><td class="tool-desc" style="color:var(--red)">✗ No alcanza — Claude Code no funciona con el plan gratuito</td></tr>
+      <tr><td class="tool-name">Claude Pro <span class="badge badge-rec">Recomendado</span></td><td class="tool-desc">~US$20/mes</td><td class="tool-desc">✓ Funciona — alcanza para uso diario personal</td></tr>
+      <tr><td class="tool-name">Claude Max</td><td class="tool-desc">~US$100–200/mes</td><td class="tool-desc">✓ Funciona, con mucho más margen para uso intensivo todo el día</td></tr>
+    </table>
+    <div class="callout amber"><strong>Para ayayai recomendamos Pro:</strong> ~US$20/mes, el costo más accesible que ya incluye Claude Code.</div>
+    <div class="callout blue"><strong>Límites de uso:</strong> Pro te da una cuota de uso que se renueva cada 5 horas aproximadamente. Alcanza bien para sesiones normales de trabajo diario; si programás muchas horas seguidas sin pausa, podés llegar al límite antes de que se renueve.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 03: ABRIR LA CONSOLA -->
+<section>
+  <section>
+    <div class="slide-label">Sección 3 — Abrir la Consola</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Abrir la Consola en Windows</div>
+    <p class="section-desc">Para quien nunca la abrió — paso a paso, sin dar nada por sabido.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Concepto</div>
+    <h3>¿Qué Es la Consola?</h3>
+    <p>La consola (también llamada "terminal" o "PowerShell") es una ventana donde le escribís instrucciones a la computadora en texto, en vez de hacer clic en íconos.</p>
+    <div class="callout green"><strong>No hay riesgo de romper nada</strong> por abrirla y mirar. Solo pasa algo cuando escribís un comando y presionás Enter.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Abrir</div>
+    <h3>Cómo Abrirla en Windows</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Hacé clic en el ícono de Windows, abajo a la izquierda</div><div class="step-sub">o presioná la tecla Windows</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Escribí "PowerShell"</div><div class="step-sub">Windows te muestra la app mientras escribís</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Hacé clic en "Windows PowerShell" y presioná Enter</div></div>
+    </div>
+    <div class="callout blue"><strong>Otra forma:</strong> clic derecho sobre el ícono de Windows → elegí "Terminal" o "Windows PowerShell" del menú.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Cómo Se Ve</div>
+    <h3>Así Se Ve la Consola</h3>
+    <p style="margin-bottom:6px;">El color de fondo varía según la versión de Windows y la app — puede ser azul o negro. El funcionamiento es el mismo.</p>
+    <div class="two-col">
+      <div>
+        <div class="console-mock">
+          <div class="console-titlebar">
+            <span>Windows PowerShell</span>
+            <div class="dots">
+              <div class="dot" style="background:#666"></div>
+              <div class="dot" style="background:#666"></div>
+              <div class="dot" style="background:#e57373"></div>
+            </div>
+          </div>
+          <div class="console-body">
+            <div class="win">Windows PowerShell<br>Copyright (C) Microsoft Corporation.</div>
+            <br>
+            <div><span class="path">PS C:\Users\Familia></span> <span class="cmdtext">claude --version</span></div>
+            <div class="ok">1.4.2</div>
+            <div><span class="path">PS C:\Users\Familia></span> <span class="cmdtext">_</span></div>
+          </div>
+        </div>
+        <p class="console-cap">Variante azul (PowerShell clásico)</p>
+      </div>
+      <div>
+        <div class="console-mock">
+          <div class="console-titlebar" style="background:#000;">
+            <span>Terminal</span>
+            <div class="dots">
+              <div class="dot" style="background:#666"></div>
+              <div class="dot" style="background:#666"></div>
+              <div class="dot" style="background:#e57373"></div>
+            </div>
+          </div>
+          <div class="console-body" style="background:#0c0c0c;">
+            <div class="win">Windows Terminal</div>
+            <br>
+            <div><span class="path" style="color:#4fc3f7;">PS C:\Users\Familia></span> <span class="cmdtext" style="color:#fff;">claude --version</span></div>
+            <div class="ok">1.4.2</div>
+            <div><span class="path" style="color:#4fc3f7;">PS C:\Users\Familia></span> <span class="cmdtext" style="color:#fff;">_</span></div>
+          </div>
+        </div>
+        <p class="console-cap">Variante negra (Windows Terminal / CMD)</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 04: INSTALAR DESDE LA CONSOLA -->
+<section>
+  <section>
+    <div class="slide-label">Sección 4 — Instalar Desde la Consola</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Instalar Claude Code Desde la Consola</div>
+    <p class="section-desc">Cómo usar la consola para instalar, y qué está pasando en cada paso.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Cómo Funciona</div>
+    <h3>Cómo Funciona la Instalación</h3>
+    <p>Le pegás un comando a la consola, presionás Enter, y la consola descarga el programa de internet y lo deja listo para usar escribiendo <code>claude</code> desde cualquier carpeta.</p>
+    <div class="callout blue"><strong>"Instalar globalmente"</strong> (la <code>-g</code> del comando) significa que después de este paso, el comando <code>claude</code> va a funcionar en cualquier carpeta de tu computadora, no solo en una.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Requisito</div>
+    <h3>Antes de Instalar — Node.js</h3>
+    <p>El método más común necesita <strong style="color:var(--blue)">Node.js</strong> (18 o más nuevo) instalado primero.</p>
+    <div class="code">node --version</div>
+    <div class="callout green"><strong>Ves un número</strong> (ej. v18.x) → ya lo tenés, seguí a la próxima diapositiva.</div>
+    <div class="callout red"><strong>Ves "no se reconoce"</strong> → descargalo de nodejs.org (versión LTS), instalalo, y cerrá/abrí la consola de nuevo.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Instalar</div>
+    <h3>El Comando de Instalación</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Pegá este comando en la consola</div><div class="step-sub">npm install -g @anthropic-ai/claude-code</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Presioná Enter y esperá</div><div class="step-sub">Van a pasar varias líneas de texto — es normal</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Cerrá la consola y volvé a abrirla</div><div class="step-sub">Así reconoce el nuevo comando</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Escribí para iniciarlo</div><div class="step-sub">claude</div></div>
+    </div>
+    <div class="callout amber"><strong>¿Prefiere no usar npm?</strong> Alternativa de un solo comando, sin Node: <code>irm https://claude.ai/install.ps1 | iex</code></div>
+  </section>
+</section>
+
+<!-- SECCIÓN 05: VERIFICAR -->
+<section>
+  <section>
+    <div class="slide-label">Sección 5 — Verificar</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Verificar Que Funcionó</div>
+    <p class="section-desc">Tres chequeos rápidos antes de confiar en la instalación.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Chequeo</div>
+    <h3>Revisá la Versión</h3>
+    <div class="code">claude --version</div>
+    <div class="callout green"><strong>Éxito:</strong> aparece un número de versión, ej. 1.x.x.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Chequeo</div>
+    <h3>Primer Prompt de Prueba</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Creá una carpeta de prueba</div><div class="step-sub">mkdir prueba-claude  →  cd prueba-claude</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Iniciá Claude Code</div><div class="step-sub">claude</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Iniciá sesión con tu cuenta Pro cuando se abra el navegador</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Escribí: "Creá un archivo hello.txt que diga Funciona"</div></div>
+    </div>
+    <div class="callout blue"><strong>Si aparece <code>hello.txt</code> en la carpeta</strong> — todo quedó instalado y conectado correctamente.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 06: PROBLEMAS COMUNES -->
+<section>
+  <section>
+    <div class="slide-label">Sección 6 — Problemas Comunes (Windows)</div>
+    <p class="section-number">06</p>
+    <div class="section-title">Problemas Comunes en Windows</div>
+    <p class="section-desc">Los errores más frecuentes, y la solución exacta.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">06 · Errores</div>
+    <h3>Errores Típicos</h3>
+    <table class="tool-table">
+      <tr><th>Ves</th><th>Solución</th></tr>
+      <tr><td class="tool-name">'npm' no se reconoce</td><td class="tool-desc">Node.js no instalado — instalalo desde nodejs.org y reiniciá la consola</td></tr>
+      <tr><td class="tool-name">'claude' no se reconoce</td><td class="tool-desc">Cerrá y volvé a abrir PowerShell después de instalar</td></tr>
+      <tr><td class="tool-name">No pasa nada al pegar el script</td><td class="tool-desc">Ejecutá: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser, luego reintentá</td></tr>
+      <tr><td class="tool-name">Dice "sin acceso" al usar Claude Code</td><td class="tool-desc">Iniciaste sesión en una cuenta sin plan Pro/Max activo — revisá la Sección 2</td></tr>
+      <tr><td class="tool-name">El antivirus bloquea la instalación</td><td class="tool-desc">Permitilo por esta vez, o usá el comando npm en vez del script</td></tr>
+    </table>
+  </section>
+</section>
+
+<!-- REFERENCIA RÁPIDA -->
+<section>
+  <div class="logo-row" style="margin-bottom:6px;">
+    <div class="logo-mark" style="width:38px;height:38px;font-size:0.9em;">ai</div>
+    <div class="logo-word" style="font-size:1em;">aya<span>ya</span>i</div>
+  </div>
+  <div class="slide-label">Referencia Rápida</div>
+  <p class="section-number">Chuleta</p>
+  <div class="section-title">Referencia Rápida</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Conceptos</h4>
+      <span class="pill">Consola / PowerShell</span>
+      <span class="pill">Carpeta de proyecto</span>
+      <span class="pill">Prompt</span>
+      <span class="pill">Sesión</span>
+      <span class="pill">Claude Pro (~US$20/mes)</span>
+      <h4 style="margin-top:14px;">Abrir consola</h4>
+      <span class="pill">Tecla Windows → "PowerShell"</span>
+    </div>
+    <div class="col-card">
+      <h4>Comandos (Windows)</h4>
+      <div class="code">
+node --version<br>
+npm install -g @anthropic-ai/claude-code<br>
+claude --version<br>
+claude<br>
+<span class="c"># Alternativa sin Node</span><br>
+irm https://claude.ai/install.ps1 | iex
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
