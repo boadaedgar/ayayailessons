@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ayayai — Claude Code con VPN (Venezuela)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .logo-mark {
+      width: 54px; height: 54px; border-radius: 16px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.3em; color: #0f0f1a;
+      box-shadow: 0 4px 18px rgba(245,166,35,0.25);
+    }
+    .logo-word { font-size: 1.5em; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .logo-word span { color: var(--accent); }
+    .logo-slogan { font-size: 0.6em; color: var(--muted); font-style: italic; margin-top: 2px; }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.red    { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+    .badge-rec  { background: rgba(245,166,35,0.18); color: var(--accent); border: 1px solid rgba(245,166,35,0.4); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- PORTADA -->
+<section>
+  <div class="logo-row">
+    <div class="logo-mark">ai</div>
+    <div>
+      <div class="logo-word">aya<span>ya</span>i</div>
+      <div class="logo-slogan">Tecnología moderna para la familia — nadie se queda atrás</div>
+    </div>
+  </div>
+  <p class="section-number">Guía de Usuario · ayayai</p>
+  <div class="cover-title">Claude Code con VPN — Caso Venezuela</div>
+  <p class="cover-sub">Cómo registrarte, pagar, y usar Claude Code estando en Venezuela</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>Por qué Claude Code no funciona directo desde Venezuela</li>
+    <li>Registro, pago y uso diario con VPN activo</li>
+    <li>Qué hacer cuando la VPN se cae a mitad de tarea</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">VPN</span>
+    <span class="tag amber">Venezuela</span>
+    <span class="tag">Sanciones EE.UU.</span>
+    <span class="tag">Claude Pro</span>
+    <span class="tag">Windows</span>
+  </div>
+  <div class="nav-hint">→ siguiente sección · ↓ sub-diapositivas dentro de la sección</div>
+</section>
+
+<!-- SECCIÓN 01: POR QUÉ VPN -->
+<section>
+  <section>
+    <div class="slide-label">Sección 1 — Por Qué Necesitas VPN</div>
+    <p class="section-number">01</p>
+    <div class="section-title">Por Qué Necesitas VPN</div>
+    <p class="section-desc">No es un problema de Claude Code — es el mismo bloqueo que afecta a toda cuenta de Anthropic.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Contexto</div>
+    <h3>El Bloqueo Es Por Sanciones, No Por Censura</h3>
+    <p>Anthropic (la empresa detrás de Claude) niega registro y acceso desde IPs venezolanas por las leyes de sanciones/exportación de EE.UU. — Venezuela está en la misma lista que Cuba, Irán, Corea del Norte, Siria y Rusia.</p>
+    <div class="callout amber"><strong>Claude Code usa la misma cuenta y los mismos servidores</strong> que Claude en la web — si tu cuenta o tu conexión están bloqueadas ahí, también lo están para Claude Code.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Qué Bloquea Exactamente</div>
+    <h3>Qué Se Bloquea Por IP Venezolana</h3>
+    <table class="tool-table">
+      <tr><th>Momento</th><th>Qué revisa Anthropic</th></tr>
+      <tr><td class="tool-name">Registro en claude.ai</td><td class="tool-desc">Rechaza el registro si detecta IP venezolana</td></tr>
+      <tr><td class="tool-name">Inicio de sesión</td><td class="tool-desc">Puede volver a revisar la IP en cada login, no solo al registrarte</td></tr>
+      <tr><td class="tool-name">Uso de Claude Code (CLI)</td><td class="tool-desc">Cada comando habla con el mismo servidor — necesita la sesión activa y la IP aceptada</td></tr>
+    </table>
+    <div class="callout blue"><strong>Por eso la VPN tiene que estar activa</strong> no solo al registrarte, sino también cada vez que abrís la consola y usás <code>claude</code>.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 02: PREPARAR CUENTA Y PAGO -->
+<section>
+  <section>
+    <div class="slide-label">Sección 2 — Preparar Cuenta y Pago</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Preparar Cuenta y Pago</div>
+    <p class="section-desc">Lo que necesitás tener listo antes de instalar Claude Code.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · VPN</div>
+    <h3>Elegir una VPN Confiable</h3>
+    <table class="tool-table">
+      <tr><th>Opción</th><th>Costo estimado</th><th>Nota</th></tr>
+      <tr><td class="tool-name">Surfshark <span class="badge badge-rec">Recomendado</span></td><td class="tool-desc">~US$2–4/mes (plan de 1–2 años) · ~US$13/mes sin plan largo</td><td class="tool-desc">La más barata de las tres, conexiones ilimitadas por cuenta</td></tr>
+      <tr><td class="tool-name">NordVPN</td><td class="tool-desc">~US$3–5/mes (plan largo) · ~US$12/mes sin plan largo</td><td class="tool-desc">Muy estable, buenos servidores en EE.UU./España</td></tr>
+      <tr><td class="tool-name">ExpressVPN</td><td class="tool-desc">~US$6–10/mes (plan largo) · ~US$13/mes sin plan largo</td><td class="tool-desc">La más cara, pero la más simple de usar</td></tr>
+      <tr><td class="tool-name">Windscribe / TunnelBear</td><td class="tool-desc">US$0 (gratis con límite de datos)</td><td class="tool-desc">Se corta a mitad de mes o de sesión larga</td></tr>
+    </table>
+    <div class="callout amber"><strong>Para usar Claude Code todos los días</strong>, una VPN gratis con límite de datos va a cortar la conexión justo quedando la sesión — mejor invertir en una de pago si el uso es constante.</div>
+    <div class="callout blue"><strong>El plan largo (1–2 años) siempre sale más barato por mes</strong> que pagar mes a mes — pero significa pagar todo por adelantado, lo cual complica el pago desde Venezuela (ver diapositiva de pago).</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Registro</div>
+    <h3>Registrar la Cuenta con VPN Activo</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Conectá la VPN a un servidor de país soportado</div><div class="step-sub">EE.UU., Colombia, España, etc — antes de abrir el navegador</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Entrá a claude.ai y hacé clic en "Sign up"</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Si pide número de teléfono, usá uno extranjero</div><div class="step-sub">De un contacto fuera de Venezuela, o un servicio de número virtual</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Verificá tu email y completá el registro</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Pago</div>
+    <h3>Pagar el Plan Pro Desde Venezuela</h3>
+    <p>El plan Claude Pro (~US$20/mes) es necesario — el plan gratis no alcanza para Claude Code.</p>
+    <div class="callout red"><strong>Una tarjeta venezolana casi nunca pasa la validación de pago de Anthropic.</strong> Necesitás una tarjeta o cuenta extranjera: tarjeta virtual internacional, cuenta de un familiar/amigo fuera del país, o servicio de tarjeta prepago en dólares aceptado internacionalmente.</div>
+    <div class="callout blue"><strong>Tip:</strong> usá la VPN también al momento de pagar — algunos procesadores de pago revisan la IP además de los datos de la tarjeta.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 03: INSTALAR Y USAR -->
+<section>
+  <section>
+    <div class="slide-label">Sección 3 — Instalar y Usar con VPN</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Instalar y Usar Claude Code con VPN</div>
+    <p class="section-desc">El mismo proceso de siempre, pero con la VPN encendida en cada paso — Windows.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Instalar</div>
+    <h3>Instalar Claude Code (Windows)</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Conectá la VPN primero</div><div class="step-sub">Antes de abrir PowerShell</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Abrí PowerShell</div><div class="step-sub">Tecla Windows → escribí "PowerShell" → Enter</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Instalá Claude Code</div><div class="step-sub">npm install -g @anthropic-ai/claude-code</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Iniciá sesión</div><div class="step-sub">claude</div></div>
+    </div>
+    <div class="callout amber"><strong>Con la VPN desconectada</strong>, el login se va a quedar cargando o va a fallar — verificá la VPN antes de escribir <code>claude</code>.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Uso Diario</div>
+    <h3>Cada Vez Que Vas a Usarlo</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Encendé la VPN</div><div class="step-sub">Mismo país/servidor que usaste para registrarte, si es posible</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Abrí PowerShell en tu carpeta de proyecto</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Escribí <code>claude</code> y trabajá normal</div></div>
+    </div>
+    <div class="callout blue"><strong>No hace falta reinstalar nada</strong> — la VPN es solo la conexión de internet, Claude Code funciona igual una vez que la sesión inició.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 04: MANTENER LA SESIÓN ESTABLE -->
+<section>
+  <section>
+    <div class="slide-label">Sección 4 — Mantener la Sesión Estable</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Mantener la Sesión Estable</div>
+    <p class="section-desc">Evitar cortes e IPs inconsistentes que puedan marcar la cuenta.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Buenas Prácticas</div>
+    <h3>Reglas Simples</h3>
+    <ul>
+      <li><strong style="color:var(--blue)">Usá siempre el mismo país de servidor</strong> — cambiar de EE.UU. a España a Colombia en días seguidos puede parecer sospechoso para la cuenta.</li>
+      <li><strong style="color:var(--blue)">Elegí un servidor cercano</strong> (EE.UU. este, o España) — menos distancia real, menos lentitud al escribir y recibir respuestas.</li>
+      <li><strong style="color:var(--blue)">No cambies de servidor a mitad de una tarea larga</strong> — mejor terminá la sesión, cambiá, y volvé a iniciar <code>claude</code>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Si Se Corta</div>
+    <h3>Si la VPN Se Cae a Mitad de Tarea</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Claude Code va a mostrar un error de conexión</div><div class="step-sub">o se va a quedar "pensando" sin responder</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Reconectá la VPN al mismo país que tenías</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Cerrá y volvé a abrir Claude Code</div><div class="step-sub">claude</div></div>
+    </div>
+    <div class="callout green"><strong>El trabajo dentro de la carpeta no se pierde</strong> — solo se corta la conexión, no los archivos ya creados.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 05: PROBLEMAS COMUNES -->
+<section>
+  <section>
+    <div class="slide-label">Sección 5 — Problemas Comunes</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Problemas Comunes</div>
+    <p class="section-desc">Lo que más falla en el caso venezolano, y cómo resolverlo.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Errores</div>
+    <h3>Errores Típicos</h3>
+    <table class="tool-table">
+      <tr><th>Ves</th><th>Solución</th></tr>
+      <tr><td class="tool-desc">Registro rechazado en claude.ai</td><td class="tool-desc">Confirmá que la VPN está conectada y activa antes de abrir la página, no después</td></tr>
+      <tr><td class="tool-desc">Tarjeta rechazada al pagar Pro</td><td class="tool-desc">Usá tarjeta virtual/prepago internacional en dólares, no tarjeta venezolana local</td></tr>
+      <tr><td class="tool-desc">VPN gratis se corta a media sesión</td><td class="tool-desc">Cambiá a una VPN de pago si usás Claude Code todos los días</td></tr>
+      <tr><td class="tool-desc">Login se queda cargando sin responder</td><td class="tool-desc">Verificá que la VPN siga conectada — reconectá y reintentá <code>claude</code></td></tr>
+      <tr><td class="tool-desc">Cuenta pide reverificación por IP "sospechosa"</td><td class="tool-desc">Usá siempre el mismo país de servidor VPN en cada sesión</td></tr>
+    </table>
+  </section>
+</section>
+
+<!-- REFERENCIA RÁPIDA -->
+<section>
+  <div class="logo-row" style="margin-bottom:6px;">
+    <div class="logo-mark" style="width:38px;height:38px;font-size:0.9em;">ai</div>
+    <div class="logo-word" style="font-size:1em;">aya<span>ya</span>i</div>
+  </div>
+  <div class="slide-label">Referencia Rápida</div>
+  <p class="section-number">Checklist</p>
+  <div class="section-title">Referencia Rápida</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Antes de cada sesión</h4>
+      <div class="code">
+1. <span class="k">Conectar VPN</span> → mismo país de siempre<br/>
+2. Abrir PowerShell<br/>
+3. <span class="s">claude</span><br/>
+4. Si falla → reconectar VPN y reintentar
+      </div>
+    </div>
+    <div class="col-card">
+      <h4>Lo que necesitás tener</h4>
+      <span class="pill">VPN de pago (~US$2–10/mes)</span>
+      <span class="pill">Número extranjero (registro)</span>
+      <span class="pill">Tarjeta/cuenta extranjera (pago)</span>
+      <span class="pill">Claude Pro (~US$20/mes)</span>
+      <span class="pill">Mismo servidor siempre</span>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
