@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>ayayai — Temporada 2</title>
+<style>
+  :root{
+    --accent:#f5a623;
+    --blue:#4fc3f7;
+    --green:#81c784;
+    --bg:#0f0f1a;
+    --surface:#1a1a2e;
+    --border:rgba(255,255,255,0.08);
+    --text:#e0e0e0;
+    --muted:#8a8a9a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{width:1080px; height:1350px;}
+  body{
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(245,166,35,0.18), transparent 45%),
+      radial-gradient(circle at 90% 85%, rgba(79,195,247,0.16), transparent 45%),
+      var(--bg);
+    color:var(--text);
+    width:1080px; height:1350px;
+    position:relative;
+    overflow:hidden;
+    padding:64px 72px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* LOGO */
+  .logo-row{display:flex; align-items:center; gap:16px;}
+  .logo-mark{
+    width:64px; height:64px; border-radius:18px; flex-shrink:0;
+    background:linear-gradient(135deg, var(--accent), var(--blue));
+    display:flex; align-items:center; justify-content:center;
+    font-weight:900; font-size:30px; color:#0f0f1a;
+    box-shadow:0 6px 20px rgba(245,166,35,0.3);
+  }
+  .logo-word{font-size:32px; font-weight:800; color:#fff; letter-spacing:-0.5px;}
+  .logo-word span{color:var(--accent);}
+
+  /* HEADLINE */
+  .headline-block{margin-top:64px;}
+  .kicker{
+    font-size:20px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+    color:var(--blue); margin-bottom:14px;
+  }
+  .headline{
+    font-size:76px; font-weight:900; line-height:1.05; color:#fff;
+    letter-spacing:-1px;
+  }
+  .headline span{color:var(--accent);}
+  .subhead{
+    font-size:30px; font-weight:600; color:var(--text); margin-top:18px;
+  }
+  .subhead b{color:var(--green); font-weight:800;}
+
+  /* TIME CARDS */
+  .times{
+    margin-top:44px; display:flex; gap:16px;
+  }
+  .time-card{
+    flex:1; background:var(--surface); border:1px solid var(--border);
+    border-radius:16px; padding:20px 12px; text-align:center;
+  }
+  .time-card .city{font-size:17px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:1px;}
+  .time-card .hour{font-size:34px; font-weight:800; color:var(--accent); margin-top:6px;}
+  .time-card.dim .hour{color:var(--muted); font-size:26px;}
+
+  .duration{
+    margin-top:22px; display:flex; align-items:center; gap:10px;
+    font-size:22px; color:var(--muted); font-weight:600;
+  }
+  .duration b{color:var(--blue); font-weight:800;}
+
+  /* AGENDA */
+  .agenda{
+    margin-top:48px; background:var(--surface); border:1px solid var(--border);
+    border-radius:20px; padding:32px 36px;
+  }
+  .spacer{flex-grow:1;}
+  .agenda-title{
+    font-size:22px; font-weight:800; color:var(--blue); text-transform:uppercase;
+    letter-spacing:2px; margin-bottom:22px;
+  }
+  .agenda-item{
+    display:flex; align-items:center; gap:18px; padding:14px 0;
+    border-bottom:1px solid var(--border);
+    font-size:28px; font-weight:700; color:#fff;
+  }
+  .agenda-item:last-child{border-bottom:none;}
+  .agenda-num{
+    width:40px; height:40px; border-radius:10px; flex-shrink:0;
+    background:linear-gradient(135deg, var(--accent), var(--blue));
+    display:flex; align-items:center; justify-content:center;
+    font-weight:900; font-size:18px; color:#0f0f1a;
+  }
+
+  /* CTA */
+  .cta{
+    margin-top:40px; text-align:center;
+    background:linear-gradient(135deg, var(--accent), #ffb84d);
+    border-radius:20px; padding:26px;
+  }
+  .cta-text{font-size:34px; font-weight:900; color:#1a1200; letter-spacing:-0.5px;}
+</style>
+</head>
+<body>
+
+  <div class="logo-row">
+    <div class="logo-mark">a</div>
+    <div class="logo-word">ayay<span>ai</span></div>
+  </div>
+
+  <div class="headline-block">
+    <div class="kicker">ayayai · IA en familia</div>
+    <div class="headline">Temporada <span>2</span></div>
+    <div class="subhead">Comienza <b>este sábado 25 de julio</b></div>
+  </div>
+
+  <div class="times">
+    <div class="time-card">
+      <div class="city">Chicago</div>
+      <div class="hour">11 AM</div>
+    </div>
+    <div class="time-card">
+      <div class="city">Venezuela</div>
+      <div class="hour">12 PM</div>
+    </div>
+    <div class="time-card">
+      <div class="city">Florida</div>
+      <div class="hour">12 PM</div>
+    </div>
+    <div class="time-card">
+      <div class="city">Argentina</div>
+      <div class="hour">1 PM</div>
+    </div>
+    <div class="time-card">
+      <div class="city">España</div>
+      <div class="hour">6 PM</div>
+    </div>
+  </div>
+  <div class="duration">⏱ Duración: <b>1 hora y media</b></div>
+
+  <div class="agenda">
+    <div class="agenda-title">Qué vamos a hacer</div>
+    <div class="agenda-item"><div class="agenda-num">1</div>Instalando Claude Code</div>
+    <div class="agenda-item"><div class="agenda-num">2</div>Instalando VPN (Venezuela)</div>
+    <div class="agenda-item"><div class="agenda-num">3</div>Primeros usos de Claude Code</div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="cta">
+    <div class="cta-text">No se lo pierdan 🚀</div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Personal side projects — not part of the ayayai course, not published
+xfreezer/
+
+# Python bytecode
+__pycache__/
+*.pyc
