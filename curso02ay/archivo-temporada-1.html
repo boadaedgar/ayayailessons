@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ayayai — Archivo de la Temporada 1</title>
+  <style>
+    :root {
+      --accent:#f5a623; --blue:#4fc3f7; --green:#81c784; --red:#e57373;
+      --yellow:#ffd54f; --bg:#0f0f1a; --surface:#1a1a2e;
+      --border:rgba(255,255,255,0.08); --text:#e0e0e0; --muted:#888; --faint:#666;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size:15px; line-height:1.6;
+    }
+    .wrap { max-width:900px; margin:0 auto; padding:0 20px 64px; }
+    header { background:var(--surface); border-bottom:1px solid var(--border); padding:24px 20px; margin-bottom:28px; }
+    .header-inner { max-width:900px; margin:0 auto; }
+    .logo-row { display:flex; align-items:center; gap:14px; }
+    .logo-mark {
+      width:48px; height:48px; border-radius:14px; flex-shrink:0;
+      background:linear-gradient(135deg, var(--accent), var(--blue));
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900; font-size:1.1em; color:#0f0f1a;
+    }
+    .logo-word { font-size:1.35em; font-weight:800; color:#fff; letter-spacing:-0.5px; }
+    .logo-word span { color:var(--accent); }
+    .logo-slogan { font-size:0.72em; color:var(--muted); font-style:italic; margin-top:2px; }
+
+    .label { font-size:0.72em; color:var(--faint); letter-spacing:1.5px; text-transform:uppercase; margin:26px 0 6px; }
+    h1 { font-size:1.9em; color:var(--accent); margin:6px 0 8px; line-height:1.2; }
+    h2 { font-size:1.15em; color:var(--accent); margin:38px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    p { margin:0 0 12px; }
+    .lead { color:#bbb; font-size:1.02em; }
+
+    .banner {
+      background:rgba(255,213,79,0.08); border:1px solid rgba(255,213,79,0.3);
+      border-radius:10px; padding:14px 18px; margin:18px 0; font-size:0.92em; color:#ddd;
+    }
+    .banner strong { color:var(--yellow); }
+
+    a { color:var(--blue); text-decoration:none; border-bottom:1px solid rgba(79,195,247,0.3); }
+    a:hover { color:var(--accent); border-bottom-color:rgba(245,166,35,0.5); }
+
+    table { width:100%; border-collapse:collapse; margin:12px 0; }
+    th { font-size:0.72em; color:var(--muted); text-transform:uppercase; letter-spacing:1px; padding:8px 10px; text-align:left; border-bottom:1px solid var(--border); font-weight:400; }
+    td { padding:10px; font-size:0.92em; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    td.tema { color:#aaa; font-size:0.88em; }
+
+    .volver { display:inline-block; margin-top:8px; font-size:0.9em; }
+
+    footer { margin-top:48px; padding-top:20px; border-top:1px solid var(--border); font-size:0.85em; color:var(--faint); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-mark">ai</div>
+      <div>
+        <div class="logo-word">aya<span>ya</span>i</div>
+        <div class="logo-slogan">Tecnología moderna para la familia — nadie se queda atrás</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="label">Archivo</div>
+  <h1>Temporada 1</h1>
+  <p class="lead">La primera temporada de ayayai: prompting, las herramientas generales de IA, creación de contenido, y las herramientas de diseño. Todo sigue disponible.</p>
+
+  <div class="banner">
+    <strong>Esto es material archivado.</strong> No se está usando en la temporada actual, pero sigue en línea y no se va a borrar. Si te mandamos alguno de estos enlaces en su momento, sigue funcionando igual.
+  </div>
+
+  <a class="volver" href="index.html">← Ir a la Temporada 2</a>
+
+  <h2>Sesiones y tareas</h2>
+  <table>
+    <tr><th>Material</th><th>De qué trata</th></tr>
+    <tr>
+      <td><a href="guidesmix/sesion_2026-06-13_intro.html">Sesión de introducción</a></td>
+      <td class="tema">La primera sesión del programa, 13 de junio de 2026</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/tarea-ayayai-draft-ai.html">La tarea de HTML</a></td>
+      <td class="tema">El ejercicio con ejemplos para cada proyecto</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/lesson-como-se-hizo-la-tarea-html.html">Cómo se hizo la tarea</a></td>
+      <td class="tema">El detrás de cámara del ejercicio anterior</td>
+    </tr>
+  </table>
+
+  <h2>Diseño</h2>
+  <table>
+    <tr><th>Material</th><th>De qué trata</th></tr>
+    <tr>
+      <td><a href="guidesmix/guide-design-md.html">Guía de design.md</a></td>
+      <td class="tema">Escribir el sistema de diseño en un archivo de texto</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/lesson-design-md.html">Lección de design.md</a></td>
+      <td class="tema">La versión corta, para la sesión</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/lesson-design-md-google-labs.html">design.md de Google Labs</a></td>
+      <td class="tema">De dónde salió la idea</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/guide-figma-mcp.html">Guía de Figma MCP</a></td>
+      <td class="tema">Conectar Figma con Claude</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/lesson-figma-mcp.html">Lección de Figma MCP</a></td>
+      <td class="tema">La versión corta</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/lesson-figma-mcp-dev.html">Figma MCP para desarrollo</a></td>
+      <td class="tema">El lado técnico</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/guide-excalidraw.html">Guía de Excalidraw</a></td>
+      <td class="tema">Dibujar diagramas a mano alzada</td>
+    </tr>
+  </table>
+
+  <h2>Herramientas de IA</h2>
+  <table>
+    <tr><th>Material</th><th>De qué trata</th></tr>
+    <tr>
+      <td><a href="guidesmix/guide-merlin-ai-and-similar-tools.html">Merlin y herramientas parecidas</a></td>
+      <td class="tema">Asistentes que viven en el navegador</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/lesson-merlin-in-phone-vs-desktop.html">Merlin en el teléfono vs la computadora</a></td>
+      <td class="tema">Las diferencias entre los dos</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/guide-spothopper.html">Guía de SpotHopper</a></td>
+      <td class="tema">Herramienta de marketing para restaurantes</td>
+    </tr>
+  </table>
+
+  <h2>Sigue vigente en la Temporada 2</h2>
+  <p style="color:#aaa;">Estos tres los seguimos usando, y por eso también aparecen en la página de la temporada actual.</p>
+  <table>
+    <tr><th>Material</th><th>De qué trata</th></tr>
+    <tr>
+      <td><a href="guidesmix/guide-ia-venezuela.html">IA en Venezuela</a></td>
+      <td class="tema">Qué se puede usar y cómo</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/guide-opera-for-venezuela.html">Opera para Venezuela</a></td>
+      <td class="tema">Navegador con VPN incluido</td>
+    </tr>
+    <tr>
+      <td><a href="guidesmix/lesson-metodo-7-pasos.html">El método de 7 pasos</a></td>
+      <td class="tema">Cómo pedirle las cosas a la IA</td>
+    </tr>
+  </table>
+
+  <footer>
+    ayayai · Archivo de la Temporada 1<br>
+    Nada de esto se borra. Si necesitas algo que ya no aparece aquí, pídelo en el grupo.
+  </footer>
+
+</div>
+
+</body>
+</html>
