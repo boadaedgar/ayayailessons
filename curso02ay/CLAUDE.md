@@ -41,15 +41,39 @@ ayayai is Edgar's technology and AI program for family and friends: we learn tog
 
 ## Folder layout
 ```
-curso02ay/
-  guidesmix/       guides + lessons (Claude Code install, VPN Venezuela, tools)
-  sebas/           Sebastian: session pages, agent demos, factory data
-                   NOT in git — real plant data, gitignored, local only
-  neurofitness/    Nersy: Parkinson's app + Gumroad assets
-  enfermeria/      Zenaida (empty)
-  elvisness/       Elvira (empty)
-  aiforvenezuela/  (empty)
-  learningtools/   (empty)
-  elclon/          (empty)
+ayayai/                    repo boadaedgar/ayayailessons — PUBLIC
+  index.html               landing page
+  curso02ay/
+    index.html             season 2 hub
+    archivo-temporada-1.html
+    sesiones/              one page per session
+    guidesmix/             all guides and lessons, season 1 and 2
+    neurofitness/          Nersy: Parkinson's app + Gumroad assets
+    enfermeria/ elvisness/ aiforvenezuela/ learningtools/ elclon/
+                           local workspace stubs, not in git
 ```
-Repo is `boadaedgar/ayayailessons`, published via GitHub Pages (`.nojekyll` at repo root). Moving or renaming any HTML file changes its public URL and breaks links already sent over WhatsApp.
+
+## This repo is public — what does NOT belong here
+
+Published via GitHub Pages (`.nojekyll` at repo root), so everything committed
+is world-readable. Before adding anything, ask: **what happens if this becomes
+public tomorrow?** If the answer isn't "nothing", it goes in a private repo.
+
+| Content | Goes to |
+|---|---|
+| Participant work with real data (Sebastián's factory files) | `ayayai-privado` — private, at `claude/ayayai-privado/` |
+| Edgar's personal projects | Their own private repos |
+| Session records, project status | Notion |
+| Edgar's ideas and frameworks | Obsidian vault |
+
+Never `git add -A` here — stage paths explicitly. A blanket add is what nearly
+published `creators/` and `xfreezer/`.
+
+## Links and archiving
+
+Moving or renaming any HTML file changes its public URL and breaks links already
+sent over WhatsApp. **Files never move.** Archiving means removing the link from
+the season index and listing it in `archivo-temporada-1.html` instead.
+
+At the end of a season: `git tag temporada-N-final && git push --tags`. That tag
+is how retired material is recovered later (`git show temporada-1-final:path`).
