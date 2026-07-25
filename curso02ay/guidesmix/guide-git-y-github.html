@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ayayai — Git y GitHub explicados sin tecnicismos</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .logo-mark {
+      width: 54px; height: 54px; border-radius: 16px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.3em; color: #0f0f1a;
+      box-shadow: 0 4px 18px rgba(245,166,35,0.25);
+    }
+    .logo-word { font-size: 1.5em; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .logo-word span { color: var(--accent); }
+    .logo-slogan { font-size: 0.6em; color: var(--muted); font-style: italic; margin-top: 2px; }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.red    { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+
+    /* Diagrama del sobre */
+    .sobre-flow { display: flex; align-items: center; gap: 10px; margin: 16px 0; flex-wrap: wrap; }
+    .sobre-paso {
+      flex: 1; min-width: 130px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px; padding: 12px;
+      text-align: center;
+    }
+    .sobre-icon { font-size: 1.7em; line-height: 1; margin-bottom: 6px; }
+    .sobre-cmd { font-family: 'Courier New', monospace; font-size: 0.62em; color: var(--blue); }
+    .sobre-desc { font-size: 0.58em; color: #999; margin-top: 4px; }
+    .sobre-arrow { color: var(--accent); font-size: 1.1em; }
+    .casa-linea {
+      border-top: 1px dashed rgba(245,166,35,0.4); margin: 6px 0 2px;
+      font-size: 0.55em; color: var(--muted); text-align: center; padding-top: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- PORTADA -->
+<section>
+  <div class="logo-row">
+    <div class="logo-mark">ai</div>
+    <div>
+      <div class="logo-word">aya<span>ya</span>i</div>
+      <div class="logo-slogan">Tecnología moderna para la familia — nadie se queda atrás</div>
+    </div>
+  </div>
+  <p class="section-number">Guía · ayayai</p>
+  <div class="cover-title">Git y GitHub, sin tecnicismos</div>
+  <p class="cover-sub">Qué es guardar tu trabajo de verdad, y por qué importa quién puede verlo</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>La diferencia entre <em>commit</em> y <em>push</em>, de una vez por todas</li>
+    <li>Por qué algo público es público para siempre</li>
+    <li>Cómo recuperar algo que borraste hace meses</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Git</span>
+    <span class="tag amber">GitHub</span>
+    <span class="tag">Público vs privado</span>
+    <span class="tag">Historial</span>
+  </div>
+  <div class="nav-hint">→ siguiente sección · ↓ sub-diapositivas dentro de la sección</div>
+</section>
+
+<!-- SECCIÓN 01 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 1 — La idea</div>
+    <p class="section-number">01</p>
+    <div class="section-title">Qué Es Git, en Serio</div>
+    <p class="section-desc">Una idea, y de ahí sale todo lo demás.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concepto</div>
+    <h3>Git Guarda Fotos, No Archivos</h3>
+    <p>Cuando le das "Guardar" a un documento, el archivo anterior desaparece. Se sobrescribe. Si mañana te arrepientes, no hay vuelta atrás.</p>
+    <p>Git funciona distinto: cada vez que le dices que guarde, saca una <strong style="color:var(--accent)">foto de toda la carpeta</strong> y la archiva con fecha y una nota tuya. La foto de ayer sigue ahí. La de la semana pasada también.</p>
+    <div class="callout blue"><strong>Por eso se dice que git nunca olvida.</strong> No es una forma de hablar — es literal. Todo lo que entró alguna vez, se queda.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concepto</div>
+    <h3>Repositorio: la Carpeta Vigilada</h3>
+    <p>Un <strong style="color:var(--blue)">repositorio</strong> — o "repo" — es simplemente una carpeta que git está vigilando. Por fuera se ve igual que cualquier otra carpeta.</p>
+    <p>La diferencia está en una subcarpeta escondida llamada <code>.git</code>, donde viven todas esas fotos. Si borras <code>.git</code>, pierdes el historial y te queda una carpeta normal.</p>
+    <div class="callout"><strong>Cada proyecto es su propio repositorio.</strong> No metes todo en uno solo — igual que no guardas los papeles del carro en la carpeta del colegio de los muchachos.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 02 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 2 — Commit y Push</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Commit vs Push</div>
+    <p class="section-desc">La confusión número uno. Se resuelve con un sobre de correo.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · La analogía</div>
+    <h3>El Sobre de Correo</h3>
+    <div class="sobre-flow">
+      <div class="sobre-paso">
+        <div class="sobre-icon">📄</div>
+        <div class="sobre-cmd">(nada)</div>
+        <div class="sobre-desc">Papeles sueltos<br>en el escritorio</div>
+      </div>
+      <div class="sobre-arrow">→</div>
+      <div class="sobre-paso">
+        <div class="sobre-icon">📥</div>
+        <div class="sobre-cmd">git add</div>
+        <div class="sobre-desc">Escoges cuáles<br>van en el sobre</div>
+      </div>
+      <div class="sobre-arrow">→</div>
+      <div class="sobre-paso">
+        <div class="sobre-icon">✉️</div>
+        <div class="sobre-cmd">git commit</div>
+        <div class="sobre-desc">Cierras el sobre,<br>le pones fecha y nota</div>
+      </div>
+      <div class="sobre-arrow">→</div>
+      <div class="sobre-paso">
+        <div class="sobre-icon">📮</div>
+        <div class="sobre-cmd">git push</div>
+        <div class="sobre-desc">Mandas copia<br>a GitHub</div>
+      </div>
+    </div>
+    <div class="casa-linea">Los tres primeros pasos pasan <strong style="color:var(--accent)">en tu casa</strong> · el último sale para afuera</div>
+    <div class="callout amber"><strong>Ahí está toda la diferencia:</strong> el <em>commit</em> es local, el <em>push</em> es el envío.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Consecuencias</div>
+    <h3>Qué Significa Eso en la Práctica</h3>
+    <ul>
+      <li><strong style="color:var(--green)">Puedes hacer commits sin internet.</strong> Diez, veinte. Y los subes todos después con un solo push.</li>
+      <li><strong style="color:var(--red)">Commit sin push = solo en tu computadora.</strong> Si se daña el disco, ese trabajo se perdió. GitHub no sabe que existe.</li>
+      <li><strong style="color:var(--blue)">Push sin commit no existe.</strong> Solo se manda lo que ya está en un sobre cerrado.</li>
+    </ul>
+    <div class="callout red"><strong>El error clásico:</strong> trabajar toda la semana haciendo commits y no hacer push nunca. Se siente como que está guardado — y lo está, pero en un solo lugar.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · En la práctica</div>
+    <h3>Cómo Se Ve de Verdad</h3>
+    <div class="code">
+<span class="c"># Ver qué cambió desde la última foto</span><br>
+git status<br>
+<br>
+<span class="c"># Meter todo lo cambiado en el sobre</span><br>
+git add .<br>
+<br>
+<span class="c"># Cerrar el sobre con una nota de qué hiciste</span><br>
+git commit -m "Agrego la guía de ejercicios de equilibrio"<br>
+<br>
+<span class="c"># Mandarlo a GitHub</span><br>
+git push
+    </div>
+    <div class="callout blue"><strong>La nota del commit importa.</strong> Dentro de seis meses, "cambios" no te dice nada. "Agrego la guía de ejercicios de equilibrio" sí.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · El otro lado</div>
+    <h3>Y Para Traer, No Mandar</h3>
+    <table class="tool-table">
+      <tr><th>Comando</th><th>Qué hace</th></tr>
+      <tr><td class="tool-name">git clone</td><td class="tool-desc">Traer un repositorio completo la primera vez. Se hace una sola vez.</td></tr>
+      <tr><td class="tool-name">git pull</td><td class="tool-desc">Bajar los cambios que subió alguien más — o tú desde otra computadora.</td></tr>
+    </table>
+    <div class="callout"><strong>Si trabajas en dos computadoras:</strong> <code>pull</code> antes de empezar, <code>push</code> al terminar. Si no, se te enredan las versiones.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 03 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 3 — Público y Privado</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Público vs Privado</div>
+    <p class="section-desc">La parte donde la gente se quema. Incluidos nosotros.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · La regla</div>
+    <h3>Una Sola Pregunta</h3>
+    <p style="font-size:0.95em; color:var(--accent); font-weight:600;">¿Qué pasa si esto se hace público mañana?</p>
+    <p>Si la respuesta no es "nada", va en un repositorio <strong style="color:var(--blue)">privado</strong>.</p>
+    <div class="callout red"><strong>Lo privado es el default.</strong> Público es una decisión que tomas a propósito, no algo que pasa porque no lo pensaste.</div>
+    <div class="callout"><strong>Un repositorio público</strong> es un archivador sin puerta. Cualquiera puede entrar, mirar, y llevarse copia — sin avisarte y sin dejar rastro.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Lo importante</div>
+    <h3>Público Es Para Siempre</h3>
+    <p>Esta es la parte que sorprende a todo el mundo: <strong style="color:var(--red)">borrar un archivo no lo saca del historial.</strong> Git guarda fotos, ¿recuerdas? El archivo sigue en la foto de ayer.</p>
+    <p>Y si eso ya estuvo publicado, hay que asumir que alguien pudo haberlo copiado.</p>
+    <div class="callout red"><strong>Sacarlo de verdad</strong> requiere reescribir todo el historial, y hasta después de eso hay que pedirle a GitHub que limpie su caché. Es un dolor de cabeza evitable.</div>
+    <div class="callout green"><strong>La regla que te ahorra todo eso:</strong> pensarlo <em>antes</em> del primer commit, no después.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Qué nunca sube</div>
+    <h3>Lo Que Nunca Va a un Repo Público</h3>
+    <table class="tool-table">
+      <tr><th>Qué</th><th>Por qué</th></tr>
+      <tr><td class="tool-desc">Contraseñas y claves de acceso</td><td class="tool-desc">Hay programas que rastrean GitHub buscándolas. En minutos.</td></tr>
+      <tr><td class="tool-desc">Datos de una empresa</td><td class="tool-desc">Inventarios, precios, planes de producción. No son tuyos para publicarlos.</td></tr>
+      <tr><td class="tool-desc">Datos de personas</td><td class="tool-desc">Nombres, teléfonos, correos, historias clínicas.</td></tr>
+      <tr><td class="tool-desc">Cosas personales tuyas</td><td class="tool-desc">Currículos, finanzas, borradores privados.</td></tr>
+    </table>
+    <div class="callout blue"><strong>Si dudas, es privado.</strong> Pasar de privado a público después es un clic. Al revés, no.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 04 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 4 — .gitignore</div>
+    <p class="section-number">04</p>
+    <div class="section-title">El Archivo .gitignore</div>
+    <p class="section-desc">La red de seguridad. Un archivo de texto que evita disgustos.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Qué es</div>
+    <h3>La Lista de lo Que Git Debe Ignorar</h3>
+    <p>Es un archivo de texto llamado <code>.gitignore</code>, en la raíz de tu proyecto. Cada línea es algo que git debe hacer como si no existiera: no lo guarda, no lo sube, ni te lo menciona.</p>
+    <div class="code">
+<span class="c"># Datos reales del cliente — no se publican</span><br>
+datos-clientes/<br>
+<br>
+<span class="c"># Cosas personales</span><br>
+finanzas/<br>
+<br>
+<span class="c"># Basura que genera la computadora</span><br>
+__pycache__/<br>
+*.tmp
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Cuándo</div>
+    <h3>Escríbelo Antes del Primer Commit</h3>
+    <p>Este es el orden que importa. Si el archivo ya entró en una foto, agregarlo al <code>.gitignore</code> después <strong style="color:var(--red)">no lo saca del historial</strong> — solo evita que entre otra vez.</p>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Creas la carpeta del proyecto</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Escribes el .gitignore</div><div class="step-sub">antes de tocar git</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Ahora sí, el primer commit</div></div>
+    </div>
+    <div class="callout green"><strong>Poner un comentario diciendo por qué</strong> ignoras cada cosa te lo agradece tu yo de dentro de un año.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 05 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 5 — Recuperar</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Recuperar Algo Viejo</div>
+    <p class="section-desc">La ventaja de que git nunca olvide.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Etiquetas</div>
+    <h3>Ponerle Nombre a un Momento</h3>
+    <p>Un <strong style="color:var(--blue)">tag</strong> es una etiqueta con nombre pegada sobre una foto específica. Sirve para marcar momentos que quieres poder encontrar sin buscar entre cien fotos.</p>
+    <div class="code">
+<span class="c"># Al cerrar la temporada 1 del curso</span><br>
+git tag temporada-1-final<br>
+git push --tags
+    </div>
+    <div class="callout blue"><strong>Ejemplos de buenos tags:</strong> el fin de una temporada, la versión que le entregaste a un cliente, el día antes de un cambio grande.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Sacar un archivo</div>
+    <h3>Traer de Vuelta Algo que Ya no Está</h3>
+    <p>Con la etiqueta puesta, recuperar cualquier archivo de esa época es una línea — aunque lo hayas borrado de la carpeta hace meses.</p>
+    <div class="code">
+<span class="c"># Ver cómo era ese archivo en aquel momento</span><br>
+git show temporada-1-final:guias/leccion-vieja.html<br>
+<br>
+<span class="c"># Traerlo de vuelta a la carpeta</span><br>
+git checkout temporada-1-final -- guias/leccion-vieja.html
+    </div>
+    <div class="callout green"><strong>Por eso "ya no lo uso" no significa "hay que botarlo".</strong> Lo sacas de la carpeta para no tener desorden, y sigue estando ahí cuando lo necesites.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Enlaces</div>
+    <h3>Ojo con Mover Archivos Publicados</h3>
+    <p>Si tu proyecto es una página web publicada, la dirección de cada archivo depende de en qué carpeta está. <strong style="color:var(--red)">Mover el archivo cambia su dirección</strong> — y los enlaces que ya compartiste dejan de funcionar.</p>
+    <div class="callout amber"><strong>La solución sencilla:</strong> no muevas nada. "Archivar" es decidir qué sigues enlazando desde la página principal, no cambiar los archivos de sitio. Así ningún enlace que mandaste se rompe nunca.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 06 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 6 — Vocabulario</div>
+    <p class="section-number">06</p>
+    <div class="section-title">Las Palabras que Vas a Oír</div>
+    <p class="section-desc">Para cuando alguien las use y no quieras quedarte callada.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">06 · Vocabulario</div>
+    <h3>Diccionario Rápido</h3>
+    <table class="tool-table">
+      <tr><th>Palabra</th><th>Qué es</th></tr>
+      <tr><td class="tool-name">repositorio / repo</td><td class="tool-desc">Una carpeta que git vigila</td></tr>
+      <tr><td class="tool-name">commit</td><td class="tool-desc">Una foto guardada, con nota y fecha. En tu computadora</td></tr>
+      <tr><td class="tool-name">push</td><td class="tool-desc">Subir tus commits a GitHub</td></tr>
+      <tr><td class="tool-name">pull</td><td class="tool-desc">Bajar los commits que subió otro</td></tr>
+      <tr><td class="tool-name">clone</td><td class="tool-desc">Copiar un repositorio completo la primera vez</td></tr>
+      <tr><td class="tool-name">remote / origin</td><td class="tool-desc">El servidor donde vive la copia. Casi siempre se llama "origin"</td></tr>
+      <tr><td class="tool-name">main</td><td class="tool-desc">La línea de trabajo principal</td></tr>
+      <tr><td class="tool-name">hash</td><td class="tool-desc">El código único de cada commit — ej. <code>3589dad</code></td></tr>
+      <tr><td class="tool-name">tag</td><td class="tool-desc">Una etiqueta con nombre sobre un commit</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">06 · Cuidado</div>
+    <h3>Dos Palabras de Cuidado</h3>
+    <table class="tool-table">
+      <tr><th>Palabra</th><th>Por qué tener cuidado</th></tr>
+      <tr>
+        <td class="tool-name">force push</td>
+        <td class="tool-desc">Sobrescribe el historial de GitHub con el tuyo. Borra trabajo de otros sin preguntar. No se usa sin saber exactamente por qué.</td>
+      </tr>
+      <tr>
+        <td class="tool-name">git reset --hard</td>
+        <td class="tool-desc">Bota todos los cambios que no has guardado en un commit. No hay papelera de reciclaje.</td>
+      </tr>
+    </table>
+    <div class="callout blue"><strong>Si un comando lleva <code>--force</code> o <code>--hard</code>,</strong> pregunta antes de darle Enter. Esa es toda la regla.</div>
+  </section>
+</section>
+
+<!-- REFERENCIA RÁPIDA -->
+<section>
+  <div class="logo-row" style="margin-bottom:6px;">
+    <div class="logo-mark" style="width:38px;height:38px;font-size:0.9em;">ai</div>
+    <div class="logo-word" style="font-size:1em;">aya<span>ya</span>i</div>
+  </div>
+  <div class="slide-label">Referencia Rápida</div>
+  <p class="section-number">Chuleta</p>
+  <div class="section-title">Todo en Una Pantalla</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>El día a día</h4>
+      <div class="code" style="margin:0;">
+git status&nbsp;&nbsp;&nbsp;<span class="c"># qué cambió</span><br>
+git add .&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># al sobre</span><br>
+git commit -m "nota"<br>
+git push&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># a GitHub</span><br>
+git pull&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># traer</span>
+      </div>
+      <h4 style="margin-top:14px;">Guardar un momento</h4>
+      <div class="code" style="margin:0;">
+git tag nombre<br>
+git push --tags
+      </div>
+    </div>
+    <div class="col-card">
+      <h4>Las tres reglas</h4>
+      <p style="font-size:0.66em; color:#bbb; margin:0 0 8px;">
+        <strong style="color:var(--accent)">1.</strong> Git nunca olvida.<br>
+        <strong style="color:var(--accent)">2.</strong> Público es para siempre.<br>
+        <strong style="color:var(--accent)">3.</strong> El .gitignore va antes del primer commit.
+      </p>
+      <h4 style="margin-top:14px;">La pregunta</h4>
+      <p style="font-size:0.66em; color:#bbb; margin:0;">
+        <em>¿Qué pasa si esto se hace público mañana?</em><br>
+        Si la respuesta no es "nada" → privado.
+      </p>
+      <h4 style="margin-top:14px;">Commit vs push</h4>
+      <span class="pill">commit = en tu casa</span>
+      <span class="pill">push = lo mandaste</span>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
