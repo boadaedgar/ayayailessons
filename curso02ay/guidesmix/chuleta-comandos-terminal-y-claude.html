@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ayayai — Chuleta: comandos de terminal y de Claude Code</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .logo-mark {
+      width: 54px; height: 54px; border-radius: 16px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.3em; color: #0f0f1a;
+      box-shadow: 0 4px 18px rgba(245,166,35,0.25);
+    }
+    .logo-word { font-size: 1.5em; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .logo-word span { color: var(--accent); }
+    .logo-slogan { font-size: 0.6em; color: var(--muted); font-style: italic; margin-top: 2px; }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .c { color: #444; font-style: italic; }
+    .code .hl { color: var(--accent); }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.red    { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+    .tool-key  { font-family: 'Courier New', monospace; color: var(--yellow); white-space: nowrap; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+
+    .console-mock {
+      border-radius: 8px; overflow: hidden; border: 1px solid #000;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5); margin: 14px 0; max-width: 660px;
+    }
+    .console-titlebar {
+      background: #012456; color: #eee; font-size: 0.62em;
+      padding: 6px 10px; display: flex; align-items: center; gap: 8px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .console-titlebar .dots { display: flex; gap: 6px; margin-left: auto; }
+    .console-titlebar .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .console-body {
+      background: #012456; color: #eee; font-family: 'Courier New', monospace;
+      font-size: 0.6em; line-height: 1.9; padding: 14px 16px; min-height: 130px;
+    }
+    .console-body .path { color: #55aaff; }
+    .console-body .cmdtext { color: #fff; }
+    .console-body .ok { color: #7fff7f; }
+    .console-body .dim { color: #8899aa; }
+    .console-cap { font-size: 0.55em; color: var(--muted); text-align: center; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- PORTADA -->
+<section>
+  <div class="logo-row">
+    <div class="logo-mark">ai</div>
+    <div>
+      <div class="logo-word">aya<span>ya</span>i</div>
+      <div class="logo-slogan">Tecnología moderna para la familia — nadie se queda atrás</div>
+    </div>
+  </div>
+  <p class="section-number">Chuleta · Temporada 2 · Sesión 1</p>
+  <div class="cover-title">Comandos de la Terminal y de Claude Code</div>
+  <p class="cover-sub">Los poquitos que de verdad necesitas para empezar</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>7 comandos de terminal — para moverte por tus carpetas</li>
+    <li>6 comandos de Claude Code — para manejar la conversación</li>
+    <li>4 teclas que te ahorran la vida</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Terminal</span>
+    <span class="tag amber">Claude Code</span>
+    <span class="tag">Windows</span>
+    <span class="tag">Mac</span>
+  </div>
+  <div class="nav-hint">→ siguiente sección · ↓ sub-diapositivas dentro de la sección</div>
+</section>
+
+<!-- SECCIÓN 01 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 1 — Entender la Terminal</div>
+    <p class="section-number">01</p>
+    <div class="section-title">Qué Es la Terminal</div>
+    <p class="section-desc">Antes de los comandos, la idea. Son dos minutos.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Concepto</div>
+    <h3>Es el Explorador de Archivos, Pero Escrito</h3>
+    <p>Cuando abres una carpeta con doble clic, estás caminando por tu computadora con el mouse. La terminal es lo mismo, pero escribiendo. Nada más.</p>
+    <div class="callout blue"><strong>La idea clave:</strong> la terminal siempre está <em>parada</em> en una carpeta. Todo lo que escribes le pasa a esa carpeta. Por eso lo primero que uno aprende es a saber dónde está parado y cómo moverse.</div>
+    <div class="callout green"><strong>No vas a romper nada</strong> por abrirla y mirar. Solo pasa algo cuando escribes un comando y presionas Enter.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Cómo se ve</div>
+    <h3>Así se Ve Trabajando</h3>
+    <div class="console-mock">
+      <div class="console-titlebar">
+        <span>Terminal</span>
+        <div class="dots">
+          <div class="dot" style="background:#666"></div>
+          <div class="dot" style="background:#666"></div>
+          <div class="dot" style="background:#e57373"></div>
+        </div>
+      </div>
+      <div class="console-body">
+        <div><span class="path">C:\Users\Nersy&gt;</span> <span class="cmdtext">cd proyecto-parkinson</span></div>
+        <div><span class="path">C:\Users\Nersy\proyecto-parkinson&gt;</span> <span class="cmdtext">dir</span></div>
+        <div class="dim">ejercicios.md&nbsp;&nbsp;&nbsp;guia-neuroplasticidad.md</div>
+        <div><span class="path">C:\Users\Nersy\proyecto-parkinson&gt;</span> <span class="cmdtext">claude</span></div>
+        <div class="ok">✓ Claude Code listo. ¿En qué te ayudo?</div>
+      </div>
+    </div>
+    <p class="console-cap">Fíjate cómo cambia el texto de la izquierda al entrar a la carpeta — eso te dice dónde estás parado.</p>
+  </section>
+</section>
+
+<!-- SECCIÓN 02 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 2 — Comandos de Terminal</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Los 7 Comandos de Terminal</div>
+    <p class="section-desc">Con estos siete te mueves por toda tu computadora.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Ubicarte</div>
+    <h3>Saber Dónde Estás y Qué Hay</h3>
+    <table class="tool-table">
+      <tr><th>Comando</th><th>Qué hace</th><th>En Mac</th></tr>
+      <tr><td class="tool-name">pwd</td><td class="tool-desc">Te dice en qué carpeta estás parado</td><td class="tool-name">pwd</td></tr>
+      <tr><td class="tool-name">dir</td><td class="tool-desc">Lista lo que hay en esta carpeta</td><td class="tool-name">ls</td></tr>
+    </table>
+    <div class="callout"><strong>Estos dos no cambian nada.</strong> Solo miran. Úsalos todas las veces que quieras — es la manera de no perderte.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Moverte</div>
+    <h3>Entrar y Salir de Carpetas</h3>
+    <table class="tool-table">
+      <tr><th>Comando</th><th>Qué hace</th></tr>
+      <tr><td class="tool-name">cd nombre</td><td class="tool-desc">Entra a la carpeta que se llama "nombre"</td></tr>
+      <tr><td class="tool-name">cd ..</td><td class="tool-desc">Sale una carpeta hacia atrás (los dos puntos son parte del comando)</td></tr>
+      <tr><td class="tool-name">cd</td><td class="tool-desc">En Mac, te devuelve a tu carpeta personal. En Windows usa <code>cd %USERPROFILE%</code></td></tr>
+    </table>
+    <div class="callout blue"><strong>cd</strong> viene de <em>change directory</em> — cambiar de carpeta. Es el comando que más vas a usar en tu vida.</div>
+    <div class="callout red"><strong>Si el nombre tiene espacios</strong> ponlo entre comillas: <code>cd "mi proyecto"</code></div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Crear y limpiar</div>
+    <h3>Crear una Carpeta y Limpiar la Pantalla</h3>
+    <table class="tool-table">
+      <tr><th>Comando</th><th>Qué hace</th><th>En Mac</th></tr>
+      <tr><td class="tool-name">mkdir nombre</td><td class="tool-desc">Crea una carpeta nueva aquí mismo</td><td class="tool-name">mkdir nombre</td></tr>
+      <tr><td class="tool-name">cls</td><td class="tool-desc">Limpia la pantalla — no borra nada, solo ordena la vista</td><td class="tool-name">clear</td></tr>
+    </table>
+    <div class="code">
+<span class="c"># El movimiento típico: crear la carpeta y entrar</span><br>
+mkdir mi-proyecto<br>
+cd mi-proyecto<br>
+claude
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 03 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 3 — Teclas</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Las 4 Teclas que te Salvan</div>
+    <p class="section-desc">Esto no son comandos, son teclas. Y valen más que la mitad de los comandos.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Teclas</div>
+    <h3>Aprende Estas Cuatro</h3>
+    <table class="tool-table">
+      <tr><th>Tecla</th><th>Qué hace</th></tr>
+      <tr><td class="tool-key">Flecha arriba ↑</td><td class="tool-desc">Trae el comando anterior. No lo vuelvas a escribir.</td></tr>
+      <tr><td class="tool-key">Tab</td><td class="tool-desc">Completa el nombre de la carpeta o archivo por ti. Escribe las primeras letras y dale Tab.</td></tr>
+      <tr><td class="tool-key">Ctrl + C</td><td class="tool-desc">Cancela lo que esté corriendo. Tu botón de pánico.</td></tr>
+      <tr><td class="tool-key">Enter</td><td class="tool-desc">Ejecuta. Hasta que no le des Enter, no pasa nada.</td></tr>
+    </table>
+    <div class="callout green"><strong>Tab es magia.</strong> Escribe <code>cd mi</code> y dale Tab — te completa <code>mi-proyecto</code> solo. Además evita que te equivoques escribiendo.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 04 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 4 — Claude Code</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Los 6 Comandos de Claude Code</div>
+    <p class="section-desc">Ya estás adentro de Claude. Estos comandos manejan la conversación.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Entrar y salir</div>
+    <h3>Abrir y Cerrar Claude</h3>
+    <table class="tool-table">
+      <tr><th>Comando</th><th>Qué hace</th></tr>
+      <tr><td class="tool-name">claude</td><td class="tool-desc">Abre Claude Code en la carpeta donde estás parado</td></tr>
+      <tr><td class="tool-name">claude --version</td><td class="tool-desc">Te dice qué versión tienes instalada — sirve para comprobar que quedó bien</td></tr>
+      <tr><td class="tool-name">/exit</td><td class="tool-desc">Cierra Claude y te devuelve a la terminal</td></tr>
+    </table>
+    <div class="callout red"><strong>Muy importante:</strong> antes de escribir <code>claude</code>, párate en la carpeta de tu proyecto. Claude trabaja con los archivos de la carpeta donde lo abriste — y solo con esos.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Adentro</div>
+    <h3>Comandos Dentro de la Conversación</h3>
+    <p>Todos empiezan con una barra <code>/</code>. Eso le avisa a Claude que es una orden, no una pregunta.</p>
+    <table class="tool-table">
+      <tr><th>Comando</th><th>Qué hace</th></tr>
+      <tr><td class="tool-name">/help</td><td class="tool-desc">Te muestra la lista de todo lo que puedes escribir</td></tr>
+      <tr><td class="tool-name">/clear</td><td class="tool-desc">Borra la conversación y empieza de cero, sin cerrar Claude</td></tr>
+      <tr><td class="tool-name">/login</td><td class="tool-desc">Conecta tu cuenta paga. Se usa la primera vez o si te desconectaste.</td></tr>
+    </table>
+    <div class="callout blue"><strong>/clear es tu amigo.</strong> Cuando cambies de tema, límpiala. Claude se enfoca mejor y trabajas más rápido.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Lo principal</div>
+    <h3>Y lo Más Importante: Escribir Normal</h3>
+    <p>Los comandos con barra son pocos. El 95% del tiempo tú simplemente le escribes a Claude en español, como le escribirías a una persona.</p>
+    <div class="code">
+&gt; Crea un archivo que se llame ejercicios.md con 5 ejercicios<br>
+&nbsp;&nbsp;de equilibrio para pacientes con Parkinson.<br>
+<br>
+&gt; Ahora hazme una versión más corta para publicar en Instagram.
+    </div>
+    <div class="callout green"><strong>Antes de tocar tus archivos, Claude te pregunta.</strong> Tú apruebas o rechazas. No hace nada por su cuenta.</div>
+  </section>
+</section>
+
+<!-- SECCIÓN 05 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 5 — Primer Ejercicio</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Tu Primera Prueba</div>
+    <p class="section-desc">Todo junto, en seis líneas.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Prueba</div>
+    <h3>Copia Esto Tal Cual</h3>
+    <div class="code">
+<span class="c"># 1. Crea una carpeta de prueba y entra</span><br>
+mkdir prueba-ayayai<br>
+cd prueba-ayayai<br>
+<br>
+<span class="c"># 2. Abre Claude ahí adentro</span><br>
+claude<br>
+<br>
+<span class="c"># 3. Ya adentro, escríbele esto:</span><br>
+<span class="hl">Crea un archivo hola.txt que diga: Funciona</span>
+    </div>
+    <div class="callout green"><strong>Si aparece el archivo <code>hola.txt</code></strong> en esa carpeta — todo quedó instalado y conectado. Ya estás lista para trabajar en tu proyecto.</div>
+  </section>
+</section>
+
+<!-- REFERENCIA RÁPIDA -->
+<section>
+  <div class="logo-row" style="margin-bottom:6px;">
+    <div class="logo-mark" style="width:38px;height:38px;font-size:0.9em;">ai</div>
+    <div class="logo-word" style="font-size:1em;">aya<span>ya</span>i</div>
+  </div>
+  <div class="slide-label">Referencia Rápida</div>
+  <p class="section-number">Chuleta</p>
+  <div class="section-title">Todo en Una Pantalla</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Terminal</h4>
+      <div class="code" style="margin:0;">
+pwd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># dónde estoy</span><br>
+dir<span class="c"> / </span>ls&nbsp;&nbsp;&nbsp;<span class="c"># qué hay aquí</span><br>
+cd carpeta&nbsp;&nbsp;<span class="c"># entrar</span><br>
+cd ..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># salir</span><br>
+mkdir nombre <span class="c"># crear carpeta</span><br>
+cls<span class="c"> / </span>clear&nbsp;<span class="c"># limpiar</span>
+      </div>
+      <h4 style="margin-top:14px;">Teclas</h4>
+      <span class="pill">↑ comando anterior</span>
+      <span class="pill">Tab completar</span>
+      <span class="pill">Ctrl+C cancelar</span>
+    </div>
+    <div class="col-card">
+      <h4>Claude Code</h4>
+      <div class="code" style="margin:0;">
+claude&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># abrir</span><br>
+claude --version <span class="c"># comprobar</span><br>
+/help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># ayuda</span><br>
+/clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># empezar de cero</span><br>
+/login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># conectar cuenta</span><br>
+/exit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># salir</span>
+      </div>
+      <h4 style="margin-top:14px;">La regla de oro</h4>
+      <p style="font-size:0.66em; color:#bbb; margin:0;">Párate en la carpeta correcta <em>antes</em> de escribir <code>claude</code>.</p>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

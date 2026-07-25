@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ayayai T2 — Sesión 1: arrancamos con Claude Code</title>
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+      --faint:   #666;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px; line-height: 1.6;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 64px; }
+
+    header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 24px 20px; margin-bottom: 28px;
+    }
+    .header-inner { max-width: 900px; margin: 0 auto; }
+    .logo-row { display: flex; align-items: center; gap: 14px; }
+    .logo-mark {
+      width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.1em; color: #0f0f1a;
+    }
+    .logo-word { font-size: 1.35em; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .logo-word span { color: var(--accent); }
+    .logo-slogan { font-size: 0.72em; color: var(--muted); font-style: italic; margin-top: 2px; }
+
+    .label {
+      font-size: 0.72em; color: var(--faint); letter-spacing: 1.5px;
+      text-transform: uppercase; margin: 26px 0 6px;
+    }
+    h1 { font-size: 1.9em; color: var(--accent); margin: 6px 0 8px; line-height: 1.2; }
+    h2 {
+      font-size: 1.15em; color: var(--accent); margin: 38px 0 12px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+      letter-spacing: 0.3px;
+    }
+    h3 { font-size: 1em; color: var(--blue); margin: 22px 0 8px; }
+    p { margin: 0 0 12px; }
+    .lead { color: #bbb; font-size: 1.02em; }
+
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
+    }
+    .chip {
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 4px 14px; font-size: 0.78em; color: var(--blue);
+    }
+    .chip.amber { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.3); color: var(--accent); }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px; margin: 16px 0;
+    }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 16px 0;
+      font-size: 0.92em; color: #ccc;
+    }
+    .callout strong { color: var(--accent); }
+    .callout.blue { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.red { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+    .callout.green { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    th {
+      font-size: 0.72em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 8px 10px; text-align: left;
+      border-bottom: 1px solid var(--border); font-weight: 400;
+    }
+    td { padding: 10px; font-size: 0.92em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    .hora { font-family: 'Courier New', monospace; color: var(--yellow); white-space: nowrap; }
+    .quien { color: var(--muted); font-size: 0.88em; }
+
+    ul.check { list-style: none; padding: 0; margin: 8px 0; }
+    ul.check li {
+      padding: 7px 0 7px 30px; position: relative; font-size: 0.95em;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    ul.check li:last-child { border-bottom: none; }
+    ul.check li::before {
+      content: "☐"; position: absolute; left: 4px; top: 6px;
+      color: var(--accent); font-size: 1.1em;
+    }
+
+    ul.plain { list-style: none; padding: 0; margin: 8px 0; }
+    ul.plain li { padding: 4px 0 4px 20px; position: relative; }
+    ul.plain li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+
+    a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(79,195,247,0.3); }
+    a:hover { color: var(--accent); border-bottom-color: rgba(245,166,35,0.5); }
+
+    .mat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 16px 0; }
+    .mat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; display: block;
+      border-bottom: 1px solid var(--border);
+    }
+    .mat:hover { border-color: rgba(245,166,35,0.35); }
+    .mat .mat-tag {
+      font-size: 0.68em; color: var(--faint); letter-spacing: 1px;
+      text-transform: uppercase; display: block; margin-bottom: 6px;
+    }
+    .mat .mat-title { font-size: 1em; color: var(--accent); font-weight: 600; display: block; margin-bottom: 5px; }
+    .mat .mat-desc { font-size: 0.85em; color: #aaa; }
+
+    code {
+      font-family: 'Courier New', monospace; font-size: 0.9em;
+      background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 6px; color: var(--blue);
+    }
+    pre {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px; overflow-x: auto;
+      font-family: 'Courier New', monospace; font-size: 0.85em;
+      line-height: 1.8; color: #ccc; margin: 12px 0;
+    }
+    pre .c { color: #555; font-style: italic; }
+
+    footer {
+      margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
+      font-size: 0.85em; color: var(--faint);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-mark">ai</div>
+      <div>
+        <div class="logo-word">aya<span>ya</span>i</div>
+        <div class="logo-slogan">Tecnología moderna para la familia — nadie se queda atrás</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="label">Temporada 2 · Sesión 1</div>
+  <h1>Arrancamos: Claude Code instalado y funcionando</h1>
+  <p class="lead">Esta primera sesión es puro montaje. Al final de hoy todos tenemos la cuenta paga, el programa instalado y una prueba que funciona en nuestra propia computadora. Nada de teoría — dejamos la máquina lista para trabajar.</p>
+
+  <div class="meta">
+    <span class="chip amber">Sábado 11:00 am (Chicago)</span>
+    <span class="chip">12:00 m Venezuela</span>
+    <span class="chip">1:00 pm Argentina</span>
+    <span class="chip">6:00 pm Barcelona</span>
+    <span class="chip amber">Zoom · se graba</span>
+  </div>
+
+  <h2>Antes de conectarte</h2>
+  <div class="card">
+    <ul class="check">
+      <li>Tu computadora encendida — no el teléfono. Hoy hay que instalar cosas.</li>
+      <li>Una tarjeta lista para el pago, o hablado ya con Edgar si estás en Venezuela.</li>
+      <li>Acceso a tu correo, para confirmar la cuenta.</li>
+      <li>Papel y lápiz, o un bloc de notas abierto, para anotar correo y contraseña.</li>
+      <li>Hora y media libre. No es una sesión de escuchar, es de hacer.</li>
+    </ul>
+  </div>
+
+  <div class="callout blue">
+    <strong>Nersy y Zenaida:</strong> el VPN lo instalamos y lo probamos juntos en la sesión. No tienes que llegar con nada montado — solo con la computadora encendida.
+  </div>
+
+  <h2>Qué vamos a lograr hoy</h2>
+  <ul class="plain">
+    <li>Cuenta de Claude creada, con plan pago activo (US$20/mes, unos US$22 con impuesto)</li>
+    <li>VPN funcionando — para quien está en Venezuela</li>
+    <li>Claude Code instalado en tu computadora</li>
+    <li>Entender qué es la terminal y manejar 7 comandos básicos</li>
+    <li>Conocer 6 comandos de Claude Code</li>
+    <li>Una prueba real: que Claude cree un archivo en tu máquina</li>
+  </ul>
+
+  <h2>Agenda</h2>
+  <table>
+    <tr><th>Hora (Chicago)</th><th>Bloque</th><th>Quién</th></tr>
+    <tr>
+      <td class="hora">11:00</td>
+      <td><strong>Bienvenida y de qué va la temporada 2</strong><br><span style="color:#aaa;font-size:0.9em;">Qué es Claude Code, en qué se diferencia del chat, y qué va a construir cada quien</span></td>
+      <td class="quien">Todos</td>
+    </tr>
+    <tr>
+      <td class="hora">11:10</td>
+      <td><strong>Instalar y probar el VPN</strong><br><span style="color:#aaa;font-size:0.9em;">Caso Venezuela. Va primero porque la cuenta hay que crearla con el VPN ya prendido. El resto aprovecha para adelantar la instalación de Claude Code.</span></td>
+      <td class="quien">Nersy, Zenaida</td>
+    </tr>
+    <tr>
+      <td class="hora">11:30</td>
+      <td><strong>Cuenta y plan pago</strong><br><span style="color:#aaa;font-size:0.9em;">Registro, elegir Pro, pagar. Casos de pago para Venezuela.</span></td>
+      <td class="quien">Todos</td>
+    </tr>
+    <tr>
+      <td class="hora">11:45</td>
+      <td><strong>Instalar Claude Code</strong><br><span style="color:#aaa;font-size:0.9em;">Abrir la terminal por primera vez, pegar el comando, verificar la versión</span></td>
+      <td class="quien">Todos</td>
+    </tr>
+    <tr>
+      <td class="hora">12:10</td>
+      <td><strong>Comandos de terminal y de Claude</strong><br><span style="color:#aaa;font-size:0.9em;">7 comandos para moverte, 4 teclas que salvan, 6 comandos de Claude</span></td>
+      <td class="quien">Todos</td>
+    </tr>
+    <tr>
+      <td class="hora">12:25</td>
+      <td><strong>Prueba final y tarea</strong><br><span style="color:#aaa;font-size:0.9em;">Que Claude cree tu primer archivo. Cerramos cuando le funcione a todo el mundo.</span></td>
+      <td class="quien">Todos</td>
+    </tr>
+  </table>
+
+  <div class="callout blue">
+    <strong>Si llegas tarde o no puedes venir:</strong> la sesión queda grabada y los materiales de abajo tienen todo el paso a paso. Cada sesión se puede seguir sola — no hace falta haber estado en la anterior.
+  </div>
+
+  <h2>Materiales</h2>
+  <p style="color:#aaa;">Ábrelos en el orden en que aparecen. Cada uno es una presentación: avanzas con las flechas del teclado.</p>
+
+  <div class="mat-grid">
+    <a class="mat" href="../guidesmix/guide-claude-code-vpn-venezuela.html">
+      <span class="mat-tag">Paso 1 · Venezuela</span>
+      <span class="mat-title">Instalar y usar el VPN</span>
+      <span class="mat-desc">Para Nersy y Zenaida. Lo montamos en la sesión; esta guía te queda para repetirlo después.</span>
+    </a>
+
+    <a class="mat" href="../guidesmix/guide-plan-claude-pago.html">
+      <span class="mat-tag">Paso 2</span>
+      <span class="mat-title">Registrarte en el plan pago</span>
+      <span class="mat-desc">Cuenta, plan Pro, cuánto cuesta y cómo pagar — incluyendo las opciones para Venezuela.</span>
+    </a>
+
+    <a class="mat" href="../guidesmix/guide-claude-code-ayayai-windows.html">
+      <span class="mat-tag">Paso 3 · Windows</span>
+      <span class="mat-title">Instalar Claude Code en Windows</span>
+      <span class="mat-desc">Desde cero, para quien nunca abrió una consola en su vida.</span>
+    </a>
+
+    <a class="mat" href="../guidesmix/guide-claude-code-instalacion.html">
+      <span class="mat-tag">Paso 3 · General</span>
+      <span class="mat-title">Instalar Claude Code</span>
+      <span class="mat-desc">La versión general de la instalación, sirve también para Mac.</span>
+    </a>
+
+    <a class="mat" href="../guidesmix/chuleta-comandos-terminal-y-claude.html">
+      <span class="mat-tag">Paso 4</span>
+      <span class="mat-title">Chuleta de comandos</span>
+      <span class="mat-desc">7 de terminal, 6 de Claude Code, 4 teclas. Esta es la que vas a volver a abrir toda la semana.</span>
+    </a>
+  </div>
+
+  <h2>La prueba con la que cerramos</h2>
+  <p>Cuando termines la instalación, haz esto. Si te sale, ya estás lista para la semana:</p>
+  <pre><span class="c"># 1. Crea una carpeta de prueba y entra en ella</span>
+mkdir prueba-ayayai
+cd prueba-ayayai
+
+<span class="c"># 2. Abre Claude ahí adentro</span>
+claude
+
+<span class="c"># 3. Ya adentro, escríbele en español:</span>
+Crea un archivo hola.txt que diga: Funciona</pre>
+
+  <div class="callout green">
+    <strong>Si aparece el archivo <code>hola.txt</code></strong> dentro de esa carpeta, quedaste lista. Manda una captura al grupo para que sepamos que te funcionó.
+  </div>
+
+  <h2>Tarea para la semana</h2>
+  <div class="card">
+    <ul class="check">
+      <li>Abrir Claude Code al menos tres días distintos, aunque sea cinco minutos. La idea es perderle el miedo a la terminal.</li>
+      <li>Crear una carpeta con el nombre de tu proyecto y dejarla lista.</li>
+      <li>Pedirle a Claude una cosa sencilla relacionada con tu proyecto y ver qué pasa.</li>
+      <li>Anotar en un papel las dudas que te salgan. Las resolvemos en la sesión individual.</li>
+    </ul>
+  </div>
+
+  <h3>Y para pensar antes de la próxima</h3>
+  <p>¿Qué cosa haces todas las semanas en tu proyecto que te quita tiempo y siempre es igual? Esa es la primera que vamos a automatizar.</p>
+
+  <div class="callout">
+    <strong>Sesiones individuales:</strong> cada quien tiene su proyecto y su ritmo. Escríbele a Edgar por WhatsApp para agendar la tuya según tu disponibilidad.
+  </div>
+
+  <footer>
+    ayayai · Temporada 2 · Sesión 1 · Sábado 25 de julio de 2026<br>
+    Recordatorios e invitaciones por WhatsApp. ¿Trancado con algo? Escribe al grupo — nadie se queda atrás.
+  </footer>
+
+</div>
+
+</body>
+</html>
