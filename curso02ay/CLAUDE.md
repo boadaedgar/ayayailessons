@@ -44,6 +44,7 @@ ayayai is Edgar's technology and AI program for family and friends: we learn tog
 curso02ay/
   guidesmix/       guides + lessons (Claude Code install, VPN Venezuela, tools)
   sebas/           Sebastian: session pages, agent demos, factory data
+                   NOT in git — real plant data, gitignored, local only
   neurofitness/    Nersy: Parkinson's app + Gumroad assets
   enfermeria/      Zenaida (empty)
   elvisness/       Elvira (empty)
