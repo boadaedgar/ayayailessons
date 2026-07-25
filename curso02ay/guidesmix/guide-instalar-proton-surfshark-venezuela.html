@@ -244,13 +244,13 @@
     que CANTV está bloqueando y busca servidores que pasen.</p>
     <div class="workflow-step">
       <div class="step-num">1</div>
-      <div><div class="step-title">Ajustes → Avanzado</div>
-      <div class="step-sub">Settings → Advanced</div></div>
+      <div><div class="step-title">Ajustes → VPN Settings → Advanced</div>
+      <div class="step-sub">No está en la pestaña de protocolo — es otra cosa</div></div>
     </div>
     <div class="workflow-step">
       <div class="step-num">2</div>
-      <div><div class="step-title">Activá "NoBorders"</div>
-      <div class="step-sub">En algunas versiones se activa solo cuando detecta bloqueo</div></div>
+      <div><div class="step-title">Activá "NoBorders" si aparece</div>
+      <div class="step-sub">Si no lo ves, no pasa nada: se enciende solo cuando detecta bloqueo</div></div>
     </div>
     <div class="workflow-step">
       <div class="step-num">3</div>
@@ -260,6 +260,28 @@
     <div class="callout green">
       <strong>Con esto ya estás conectada.</strong> Ahora sí podés pasar a Proton — vas a
       necesitar esta conexión para poder crear tu cuenta.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Surfshark</div>
+    <h3>El plan B: cambiar de protocolo</h3>
+    <p>Esto es lo que hay que hacer cuando Surfshark no conecta o se cae todo el rato.
+    Guardalo, porque es la respuesta a casi todas las fallas.</p>
+    <table class="tool-table">
+      <tr><th>Protocolo</th><th>Cuándo usarlo</th></tr>
+      <tr><td class="tool-name">WireGuard</td><td class="tool-desc">El que viene puesto. El más rápido. Dejalo así mientras funcione</td></tr>
+      <tr><td class="tool-name">OpenVPN TCP</td><td class="tool-desc"><strong>El plan B.</strong> Más lento, pero el más difícil de bloquear: su tráfico se parece a navegación normal</td></tr>
+      <tr><td class="tool-desc">OpenVPN UDP</td><td class="tool-desc">Intermedio. Rara vez es la respuesta</td></tr>
+    </table>
+    <div class="callout">
+      <strong>Se cambia en Ajustes → Protocolo.</strong> Si WireGuard no conecta, poné
+      OpenVPN TCP y volvé a intentar. Cuando la cosa se normalice podés volver a WireGuard
+      para recuperar velocidad.
+    </div>
+    <div class="callout blue">
+      <strong>Es el equivalente al Stealth de Proton.</strong> Las dos apps tienen su forma de
+      disfrazar el tráfico: en Proton es el protocolo Stealth, en Surfshark es OpenVPN TCP.
     </div>
   </section>
 </section>
@@ -452,7 +474,7 @@
       <tr><td class="tool-desc">Proton no conecta en <strong>iPhone con línea Digitel</strong></td><td class="tool-desc">Falla confirmada por VE sin Filtro. Usá Surfshark en ese teléfono</td></tr>
       <tr><td class="tool-desc">La página de la VPN no carga</td><td class="tool-desc">Bloquearon el sitio, no la app. La app sigue sirviendo</td></tr>
       <tr><td class="tool-desc">Conecta pero va lentísimo</td><td class="tool-desc">Cambiá de servidor: probá Panamá si estabas en Colombia</td></tr>
-      <tr><td class="tool-desc">Se cae cada rato</td><td class="tool-desc">Cambiá el protocolo a Stealth. Si sigue, pasate a Surfshark</td></tr>
+      <tr><td class="tool-desc">Se cae cada rato</td><td class="tool-desc">Cambiá el protocolo: Stealth en Proton, OpenVPN TCP en Surfshark</td></tr>
       <tr><td class="tool-desc">No conecta de ninguna forma</td><td class="tool-desc">Probá la otra app. Para eso están las dos</td></tr>
     </table>
   </section>
@@ -462,8 +484,8 @@
     <h3>Orden para resolver</h3>
     <div class="workflow-step">
       <div class="step-num">1</div>
-      <div><div class="step-title">Cambiá el protocolo a Stealth / activá NoBorders</div>
-      <div class="step-sub">Resuelve la mayoría de los casos</div></div>
+      <div><div class="step-title">Cambiá el protocolo</div>
+      <div class="step-sub">Proton → Stealth · Surfshark → OpenVPN TCP. Resuelve la mayoría</div></div>
     </div>
     <div class="workflow-step">
       <div class="step-num">2</div>
@@ -517,7 +539,8 @@
       <span class="pill">Kill switch: <strong>Soft</strong>, nunca Hard</span>
       <span class="pill">Auto-connect: ON</span>
       <span class="pill">Proton: protocolo Stealth</span>
-      <span class="pill">Surfshark: NoBorders ON</span>
+      <span class="pill">Surfshark: WireGuard, NoBorders ON</span>
+      <span class="pill">Si falla → Surfshark a OpenVPN TCP</span>
       <span class="pill">País: Colombia o Panamá</span>
       <span class="pill">Bypasser: banco y sitios locales</span>
       <span class="pill">Nunca las dos prendidas</span>
