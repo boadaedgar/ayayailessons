@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paso a paso: VPN y tu cuenta Proton — ayayai</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+    .reveal a { color: var(--blue); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    /* ETIQUETA DE DISPOSITIVO */
+    .dev {
+      display: inline-block; border-radius: 5px;
+      padding: 2px 10px; font-size: 0.58em; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin-right: 10px; vertical-align: middle;
+    }
+    .dev-movil { background: rgba(79,195,247,0.15); color: var(--blue); border: 1px solid rgba(79,195,247,0.35); }
+    .dev-pc    { background: rgba(245,166,35,0.15); color: var(--accent); border: 1px solid rgba(245,166,35,0.35); }
+    .dev-ambos { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.35); }
+
+    .cover-title { font-size: 1.5em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 20px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25); color: var(--accent); }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.35em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 620px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.66em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.72em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.red    { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 9px 0; }
+    .step-num {
+      min-width: 27px; height: 27px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.78em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.76em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.65em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.7em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.6em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 18px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- PORTADA -->
+<section>
+  <p class="section-number">ayayai · Temporada 2</p>
+  <div class="cover-title">Paso a paso: VPN y tu cuenta Proton</div>
+  <p class="cover-sub">Todo lo que hay que hacer, en orden, sin saltarse nada</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>Cada paso dice si es en el <strong>teléfono</strong> o en la <strong>computadora</strong></li>
+    <li>Cada paso dice qué app abrís y qué opción tocás</li>
+    <li>El orden importa — hacelo de arriba hacia abajo</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Venezuela</span>
+    <span class="tag">Surfshark</span>
+    <span class="tag">Proton VPN</span>
+    <span class="tag">Proton Family</span>
+  </div>
+  <div class="nav-hint">→ siguiente sección · ↓ sub-diapositivas dentro de la sección</div>
+</section>
+
+<!-- SECCIÓN 1 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 1 — Antes de empezar</div>
+    <p class="section-number">01</p>
+    <div class="section-title">Antes de empezar</div>
+    <p class="section-desc">Qué vas a instalar, de quién es cada cuenta, y por qué el orden no se puede cambiar.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Antes de empezar</div>
+    <h3>Vas a tener dos VPN, no una</h3>
+    <table class="tool-table">
+      <tr><th>App</th><th>De quién es la cuenta</th><th>Para qué</th></tr>
+      <tr><td class="tool-name">Surfshark</td><td class="tool-desc"><strong>Del grupo.</strong> Una sola credencial que usamos todas. Edgar te la manda aparte</td><td class="tool-desc">La primera que instalás. Te abre la puerta para poder crear la cuenta de Proton</td></tr>
+      <tr><td class="tool-name">Proton VPN</td><td class="tool-desc"><strong>Tuya.</strong> Tu correo, tu clave, tuya sola. Edgar te suma a su plan pero no entra a tu cuenta</td><td class="tool-desc">La principal, la de todos los días</td></tr>
+    </table>
+    <div class="callout">
+      <strong>¿Por qué dos?</strong> Son empresas distintas. Cuando bloquean una, casi nunca
+      bloquean la otra el mismo día. Tener las dos es la diferencia entre "se me cayó" y
+      "me quedé sin clase".
+    </div>
+    <div class="callout blue">
+      <strong>Edgar paga las dos.</strong> No intentes pagar nada — las tarjetas venezolanas
+      no pasan en estos servicios.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Antes de empezar</div>
+    <h3>El orden no se puede cambiar</h3>
+    <div class="code">
+<span class="c">1 · teléfono</span>
+instalar <span class="hl">Surfshark</span> y conectar
+        <span class="dim">↓ ya tenés internet sin bloqueos</span>
+
+<span class="c">2 · teléfono o computadora</span>
+crear tu cuenta <span class="hl">Proton</span> gratis
+        <span class="dim">↓ te queda una dirección @proton.me</span>
+
+<span class="c">3 · WhatsApp</span>
+mandarle esa dirección a <span class="k">Edgar</span>
+        <span class="dim">↓ él te invita a su plan</span>
+
+<span class="c">4 · correo Proton</span>
+<span class="k">aceptar</span> la invitación
+        <span class="dim">↓ se te activa la versión completa</span>
+
+<span class="c">5 · teléfono</span>
+instalar <span class="hl">Proton VPN</span> y entrar
+    </div>
+    <div class="callout red">
+      <strong>El paso 2 no funciona sin el paso 1.</strong> La página de Proton está bloqueada
+      en Venezuela. Sin Surfshark conectada, no vas a poder crear tu cuenta.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Antes de empezar</div>
+    <h3>Lo más importante de toda la guía</h3>
+    <div class="callout red">
+      <strong>Bajá las apps desde la tienda del teléfono, no desde la web.</strong> En Venezuela
+      están bloqueadas las <em>páginas</em> de Surfshark y Proton, pero no las tiendas. Las apps
+      funcionan perfecto — lo que no carga es el sitio de descarga.
+    </div>
+    <table class="tool-table">
+      <tr><th>Si tenés</th><th>Usá</th></tr>
+      <tr><td class="tool-desc">Android</td><td class="tool-desc"><strong>Play Store</strong></td></tr>
+      <tr><td class="tool-desc">iPhone</td><td class="tool-desc"><strong>App Store</strong></td></tr>
+    </table>
+    <div class="callout">
+      <strong>Hacelo hoy, no el día que lo necesites.</strong> Si esperás, te vas a encontrar
+      con que no podés llegar a la descarga — y para llegar necesitarías una VPN.
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 2 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 2 — Surfshark</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Surfshark en el teléfono</div>
+    <p class="section-desc">La primera. Con la credencial del grupo que te manda Edgar por WhatsApp.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Surfshark</div>
+    <h3><span class="dev dev-movil">📱 Teléfono</span> Instalar y entrar</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Abrí la tienda de tu teléfono y buscá "Surfshark"</div>
+      <div class="step-sub">app: Play Store o App Store · ícono: tiburón azul · autor: Surfshark B.V.</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Instalá y abrí la app</div>
+      <div class="step-sub">app: Surfshark</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Tocá "Log in" — NO "Sign up"</div>
+      <div class="step-sub">poné el correo y la clave del grupo que te mandó Edgar</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Aceptá el permiso de VPN que pide el teléfono</div>
+      <div class="step-sub">sale una ventana del sistema · tocá "Permitir" / "Allow"</div></div>
+    </div>
+    <div class="callout red">
+      <strong>No cambies esa clave.</strong> Es la misma para todas. Si la cambiás, dejás afuera
+      a las demás.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Surfshark</div>
+    <h3><span class="dev dev-movil">📱 Teléfono</span> Ajustes que hay que dejar puestos</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Kill switch en <strong>Soft</strong></div>
+      <div class="step-sub">app: Surfshark → Settings → VPN settings → Kill Switch → Soft</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Auto-connect encendido</div>
+      <div class="step-sub">app: Surfshark → Settings → VPN settings → Auto-connect</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">NoBorders encendido, si aparece</div>
+      <div class="step-sub">app: Surfshark → Settings → VPN settings → Advanced → NoBorders</div></div>
+    </div>
+    <div class="callout blue">
+      <strong>Si no encontrás NoBorders, seguí igual.</strong> Se enciende solo cuando la app
+      detecta que te están bloqueando. No está en la pestaña de protocolo — eso es otra cosa.
+    </div>
+    <div class="callout">
+      <strong>Soft y no Hard:</strong> con Soft, si la VPN se cae sola te corta el internet
+      (bien), pero si la apagás vos a propósito internet sigue andando. Con Hard tendrías que
+      andar prendiendo y apagando el kill switch, y un día se te queda apagado.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Surfshark</div>
+    <h3><span class="dev dev-movil">📱 Teléfono</span> Conectar y comprobar</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Buscá "Colombia" en la lista de países y conectá</div>
+      <div class="step-sub">app: Surfshark → Locations → Colombia</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Esperá a que diga "Connected" / "Conectado"</div>
+      <div class="step-sub">arriba en la app, en verde</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Abrí el navegador y buscá "cuál es mi ip"</div>
+      <div class="step-sub">app: Chrome o Safari · cualquiera de los resultados sirve</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Tiene que decir <strong>Colombia</strong></div>
+      <div class="step-sub">si dice Venezuela, la VPN no está funcionando — no sigas</div></div>
+    </div>
+    <div class="callout green">
+      <strong>Si dice Colombia, ya está.</strong> Ahora sí podés pasar a crear tu cuenta de Proton.
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 3 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 3 — Tu cuenta Proton</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Tu cuenta de Proton</div>
+    <p class="section-desc">Esta cuenta es tuya sola. Nadie más entra con ella, ni siquiera Edgar.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Tu cuenta Proton</div>
+    <h3><span class="dev dev-ambos">📱💻 Cualquiera</span> Crear la cuenta gratis</h3>
+    <div class="callout red">
+      <strong>Surfshark tiene que estar conectada antes de empezar esto.</strong> Si no, la
+      página de Proton no va a cargar.
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Entrá a account.proton.me</div>
+      <div class="step-sub">app: navegador (Chrome / Safari) · escribí account.proton.me</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Tocá "Create a free account"</div>
+      <div class="step-sub">elegí el plan <strong>Free</strong> — Edgar te sube después, no pagues nada</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Elegí tu nombre de usuario</div>
+      <div class="step-sub">te queda una dirección así: tunombre@proton.me</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Poné una clave y <strong>anotala</strong></div>
+      <div class="step-sub">esta clave es tuya y no se la das a nadie, ni a Edgar</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Tu cuenta Proton</div>
+    <h3><span class="dev dev-ambos">📱💻 Cualquiera</span> Pasarle la dirección a Edgar</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Copiá tu dirección completa @proton.me</div>
+      <div class="step-sub">ejemplo: nersyfitness@proton.me</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Mandásela a Edgar por WhatsApp</div>
+      <div class="step-sub">app: WhatsApp · solo la dirección — la clave NO se manda</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Esperá a que te avise que te invitó</div>
+      <div class="step-sub">tarda un minuto</div></div>
+    </div>
+    <div class="callout red">
+      <strong>Nunca mandes tu clave por WhatsApp.</strong> Edgar no la necesita para invitarte.
+      Si alguien te la pide, algo anda mal.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Tu cuenta Proton</div>
+    <h3><span class="dev dev-ambos">📱💻 Cualquiera</span> Aceptar la invitación</h3>
+    <div class="callout blue">
+      <strong>La invitación NO llega a tu Gmail.</strong> Llega a tu correo nuevo de Proton.
+      Hay que entrar ahí a buscarla.
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Entrá a mail.proton.me</div>
+      <div class="step-sub">app: navegador · o instalá la app "Proton Mail" de la tienda</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Entrá con tu cuenta @proton.me</div>
+      <div class="step-sub">la que acabás de crear</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Abrí el correo de invitación y aceptá</div>
+      <div class="step-sub">de: Proton · asunto sobre unirte a una familia / family plan</div></div>
+    </div>
+    <div class="callout green">
+      <strong>Listo.</strong> Tu cuenta gratis pasó a ser la versión completa. Ahora sí instalás
+      Proton VPN.
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 4 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 4 — Proton VPN</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Proton VPN en el teléfono</div>
+    <p class="section-desc">La principal, la que vas a usar todos los días. Con tu cuenta, no con la del grupo.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Proton VPN</div>
+    <h3><span class="dev dev-movil">📱 Teléfono</span> Instalar y entrar</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Buscá "Proton VPN" en la tienda</div>
+      <div class="step-sub">app: Play Store o App Store · ícono: candado morado · autor: Proton AG</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Instalá y abrí la app</div>
+      <div class="step-sub">app: Proton VPN — ojo, no es la misma que Proton Mail</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Tocá "Sign in" y entrá con <strong>tu</strong> cuenta @proton.me</div>
+      <div class="step-sub">la tuya, la que creaste vos. No la del grupo de Surfshark</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Aceptá el permiso de VPN</div>
+      <div class="step-sub">tocá "Permitir" / "Allow"</div></div>
+    </div>
+    <div class="callout red">
+      <strong>Apagá Surfshark antes de conectar Proton.</strong> Dos VPN prendidas al mismo
+      tiempo se pelean y no funciona ninguna.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Proton VPN</div>
+    <h3><span class="dev dev-movil">📱 Teléfono</span> Activar Stealth</h3>
+    <p>Este ajuste es el que hace que funcione en Venezuela. Sin él, CANTV la reconoce y la corta.</p>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Entrá a los ajustes de la app</div>
+      <div class="step-sub">app: Proton VPN → ícono de engranaje (Settings)</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Buscá "Protocol" y elegí <strong>Stealth</strong></div>
+      <div class="step-sub">Settings → Protocol → Stealth</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Kill switch en el modo normal, no permanente</div>
+      <div class="step-sub">Settings → Kill switch (dejá apagado "Permanent" / "Always-on")</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Conectá a Colombia y comprobá la IP</div>
+      <div class="step-sub">Countries → Colombia · después buscá "cuál es mi ip"</div></div>
+    </div>
+    <div class="callout green">
+      <strong>Regla para recordar:</strong> si un día Proton no conecta, lo primero que se
+      prueba es que el protocolo esté en Stealth.
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 5 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 5 — Computadora</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Las dos apps en la computadora</div>
+    <p class="section-desc">Mismo procedimiento, mismas cuentas. Esto es lo que vas a usar para Claude Code.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Computadora</div>
+    <h3><span class="dev dev-pc">💻 Computadora</span> Descargar las dos</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Conectá primero la VPN del teléfono</div>
+      <div class="step-sub">si las páginas no cargan, compartí internet del teléfono a la computadora</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Surfshark: entrá a surfshark.com/download</div>
+      <div class="step-sub">navegador → elegí <strong>Windows 10 o superior</strong></div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Proton VPN: entrá a protonvpn.com/download</div>
+      <div class="step-sub">navegador → versión de Windows</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Instalá las dos y dale "Sí" a Windows</div>
+      <div class="step-sub">Windows pregunta si permitís cambios — es normal</div></div>
+    </div>
+    <div class="callout">
+      <strong>Si te ofrece "Windows con procesador ARM", no la elijas.</strong> Esa es para
+      equipos especiales. La normal es "Windows 10 o superior".
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Computadora</div>
+    <h3><span class="dev dev-pc">💻 Computadora</span> Los mismos ajustes</h3>
+    <table class="tool-table">
+      <tr><th>Ajuste</th><th>Surfshark</th><th>Proton VPN</th></tr>
+      <tr><td class="tool-desc">Cuenta</td><td class="tool-desc">la del grupo</td><td class="tool-desc"><strong>la tuya</strong></td></tr>
+      <tr><td class="tool-desc">Kill switch</td><td class="tool-desc">Soft</td><td class="tool-desc">normal, no permanente</td></tr>
+      <tr><td class="tool-desc">Auto-connect</td><td class="tool-desc">encendido</td><td class="tool-desc">encendido</td></tr>
+      <tr><td class="tool-desc">Protocolo</td><td class="tool-desc">WireGuard</td><td class="tool-desc"><strong>Stealth</strong></td></tr>
+      <tr><td class="tool-desc">País</td><td class="tool-desc">Colombia</td><td class="tool-desc">Colombia</td></tr>
+    </table>
+    <div class="callout blue">
+      <strong>Bypasser, solo en Surfshark:</strong> si tu banco no te deja entrar con la VPN
+      puesta, agregá el sitio del banco en Settings → Bypasser. Así ese sitio sale por Venezuela
+      y todo lo demás sigue saliendo por Colombia, sin que tengas que apagar nada.
+    </div>
+  </section>
+</section>
+
+<!-- REFERENCIA RÁPIDA -->
+<section>
+  <div class="slide-label">Referencia rápida</div>
+  <h2 style="font-size:1.05em; margin-bottom:12px;">Referencia rápida</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Antes de cada clase</h4>
+      <div class="code">
+<span class="c">1 · prender Proton VPN</span>
+<span class="k">esperar</span> <span class="s">"Conectado"</span>
+
+<span class="c">2 · comprobar</span>
+buscar <span class="s">"cuál es mi ip"</span>
+<span class="hl">debe decir Colombia</span>
+
+<span class="c">3 · si dice Venezuela</span>
+<span class="k">no sigas</span> <span class="dim">— revisá Stealth</span>
+      </div>
+      <h4 style="margin-top:10px;">Si algo falla, en este orden</h4>
+      <span class="pill">1 · Proton → Stealth</span>
+      <span class="pill">1 · Surfshark → OpenVPN TCP</span>
+      <span class="pill">2 · cambiar de país</span>
+      <span class="pill">3 · abrir la otra app</span>
+      <span class="pill">4 · escribir al grupo</span>
+    </div>
+    <div class="col-card">
+      <h4>Las cuentas</h4>
+      <span class="pill">Surfshark: del grupo, no la cambies</span>
+      <span class="pill">Proton: tuya, tu clave</span>
+      <span class="pill">La clave nunca por WhatsApp</span>
+      <h4 style="margin-top:10px;">Ajustes fijos</h4>
+      <span class="pill">Kill switch: Soft</span>
+      <span class="pill">Auto-connect: ON</span>
+      <span class="pill">Proton: Stealth</span>
+      <span class="pill">Surfshark: WireGuard</span>
+      <span class="pill">País: Colombia</span>
+      <span class="pill">Nunca las dos prendidas</span>
+      <h4 style="margin-top:10px;">Enlaces</h4>
+      <span class="pill">account.proton.me</span>
+      <span class="pill">mail.proton.me</span>
+      <span class="pill">protonvpn.com/download</span>
+      <span class="pill">surfshark.com/download</span>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:12px;">
+    <strong>Si te trancás en cualquier paso, escribí al grupo</strong> diciendo en cuál estás y
+    qué te sale en pantalla. Es más rápido que seguir probando sola.
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
