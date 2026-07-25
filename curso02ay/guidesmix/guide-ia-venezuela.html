@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso a IA en Venezuela — Guía</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- COVER -->
+<section>
+  <p class="section-number">Guía de Usuario</p>
+  <div class="cover-title">Acceso a IA en Venezuela</div>
+  <p class="cover-sub">Qué está bloqueado, qué opciones hay, cómo la usa la gente</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>ChatGPT y Claude bloquean Venezuela por sanciones de EE.UU., no por censura del contenido</li>
+    <li>Gemini, Copilot y DeepSeek funcionan sin VPN, sin fricción</li>
+    <li>VPN + verificación con número extranjero desbloquea ChatGPT/Claude directo</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Sanciones EE.UU.</span>
+    <span class="tag">VPN</span>
+    <span class="tag">ChatGPT</span>
+    <span class="tag">Claude</span>
+    <span class="tag">Gemini</span>
+    <span class="tag">DeepSeek</span>
+  </div>
+  <div class="nav-hint">→ siguiente sección · ↓ sub-slides dentro de sección</div>
+</section>
+
+<!-- SECTION 1: QUÉ PASA -->
+<section>
+  <section>
+    <div class="slide-label">Sección 1 — Qué Pasa</div>
+    <p class="section-number">01</p>
+    <div class="section-title">Qué Pasa Realmente</div>
+    <p class="section-desc">No es censura venezolana — es bloqueo de EE.UU. por sanciones.</p>
+    <div class="nav-hint">↓ para profundizar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — Qué Pasa</div>
+    <h3>El bloqueo viene de EE.UU., no de Venezuela</h3>
+    <p>OpenAI (ChatGPT) y Anthropic (Claude) niegan registro y acceso desde IPs venezolanas por ley de sanciones/exportación de EE.UU. — mismo grupo que Cuba, Irán, Corea del Norte, Siria, Rusia.</p>
+    <div class="callout">
+      <strong>Ojo:</strong> el gobierno de Venezuela también filtra ciertos sitios por su cuenta — pero el bloqueo específico de ChatGPT/Claude es decisión de la empresa de EE.UU., no del gobierno venezolano.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — Qué Pasa</div>
+    <h3>Quién bloquea a quién</h3>
+    <table class="tool-table">
+      <tr><th>Herramienta</th><th>Estado en Venezuela</th><th>Motivo</th></tr>
+      <tr><td class="tool-name">ChatGPT / OpenAI</td><td class="tool-desc">Bloqueado — registro rechazado</td><td class="tool-desc">Lista de países no soportados (sanciones EE.UU.)</td></tr>
+      <tr><td class="tool-name">Claude / Anthropic</td><td class="tool-desc">Bloqueado — en lista de 20 países</td><td class="tool-desc">Sanciones EE.UU.</td></tr>
+      <tr><td class="tool-name">Google Gemini</td><td class="tool-desc">Funciona normal</td><td class="tool-desc">Google no aplica bloqueo por sanciones</td></tr>
+      <tr><td class="tool-name">Microsoft Copilot</td><td class="tool-desc">Funciona normal</td><td class="tool-desc">Sin restricción geográfica activa</td></tr>
+      <tr><td class="tool-name">DeepSeek</td><td class="tool-desc">Funciona normal</td><td class="tool-desc">Empresa china, sin sanción EE.UU.</td></tr>
+    </table>
+  </section>
+</section>
+
+<!-- SECTION 2: OPCIONES SIN VPN -->
+<section>
+  <section>
+    <div class="slide-label">Sección 2 — Opciones Sin VPN</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Opciones Sin Bloqueo</div>
+    <p class="section-desc">Herramientas que funcionan directo desde Venezuela, sin VPN ni truco.</p>
+    <div class="nav-hint">↓ para ver tabla completa</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Sin VPN</div>
+    <h3>IA accesible directo, cero fricción</h3>
+    <table class="tool-table">
+      <tr><th>Herramienta</th><th>Qué hace</th><th>Costo</th></tr>
+      <tr><td class="tool-name">Google Gemini</td><td class="tool-desc">Chat, análisis, generación de imagen/texto</td><td class="tool-desc"><span class="badge badge-free">FREE</span></td></tr>
+      <tr><td class="tool-name">Microsoft Copilot</td><td class="tool-desc">Chat + integración Office/Windows</td><td class="tool-desc"><span class="badge badge-free">FREE</span></td></tr>
+      <tr><td class="tool-name">DeepSeek</td><td class="tool-desc">Chat, razonamiento, código — alternativa china</td><td class="tool-desc"><span class="badge badge-free">FREE</span></td></tr>
+      <tr><td class="tool-name">Perplexity</td><td class="tool-desc">Búsqueda + IA combinada, cita fuentes</td><td class="tool-desc"><span class="badge badge-free">FREE</span></td></tr>
+    </table>
+    <div class="callout green">
+      <strong>Recomendación:</strong> si solo necesitas chatear/producir contenido sin dolor de cabeza — arranca aquí antes de meterte con VPN.
+    </div>
+  </section>
+</section>
+
+<!-- SECTION 3: CÓMO ACCEDER A CHATGPT/CLAUDE -->
+<section>
+  <section>
+    <div class="slide-label">Sección 3 — Acceso Directo</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Cómo Acceder a ChatGPT / Claude</div>
+    <p class="section-desc">Si necesitas específicamente esas herramientas — ruta con VPN y verificación.</p>
+    <div class="nav-hint">↓ pasos en orden</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Ruta VPN</div>
+    <h3>Pasos — el orden importa</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Instala VPN confiable</div>
+        <div class="step-sub">NordVPN, ExpressVPN, Surfshark (pago) · Windscribe, TunnelBear (free limitado)</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Conecta a servidor en país soportado</div>
+        <div class="step-sub">EE.UU., Colombia, España, etc — ANTES de abrir la página de registro</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Consigue número de teléfono extranjero</div>
+        <div class="step-sub">Pide código SMS a alguien fuera de VE, o usa servicio de número virtual (ej. sms-activate)</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Regístrate y confirma con ese código</div>
+        <div class="step-sub">chat.openai.com / claude.ai</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">Mantén VPN activo para futuros logins</div>
+        <div class="step-sub">Algunas cuentas revisan IP en cada sesión</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Alternativa sin VPN</div>
+    <h3>Wrappers y bots — sin instalar VPN</h3>
+    <p>Apps/bots de terceros (Telegram, WhatsApp, extensiones tipo Merlin AI) que llaman la API de OpenAI/Claude desde fuera de Venezuela y te pasan la respuesta.</p>
+    <div class="callout blue">
+      <strong>Trade-off:</strong> cero fricción de setup, pero pagas intermediario, menos privacidad, calidad variable según el bot.
+    </div>
+  </section>
+</section>
+
+<!-- SECTION 4: CÓMO LA USAN LOS VENEZOLANOS -->
+<section>
+  <section>
+    <div class="slide-label">Sección 4 — Uso Real</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Cómo la Usan los Venezolanos</div>
+    <p class="section-desc">Tres perfiles de uso reportados en 2026, pese a las barreras.</p>
+    <div class="nav-hint">↓ ver cada perfil</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Emprendedores</div>
+    <h3>Emprendedores</h3>
+    <p>IA como motor de transformación estructural — no solo consulta. Permite testear producto sin invertir dólar ni bolívar en fábrica, ahorra horas de trabajo manual, nivela el terreno pese a la crisis económica.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Remoto</div>
+    <h3>Freelancers y trabajo remoto</h3>
+    <p>Usan IA (vía VPN o alternativas sin bloqueo) para competir por trabajos internacionales — redacción, código, diseño — pese a limitaciones de conectividad y economía local. El teletrabajo ya es preferencia consolidada, no solución de emergencia.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Estudiantes</div>
+    <h3>Estudiantes y profesionales</h3>
+    <p>Mayoría se inclina por Gemini, DeepSeek o Copilot — cero fricción de VPN. Otros comparten acceso VPN+cuenta en grupo para repartir costo.</p>
+  </section>
+</section>
+
+<!-- SECTION 5: LÍMITES Y TIPS -->
+<section>
+  <section>
+    <div class="slide-label">Sección 5 — Límites y Tips</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Límites y Tips</div>
+    <p class="section-desc">Lo que puede salir mal y cómo evitarlo.</p>
+    <div class="nav-hint">↓ ver detalle</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 — Límites</div>
+    <table class="tool-table">
+      <tr><th>Riesgo</th><th>Detalle</th></tr>
+      <tr><td class="tool-name">Suspensión de cuenta</td><td class="tool-desc">OpenAI puede banear cuentas si detecta acceso repetido desde IP no soportada</td></tr>
+      <tr><td class="tool-name">VPN gratis inestable</td><td class="tool-desc">Free tier de Windscribe/TunnelBear tiene límite de datos y corta conexión</td></tr>
+      <tr><td class="tool-name">Pago con tarjeta local</td><td class="tool-desc">Tarjeta venezolana casi nunca pasa validación — necesitas tarjeta/cuenta extranjera</td></tr>
+      <tr><td class="tool-name">Privacidad en bots wrapper</td><td class="tool-desc">Terceros ven tus prompts — evita data sensible</td></tr>
+    </table>
+    <div class="callout">
+      <strong>Tip:</strong> si solo quieres producir sin drama, Gemini/DeepSeek/Copilot te ahorran todo este problema.
+    </div>
+  </section>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section>
+  <div class="slide-label">Referencia Rápida</div>
+  <p class="section-number">Quick Reference</p>
+  <div class="section-title">Resumen</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Sin VPN (directo)</h4>
+      <span class="pill">Google Gemini</span>
+      <span class="pill">Microsoft Copilot</span>
+      <span class="pill">DeepSeek</span>
+      <span class="pill">Perplexity</span>
+      <h4 style="margin-top:14px;">Con VPN (bloqueados)</h4>
+      <span class="pill">ChatGPT / OpenAI</span>
+      <span class="pill">Claude / Anthropic</span>
+    </div>
+    <div class="col-card">
+      <h4>Checklist VPN + registro</h4>
+      <div class="code">
+        <span class="c">// orden correcto</span><br/>
+        1. <span class="k">Conectar VPN</span> → país soportado<br/>
+        2. <span class="k">Conseguir</span> <span class="s">número extranjero</span><br/>
+        3. <span class="hl">Registrar</span> cuenta ChatGPT/Claude<br/>
+        4. Mantener VPN <span class="dim">activo en cada login</span>
+      </div>
+    </div>
+  </div>
+  <div class="nav-hint">Fin de la guía</div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

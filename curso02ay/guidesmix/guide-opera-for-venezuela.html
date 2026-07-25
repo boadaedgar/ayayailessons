@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opera for Venezuela — User Guide</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- COVER -->
+<section>
+  <p class="section-number">User Guide</p>
+  <div class="cover-title">Opera for Venezuela</div>
+  <p class="cover-sub">Free built-in VPN as a workaround for geo-blocked AI</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>No separate VPN app or account needed — VPN is built into the browser</li>
+    <li>Free tier has no bandwidth cap, unlike most free standalone VPNs</li>
+    <li>Same setup path also unblocks streaming and other geo-restricted sites</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Opera Browser</span>
+    <span class="tag">Free VPN</span>
+    <span class="tag">ChatGPT Access</span>
+    <span class="tag">Claude Access</span>
+    <span class="tag">Geo-unblock</span>
+  </div>
+  <div class="nav-hint">→ next section · ↓ sub-slides within section</div>
+</section>
+
+<!-- SECTION 1: WHAT IS IT -->
+<section>
+  <section>
+    <div class="slide-label">Section 1 — What Is It</div>
+    <p class="section-number">01</p>
+    <div class="section-title">What Is It</div>
+    <p class="section-desc">A regular Chromium browser with one feature no mainstream browser ships free: a built-in VPN.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — What Is It</div>
+    <h3>Browser first, VPN second</h3>
+    <p>Opera works like Chrome or Edge for everyday browsing — same Chromium engine underneath. The difference that matters for Venezuela: a free, no-login VPN is built directly into the browser, not a separate app you have to install and manage.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — What Is It</div>
+    <h3>Why this matters for blocked AI services</h3>
+    <p>ChatGPT and Claude reject signups and logins from Venezuelan IPs due to US sanctions rules, not content filtering. Opera's built-in VPN reroutes your browser traffic through a foreign server, so the site sees a supported country's IP instead.</p>
+    <div class="callout">
+      <strong>Note:</strong> the VPN changes your IP location, not your phone number — some services also require a foreign phone number to finish signup.
+    </div>
+  </section>
+</section>
+
+<!-- SECTION 2: SETUP -->
+<section>
+  <section>
+    <div class="slide-label">Section 2 — Setup</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Getting Started</div>
+    <p class="section-desc">Install once, toggle VPN, browse — five steps, no account needed.</p>
+    <div class="nav-hint">↓ pasos en orden</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Setup</div>
+    <h3>Install and turn on the VPN</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Download Opera</div>
+        <div class="step-sub">opera.com — free, no account required</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Open Settings → VPN</div>
+        <div class="step-sub">Or click the VPN icon in the address bar</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Toggle VPN on</div>
+        <div class="step-sub">No signup, no login, no data cap</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Pick a virtual region</div>
+        <div class="step-sub">Europe, Americas, or Asia on the free tier</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">Navigate to the blocked site</div>
+        <div class="step-sub">chat.openai.com or claude.ai</div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- SECTION 3: FEATURES -->
+<section>
+  <section>
+    <div class="slide-label">Section 3 — Features</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Features Worth Knowing</div>
+    <p class="section-desc">What's bundled beyond the VPN, and Free vs Pro.</p>
+    <div class="nav-hint">↓ ver tabla completa</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Features</div>
+    <h3>What's built in</h3>
+    <table class="tool-table">
+      <tr><th>Feature</th><th>What it does</th></tr>
+      <tr><td class="tool-name">Free VPN</td><td class="tool-desc">Unlimited bandwidth, no login, AES-256 encrypted, Deloitte-audited no-log policy</td></tr>
+      <tr><td class="tool-name">Ad blocker</td><td class="tool-desc">Built-in, no extension needed</td></tr>
+      <tr><td class="tool-name">AI sidebar</td><td class="tool-desc">Access to ChatGPT and Gemini directly in the browser panel</td></tr>
+      <tr><td class="tool-name">AI image generation</td><td class="tool-desc">Text-to-image built into the sidebar</td></tr>
+      <tr><td class="tool-name">Opera Flow</td><td class="tool-desc">Cross-device file and link sharing</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Features</div>
+    <h3>Free vs Pro VPN</h3>
+    <table class="tool-table">
+      <tr><th>Plan</th><th>Price</th><th>Key limit</th></tr>
+      <tr><td class="tool-name">Free VPN</td><td class="tool-desc"><span class="badge badge-free">FREE</span></td><td class="tool-desc">Limited region picker, no bandwidth cap</td></tr>
+      <tr><td class="tool-name">VPN Pro</td><td class="tool-desc"><span class="badge badge-paid">PAID</span> ~$4-8/mo</td><td class="tool-desc">More regions, faster servers, priority support</td></tr>
+    </table>
+    <div class="callout blue">
+      <strong>Tip:</strong> the free tier is enough for basic geo-unblocking — Pro mainly adds speed and region choice.
+    </div>
+  </section>
+</section>
+
+<!-- SECTION 4: WORKFLOWS -->
+<section>
+  <section>
+    <div class="slide-label">Section 4 — Workflows</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Common Use Cases</div>
+    <p class="section-desc">Three real scenarios where Opera's VPN gets used from Venezuela.</p>
+    <div class="nav-hint">↓ ver cada caso</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — AI Access</div>
+    <h3>Unblocking ChatGPT or Claude</h3>
+    <p>Toggle VPN on, pick a supported region, go to chat.openai.com or claude.ai. If signup still fails, the service is checking phone number in addition to IP — you'll need a foreign number too, VPN alone isn't enough for new accounts.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Streaming</div>
+    <h3>Unblocking streaming catalogs</h3>
+    <p>Same toggle-and-pick-region flow works for region-locked streaming content. Opera VPN performs comparatively well here versus its weaker general privacy score.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Everyday Privacy</div>
+    <h3>General browsing privacy</h3>
+    <p>Leave the VPN on as a default for everyday browsing to mask your IP from ad networks and trackers — pairs with the built-in ad blocker for a lighter, faster page load too.</p>
+  </section>
+</section>
+
+<!-- SECTION 5: LIMITS & TIPS -->
+<section>
+  <section>
+    <div class="slide-label">Section 5 — Limits &amp; Tips</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Limits &amp; Tips</div>
+    <p class="section-desc">What the free VPN won't do, and how to avoid a false sense of security.</p>
+    <div class="nav-hint">↓ ver detalle</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 — Limits</div>
+    <table class="tool-table">
+      <tr><th>Limit</th><th>Detail</th></tr>
+      <tr><td class="tool-name">Browser-only</td><td class="tool-desc">Other apps on your device (email client, other browsers) stay unprotected</td></tr>
+      <tr><td class="tool-name">No kill switch</td><td class="tool-desc">If VPN drops, traffic can leak through your real IP</td></tr>
+      <tr><td class="tool-name">No protocol choice</td><td class="tool-desc">Can't pick a specific server location, only a region</td></tr>
+      <tr><td class="tool-name">Signup checks beyond IP</td><td class="tool-desc">Some AI services also require a foreign phone number</td></tr>
+    </table>
+    <div class="callout green">
+      <strong>Tip:</strong> for account signup on OpenAI/Anthropic, pair the VPN with a foreign SMS-verification service if the phone-number step blocks you.
+    </div>
+  </section>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section>
+  <div class="slide-label">Quick Reference</div>
+  <p class="section-number">Quick Reference</p>
+  <div class="section-title">Cheat Sheet</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Built-in features</h4>
+      <span class="pill">Free VPN — no cap</span>
+      <span class="pill">Ad blocker</span>
+      <span class="pill">AI sidebar (ChatGPT/Gemini)</span>
+      <span class="pill">AI image gen</span>
+      <span class="pill">Opera Flow</span>
+    </div>
+    <div class="col-card">
+      <h4>Unblock checklist</h4>
+      <div class="code">
+        <span class="c">// 3-step unblock</span><br/>
+        1. Settings → <span class="k">VPN</span> → toggle on<br/>
+        2. Region: <span class="s">Europe / Americas / Asia</span><br/>
+        3. Visit <span class="hl">chat.openai.com</span> / <span class="hl">claude.ai</span><br/>
+        <span class="dim">// if signup still fails: need foreign phone number too</span>
+      </div>
+    </div>
+  </div>
+  <div class="nav-hint">End of guide</div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

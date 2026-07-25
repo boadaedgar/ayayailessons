@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cambio de estilo NeuroFit · Planetario3</title>
+<style>
+  :root {
+    --p3-blue:#0B1C2D; --p3-cyan:#1ECAD3; --p3-amber:#F4B400; --p3-violet:#6C63FF;
+    --p3-carbon:#121212; --p3-white:#FFFFFF; --p3-gray:#E5E7EB;
+    --p3-ink-soft:#3A4653; --p3-ink-mute:#6B7683; --p3-white-70:rgba(255,255,255,0.72);
+    --p3-amber-12:rgba(244,180,0,0.12);
+    --p3-font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
+    --fs-display:clamp(2.6rem,6.5vw,5.2rem); --fs-h2:clamp(1.5rem,3vw,2.2rem);
+    --fs-h3:clamp(1.15rem,2vw,1.4rem); --fs-lead:clamp(1.15rem,2.2vw,1.6rem);
+    --fs-body:clamp(1rem,1.4vw,1.15rem); --fs-label:0.72rem;
+    --sp-1:8px; --sp-2:16px; --sp-3:24px; --sp-4:32px; --sp-5:48px; --sp-6:64px;
+    --r-md:16px; --r-lg:20px; --r-pill:999px;
+    --shadow-md:0 20px 40px rgba(11,28,45,0.08);
+    --content-max:1080px;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; }
+  body {
+    font-family:var(--p3-font); color:var(--p3-carbon); background:var(--p3-blue);
+    -webkit-font-smoothing:antialiased; line-height:1.5; overflow:hidden;
+  }
+  h1,h2,h3 { letter-spacing:-0.02em; line-height:1.05; font-weight:700; margin:0 0 var(--sp-2); }
+  .eyebrow {
+    font-size:var(--fs-label); font-weight:600; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--p3-cyan); margin:0 0 var(--sp-2);
+  }
+  .lead { font-size:var(--fs-lead); font-weight:400; line-height:1.4; max-width:46ch; }
+
+  .deck { height:100vh; width:100vw; position:relative; }
+  .lamina {
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    justify-content:center; padding:var(--sp-6) clamp(24px,7vw,120px);
+    opacity:0; visibility:hidden; transform:translateY(16px);
+    transition:opacity .5s ease, transform .5s ease, visibility .5s;
+    overflow-y:auto;
+  }
+  .lamina.active { opacity:1; visibility:visible; transform:translateY(0); }
+  .lamina__inner { max-width:var(--content-max); margin:0 auto; width:100%; }
+
+  .lamina--concept { background:var(--p3-blue); color:var(--p3-white); text-align:center; }
+  .lamina--concept h1 { color:var(--p3-white); font-size:var(--fs-display); margin-bottom:var(--sp-3); }
+  .lamina--concept .lead { color:var(--p3-white-70); margin:0 auto var(--sp-4); }
+  .anchor { font-size:clamp(4rem,12vw,8rem); display:block; margin-bottom:var(--sp-3); line-height:1; }
+  .points { list-style:none; padding:0; margin:var(--sp-3) auto 0; max-width:44ch;
+            display:flex; flex-direction:column; gap:var(--sp-1); }
+  .points li { font-size:var(--fs-body); color:var(--p3-white); }
+  .points li::before { content:"›  "; color:var(--p3-cyan); font-weight:700; }
+
+  .lamina--guide { background:var(--p3-white); color:var(--p3-carbon); }
+  .lamina--guide h2 { color:var(--p3-blue); font-size:var(--fs-h2); }
+  .lamina--guide .eyebrow { color:var(--p3-cyan); }
+  .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+               gap:var(--sp-3); margin-top:var(--sp-4); }
+  .card { background:var(--p3-white); border:1px solid var(--p3-gray);
+          border-radius:var(--r-lg); padding:var(--sp-4); box-shadow:var(--shadow-md); }
+  .card h3 { color:var(--p3-blue); font-size:var(--fs-h3); margin-bottom:var(--sp-2); }
+  .card p, .card li { color:var(--p3-ink-soft); font-size:var(--fs-body); margin:0; }
+  .card ul, .card ol { margin:0; padding-left:1.1em; display:flex; flex-direction:column; gap:6px; }
+  .card ul { list-style:none; padding-left:0; }
+  .card ul li::before { content:"›  "; color:var(--p3-cyan); font-weight:700; }
+  .card ol { padding-left:0; counter-reset:step; list-style:none; }
+  .card ol li { counter-increment:step; padding-left:2em; position:relative; }
+  .card ol li::before {
+    content:counter(step); position:absolute; left:0; top:0;
+    width:1.5em; height:1.5em; background:var(--p3-cyan); color:var(--p3-blue);
+    border-radius:var(--r-pill); display:flex; align-items:center; justify-content:center;
+    font-size:0.8em; font-weight:700;
+  }
+  .card--talk { background:linear-gradient(180deg,var(--p3-white),var(--p3-gray)); }
+  .card--talk h3 { color:var(--p3-ink-mute); }
+  .badge {
+    display:inline-block; background:var(--p3-amber-12); color:var(--p3-blue);
+    border:1px solid var(--p3-amber); border-radius:var(--r-pill); padding:4px 12px;
+    font-size:var(--fs-label); font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  }
+
+  .nav { position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+         display:flex; align-items:center; gap:16px; z-index:10;
+         background:rgba(11,28,45,0.55); backdrop-filter:blur(8px);
+         padding:8px 14px; border-radius:var(--r-pill); }
+  .nav button {
+    font-family:var(--p3-font); font-size:1rem; font-weight:600; cursor:pointer;
+    background:var(--p3-cyan); color:var(--p3-blue); border:none;
+    width:34px; height:34px; border-radius:var(--r-pill); transition:opacity .15s;
+  }
+  .nav button:disabled { opacity:.35; cursor:default; }
+  .dots { display:flex; gap:8px; }
+  .dot { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,0.3);
+         cursor:pointer; transition:background .2s, transform .2s; border:none; padding:0; }
+  .dot.active { background:var(--p3-cyan); transform:scale(1.25); }
+  .counter { color:var(--p3-white-70); font-size:var(--fs-label); letter-spacing:.08em; min-width:44px; text-align:center; }
+
+  @keyframes p3-rise { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
+  .reveal-up { animation:p3-rise .7s cubic-bezier(.22,.61,.36,1) both; }
+  .reveal-up.d1{animation-delay:.08s;} .reveal-up.d2{animation-delay:.18s;} .reveal-up.d3{animation-delay:.30s;}
+  @media (prefers-reduced-motion:reduce){ .reveal-up{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ===== LÁMINA 1 — CONCEPTO ===== -->
+  <section class="lamina lamina--concept active" data-index="0">
+    <div class="lamina__inner">
+      <span class="anchor reveal-up">🎨</span>
+      <p class="eyebrow reveal-up d1">El cambio</p>
+      <h1 class="reveal-up d1">NeuroFit se vistió de Planetario3</h1>
+      <p class="lead reveal-up d2">Le pusimos a la app la misma ropa de marca: azul profundo, celeste y detalles dorados. Misma app, nueva cara.</p>
+      <ul class="points reveal-up d3">
+        <li>Antes: crema y verde, sin identidad</li>
+        <li>Ahora: azul + celeste de Planetario3</li>
+        <li>Se ve profesional y de una sola familia</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== LÁMINA 2 — GUÍA COMPLETA ===== -->
+  <section class="lamina lamina--guide" data-index="1">
+    <div class="lamina__inner">
+      <p class="eyebrow">Guía completa</p>
+      <h2>Qué cambiamos y por qué importa</h2>
+      <p class="lead" style="color:var(--p3-ink-soft);max-width:60ch;">Cambiamos solo la apariencia y detalles de la app NeuroFit: los colores, la voz que lee, la sección de pago y la lista de ejercicios. La app funciona igual — se ve y suena mejor.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Cómo lo hicimos</h3>
+          <ol>
+            <li>Reemplazamos todos los colores por la paleta Planetario3.</li>
+            <li>Repintamos los dibujos y botones al mismo estilo.</li>
+            <li>Mejoramos la voz para que suene con acento latino.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Ejemplo real</h3>
+          <p>Antes el botón "HECHO" era verde sobre fondo crema. Ahora es una píldora celeste con texto azul: más limpio, más fácil de ver para un adulto mayor.</p>
+        </div>
+        <div class="card">
+          <h3>Por qué importa</h3>
+          <ul>
+            <li>Coherencia: parece hecha por una marca seria.</li>
+            <li>Claridad: texto grande y botones amplios.</li>
+            <li>Cercanía: la voz suena natural, no extranjera.</li>
+          </ul>
+        </div>
+        <div class="card card--talk">
+          <h3>Para explicarlo <span class="badge">tip</span></h3>
+          <ul>
+            <li>"Es como pintar la casa: misma casa, mejor fachada."</li>
+            <li>Mostrar el botón 🔊 y escuchar el acento nuevo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="nav">
+    <button id="prev" aria-label="Anterior">‹</button>
+    <div class="dots" id="dots"></div>
+    <span class="counter" id="counter">1 / 2</span>
+    <button id="next" aria-label="Siguiente">›</button>
+  </nav>
+</div>
+
+<script>
+  const laminas = Array.from(document.querySelectorAll('.lamina'));
+  const TOTAL = laminas.length;
+  const dotsWrap = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  let current = 0;
+
+  laminas.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Ir a lámina ' + (i + 1));
+    d.addEventListener('click', () => go(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  function go(i) {
+    current = Math.max(0, Math.min(TOTAL - 1, i));
+    laminas.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+    counter.textContent = (current + 1) + ' / ' + TOTAL;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === TOTAL - 1;
+  }
+  prevBtn.addEventListener('click', () => go(current - 1));
+  nextBtn.addEventListener('click', () => go(current + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') go(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   go(current - 1);
+  });
+  go(0);
+</script>
+</body>
+</html>
