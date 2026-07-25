@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpotHopper — Business Guide</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.red    { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- COVER -->
+<section>
+  <p class="section-number">Business Guide</p>
+  <div class="cover-title">SpotHopper</div>
+  <p class="cover-sub">AI-powered marketing platform built exclusively for independent restaurants</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>19,000+ independent restaurants use the platform</li>
+    <li>$26M raised across 2 funding rounds</li>
+    <li>Bundles website, menu, social, email & app into one contract</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Restaurant Tech</span>
+    <span class="tag">SaaS</span>
+    <span class="tag">Marketing Automation</span>
+    <span class="tag">AI</span>
+    <span class="tag">Milwaukee, WI</span>
+  </div>
+  <div class="nav-hint">→ next section · ↓ sub-slides within section</div>
+</section>
+
+<!-- SECTION 1: WHAT IS IT -->
+<section>
+  <section>
+    <div class="slide-label">Section 1 — What Is It</div>
+    <p class="section-number">01</p>
+    <div class="section-title">What Is It</div>
+    <p class="section-desc">The business model behind SpotHopper — what it sells and how it makes money.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <h3>Concept</h3>
+    <p>Marketing automation platform sold exclusively to independent bars &amp; restaurants — not chains, not enterprise.</p>
+    <div class="callout blue"><strong>Pitch:</strong> "AI does the marketing for you" — operator spends ~20-30 min/month, platform handles the rest.</div>
+  </section>
+
+  <section>
+    <h3>The Bundle</h3>
+    <table class="tool-table">
+      <tr><th>Component</th><th>What it does</th></tr>
+      <tr><td class="tool-name">Website</td><td class="tool-desc">Builds &amp; hosts the restaurant's site</td></tr>
+      <tr><td class="tool-name">Menu automation</td><td class="tool-desc">Keeps menus synced across channels</td></tr>
+      <tr><td class="tool-name">Social &amp; email</td><td class="tool-desc">Schedules campaigns, AI-generated posts</td></tr>
+      <tr><td class="tool-name">Custom app</td><td class="tool-desc">Branded mobile app per restaurant</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h3>Revenue Model</h3>
+    <p>SaaS subscription, mostly <strong style="color:var(--accent)">annual or multi-year contracts</strong>.</p>
+    <div class="code"><span class="k">price</span> = <span class="s">"$200–$400+/month"</span> <span class="c">// varies by market, tier, negotiation</span></div>
+    <div class="callout red"><strong>Lock-in:</strong> photo/video content produced by SpotHopper stays with them under contract terms.</div>
+  </section>
+</section>
+
+<!-- SECTION 2: HISTORY & GROWTH -->
+<section>
+  <section>
+    <div class="slide-label">Section 2 — History &amp; Growth</div>
+    <p class="section-number">02</p>
+    <div class="section-title">History &amp; Growth</div>
+    <p class="section-desc">Founding story, funding, and scale reached to date.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <h3>Founding</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Founded 2013, Milwaukee, Wisconsin</div><div class="step-sub">(some sources cite 2015 for public launch)</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Co-founders: Aleksandar Ivanovic &amp; son Niko Ivanovic</div><div class="step-sub">Aleksandar previously founded &amp; sold Webcom Inc.</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Dev/ops offices in Serbia</div><div class="step-sub">plus US offices beyond HQ</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Funding</h3>
+    <table class="tool-table">
+      <tr><th>Round</th><th>Detail</th></tr>
+      <tr><td class="tool-name">Total raised</td><td class="tool-desc">$26M over 2 rounds, 2 investors</td></tr>
+      <tr><td class="tool-name">2023 round</td><td class="tool-desc">$12M raised to boost AI-enabled sales &amp; marketing tools</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h3>Scale Today</h3>
+    <div class="callout green"><strong>19,000+</strong> independent restaurants across the US &amp; Canada rely on the platform.</div>
+  </section>
+</section>
+
+<!-- SECTION 3: STRATEGY -->
+<section>
+  <section>
+    <div class="slide-label">Section 3 — Strategy</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Business &amp; Marketing Strategy</div>
+    <p class="section-desc">How SpotHopper positions itself and sells to restaurant owners.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <h3>Business Strategy</h3>
+    <ul>
+      <li>Niche focus: independent restaurants/bars only, never chains</li>
+      <li>Edge: one bundled contract instead of juggling separate vendors</li>
+      <li>Contract structure creates lock-in (content ownership, multi-year terms)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Marketing Strategy</h3>
+    <div class="callout blue"><strong>Core message:</strong> "AI does the marketing for you" — low owner time investment (20-30 min/month), platform handles execution.</div>
+    <p>Sells against DIY social media management and against generic (non-restaurant) marketing tools.</p>
+  </section>
+</section>
+
+<!-- SECTION 4: CUSTOMER REVIEWS -->
+<section>
+  <section>
+    <div class="slide-label">Section 4 — Customer Reviews</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Customer Reviews</div>
+    <p class="section-desc">What restaurant owners say on G2 (67 reviews).</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <h3>Praise <span class="badge badge-free">Positive</span></h3>
+    <ul>
+      <li>Support team called responsive &amp; helpful, consistently</li>
+      <li>Easy to navigate, understands restaurant business specifically</li>
+      <li>Clean design, functionality aimed at driving foot traffic</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Complaints <span class="badge badge-paid">Mixed</span></h3>
+    <ul>
+      <li>Not very user-friendly overall</li>
+      <li>Post editing is complex, caption accuracy suffers</li>
+      <li>AI-generated posts feel robotic — missing personal/organic touch</li>
+    </ul>
+  </section>
+</section>
+
+<!-- SECTION 5: COMPETITORS & CURRENT STATE -->
+<section>
+  <section>
+    <div class="slide-label">Section 5 — Competitors</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Competitors &amp; Current State</div>
+    <p class="section-desc">Where SpotHopper sits in the restaurant-tech market today.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <h3>Key Competitors</h3>
+    <table class="tool-table">
+      <tr><th>Competitor</th><th>Angle</th></tr>
+      <tr><td class="tool-name">Owner.com</td><td class="tool-desc">Top-rated alt, ~4.8★ G2, unified site+ordering+marketing</td></tr>
+      <tr><td class="tool-name">Toast</td><td class="tool-desc">POS bundling marketing using real transaction data</td></tr>
+      <tr><td class="tool-name">SevenRooms</td><td class="tool-desc">~4.7★, reservation-management focused</td></tr>
+      <tr><td class="tool-name">ChowNow / Olo</td><td class="tool-desc">Online ordering-first platforms</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h3>Current State</h3>
+    <div class="callout red"><strong>Threat:</strong> POS incumbents like Toast fold marketing into existing stack using real transaction data — SpotHopper relies on inferred behavior data instead.</div>
+    <p>Continues scaling via AI feature investment (2023 $12M raise) to defend standalone positioning.</p>
+  </section>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section>
+  <div class="slide-label">Quick Reference</div>
+  <p class="section-number">Reference</p>
+  <div class="section-title">SpotHopper at a Glance</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Key Facts</h4>
+      <span class="pill">Founded 2013</span>
+      <span class="pill">Milwaukee, WI</span>
+      <span class="pill">19,000+ restaurants</span>
+      <span class="pill">$26M raised</span>
+      <span class="pill">Serbia dev office</span>
+      <span class="pill">Annual/multi-yr contracts</span>
+      <span class="pill">$200-400+/mo</span>
+    </div>
+    <div class="col-card">
+      <h4>Position</h4>
+      <div class="code"><span class="k">niche</span>: <span class="s">"independent restaurants only"</span>
+<span class="k">pitch</span>: <span class="s">"AI does marketing for you"</span>
+<span class="k">time_cost</span>: <span class="s">"20-30 min/month"</span>
+<span class="k">top_rival</span>: <span class="hl">Owner.com</span> <span class="c">// 4.8★ G2</span></div>
+    </div>
+  </div>
+  <div class="nav-hint">End of guide</div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

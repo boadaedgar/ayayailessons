@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merlin AI and Similar Tools — User Guide</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- COVER -->
+<section>
+  <p class="section-number">User Guide</p>
+  <div class="cover-title">Merlin AI &amp; Similar Tools</div>
+  <p class="cover-sub">Browser-extension AI aggregators compared</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>One subscription for GPT, Claude, Gemini, DeepSeek instead of four</li>
+    <li>AI injected directly into Gmail, LinkedIn, X, YouTube — no tab switching</li>
+    <li>Four real alternatives compared: Monica, Sider, MaxAI.me, Perplexity</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Merlin AI</span>
+    <span class="tag">Monica</span>
+    <span class="tag">Sider</span>
+    <span class="tag">MaxAI.me</span>
+    <span class="tag">Perplexity</span>
+    <span class="tag">Browser Extension</span>
+  </div>
+  <div class="nav-hint">→ next section · ↓ sub-slides within section</div>
+</section>
+
+<!-- SECTION 1: WHAT IS IT -->
+<section>
+  <section>
+    <div class="slide-label">Section 1 — What Is It</div>
+    <p class="section-number">01</p>
+    <div class="section-title">What Is It</div>
+    <p class="section-desc">A category of browser extensions that put multi-model AI inside the pages you already use.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — What Is It</div>
+    <h3>The core idea: aggregation, not a new model</h3>
+    <p>Merlin AI, Monica, Sider, and MaxAI.me don't build their own AI models. They wrap existing ones (GPT, Claude, Gemini, DeepSeek, Llama) behind one login and one subscription, then inject that access into websites you already have open — Gmail, LinkedIn, X, YouTube, Google Search.</p>
+    <div class="callout">
+      <strong>Mental model:</strong> think of it as a universal remote for AI models, clipped onto your browser toolbar.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — What Is It</div>
+    <h3>Where Perplexity is different</h3>
+    <p>Perplexity isn't an aggregator wrapper — it's a search engine with AI synthesis and citations built in. It belongs in this comparison because people often choose between "chat assistant everywhere" (Merlin-type tools) and "cited research answers" (Perplexity) for the same underlying need: getting an AI answer fast, in-browser.</p>
+  </section>
+</section>
+
+<!-- SECTION 2: GETTING STARTED -->
+<section>
+  <section>
+    <div class="slide-label">Section 2 — Getting Started</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Getting Started with Merlin</div>
+    <p class="section-desc">Install once, use everywhere — five steps.</p>
+    <div class="nav-hint">↓ pasos en orden</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Setup</div>
+    <h3>Install and first use</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Install the extension</div>
+        <div class="step-sub">Chrome Web Store or Edge Add-ons — search "Merlin AI"</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Create a free account</div>
+        <div class="step-sub">getmerlin.in</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Open the chatbot anywhere</div>
+        <div class="step-sub">Shortcut: Ctrl/⌘ + M</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Use inline buttons on supported sites</div>
+        <div class="step-sub">X, LinkedIn, YouTube, Gmail</div>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">Sync across devices</div>
+        <div class="step-sub">Same account: Windows, Mac, iOS, Android</div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- SECTION 3: FEATURES / TOOL COMPARISON -->
+<section>
+  <section>
+    <div class="slide-label">Section 3 — Comparison</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Tool Comparison</div>
+    <p class="section-desc">How the five tools stack up on models, price, and specialty.</p>
+    <div class="nav-hint">↓ ver tabla completa</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Comparison</div>
+    <h3>Core positioning</h3>
+    <table class="tool-table">
+      <tr><th>Tool</th><th>What it's best at</th><th>Models</th></tr>
+      <tr><td class="tool-name">Merlin AI</td><td class="tool-desc">In-page chat across Gmail/LinkedIn/X/YouTube, broadest model roster</td><td class="tool-desc">GPT-5.2, Claude Opus 4.6, Gemini 3.0, DeepSeek, Llama, Mistral</td></tr>
+      <tr><td class="tool-name">Monica</td><td class="tool-desc">Image + short-video generation, polished UI</td><td class="tool-desc">Multi-model, credit-based</td></tr>
+      <tr><td class="tool-name">Sider</td><td class="tool-desc">Cheapest daily chat, no frills</td><td class="tool-desc">Multi-model, general-purpose</td></tr>
+      <tr><td class="tool-name">MaxAI.me</td><td class="tool-desc">Fastest select-text-and-act on any webpage</td><td class="tool-desc">Multi-model</td></tr>
+      <tr><td class="tool-name">Perplexity</td><td class="tool-desc">Cited research answers, not chat/social automation</td><td class="tool-desc">Multiple, search-optimized</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Comparison</div>
+    <h3>Pricing snapshot</h3>
+    <table class="tool-table">
+      <tr><th>Tool</th><th>Free tier</th><th>Paid entry</th></tr>
+      <tr><td class="tool-name">Merlin AI</td><td class="tool-desc">51 queries/day</td><td class="tool-desc"><span class="badge badge-paid">PAID</span> $19/mo</td></tr>
+      <tr><td class="tool-name">Monica</td><td class="tool-desc">Limited daily credits</td><td class="tool-desc"><span class="badge badge-paid">PAID</span> ~$15-20/mo</td></tr>
+      <tr><td class="tool-name">Sider</td><td class="tool-desc">Limited daily credits</td><td class="tool-desc"><span class="badge badge-paid">PAID</span> ~$10-15/mo</td></tr>
+      <tr><td class="tool-name">MaxAI.me</td><td class="tool-desc">Freemium</td><td class="tool-desc"><span class="badge badge-paid">PAID</span> Comparable range</td></tr>
+      <tr><td class="tool-name">Perplexity</td><td class="tool-desc"><span class="badge badge-free">FREE</span> Generous</td><td class="tool-desc"><span class="badge badge-paid">PAID</span> Pro tier</td></tr>
+    </table>
+    <div class="callout blue">
+      <strong>Verify before buying:</strong> pricing changes often — check each vendor's own pricing page.
+    </div>
+  </section>
+</section>
+
+<!-- SECTION 4: WORKFLOWS -->
+<section>
+  <section>
+    <div class="slide-label">Section 4 — Workflows</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Pick the Right Tool</div>
+    <p class="section-desc">Three real scenarios and which tool fits.</p>
+    <div class="nav-hint">↓ ver cada caso</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Social &amp; Email</div>
+    <h3>Scenario: fast replies on LinkedIn, X, Gmail</h3>
+    <p><strong>Use Merlin AI.</strong> Dedicated inline buttons draft replies and summaries directly on those sites — no copy-paste to a separate chat window.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Creative Output</div>
+    <h3>Scenario: need image or short-video generation too</h3>
+    <p><strong>Use Monica.</strong> Handles writing, translation, and summarization plus native image/video generation in one place — watch the credit system on cheaper plans.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Research</div>
+    <h3>Scenario: need a cited, verifiable answer</h3>
+    <p><strong>Use Perplexity.</strong> Built for research and fact-checking with inline source citations — not a general in-page chat assistant.</p>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Budget / Speed</div>
+    <h3>Scenario: cheapest daily chat, or fastest inline text edits</h3>
+    <p><strong>Sider</strong> wins on price for plain daily chat. <strong>MaxAI.me</strong> wins on speed for highlight-text-and-act edits on any webpage.</p>
+  </section>
+</section>
+
+<!-- SECTION 5: LIMITS & TIPS -->
+<section>
+  <section>
+    <div class="slide-label">Section 5 — Limits &amp; Tips</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Limits &amp; Tips</div>
+    <p class="section-desc">What none of these tools do, and how to avoid getting burned.</p>
+    <div class="nav-hint">↓ ver detalle</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 — Limits</div>
+    <table class="tool-table">
+      <tr><th>Limit</th><th>Applies to</th></tr>
+      <tr><td class="tool-name">No API / dev access</td><td class="tool-desc">Merlin, Monica, Sider, MaxAI.me — all end-user only</td></tr>
+      <tr><td class="tool-name">Credit systems drain fast</td><td class="tool-desc">Monica, Sider on cheaper plans</td></tr>
+      <tr><td class="tool-name">Prompts pass through a third party</td><td class="tool-desc">All aggregator wrappers — avoid sensitive data</td></tr>
+      <tr><td class="tool-name">No social/email buttons</td><td class="tool-desc">Perplexity, MaxAI.me (generic act-on-text only)</td></tr>
+    </table>
+    <div class="callout green">
+      <strong>Tip:</strong> if you only ever use one model, its native app (ChatGPT, Claude, Gemini directly) is usually cheaper than any aggregator.
+    </div>
+  </section>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section>
+  <div class="slide-label">Quick Reference</div>
+  <p class="section-number">Quick Reference</p>
+  <div class="section-title">Cheat Sheet</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Tools by strength</h4>
+      <span class="pill">Merlin AI — in-page social/email</span>
+      <span class="pill">Monica — image/video gen</span>
+      <span class="pill">Sider — cheapest daily chat</span>
+      <span class="pill">MaxAI.me — fastest text-act</span>
+      <span class="pill">Perplexity — cited research</span>
+    </div>
+    <div class="col-card">
+      <h4>Merlin shortcut</h4>
+      <div class="code">
+        <span class="c">// open Merlin anywhere</span><br/>
+        <span class="k">Ctrl</span> + <span class="k">M</span> <span class="dim">(Windows)</span><br/>
+        <span class="k">⌘</span> + <span class="k">M</span> <span class="dim">(Mac)</span><br/>
+        <span class="c">// then pick model</span><br/>
+        <span class="hl">GPT-5.2</span> · <span class="hl">Claude Opus 4.6</span> · <span class="hl">Gemini 3.0</span> · <span class="hl">DeepSeek</span>
+      </div>
+    </div>
+  </div>
+  <div class="nav-hint">End of guide</div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>

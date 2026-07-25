@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Excalidraw — User Guide</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- COVER -->
+<section>
+  <p class="section-number">User Guide</p>
+  <div class="cover-title">Excalidraw</div>
+  <p class="cover-sub">Free hand-drawn whiteboard for fast sketching</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>No signup — open the site and draw instantly</li>
+    <li>Real-time multiplayer collaboration built in</li>
+    <li>Open-source, self-hostable, no vendor lock-in</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">Whiteboard</span>
+    <span class="tag">Open Source</span>
+    <span class="tag">Free</span>
+    <span class="tag">Diagrams</span>
+    <span class="tag">Collaboration</span>
+  </div>
+  <div class="nav-hint">→ next section · ↓ sub-slides within section</div>
+</section>
+
+<!-- SECTION 1: WHAT IS IT -->
+<section>
+  <section>
+    <div class="slide-label">Section 1 — What Is It</div>
+    <p class="section-number">01</p>
+    <div class="section-title">What Is It</div>
+    <p class="section-desc">A browser-based infinite canvas that draws in a deliberate hand-drawn style.</p>
+    <div class="nav-hint">↓ to dive in</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — Concept</div>
+    <h3>The core idea</h3>
+    <p>Excalidraw is a free, open-source virtual whiteboard for sketching diagrams, flowcharts, wireframes, and mind maps. It runs entirely in the browser on an infinite canvas — no account, no install.</p>
+    <div class="callout blue"><strong>Category:</strong> lightweight sketch tool, not a full design or workshop platform.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — Mental Model</div>
+    <h3>Draft, not final design</h3>
+    <p>Every shape renders in a wobbly, hand-drawn style. That's deliberate — it signals "this is a rough idea" rather than "this is the finished artifact."</p>
+    <div class="callout"><strong>Think of it as:</strong> a whiteboard marker, not a vector design tool.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 — Key Distinction</div>
+    <h3>Where it sits vs other tools</h3>
+    <p>Figma/Whimsical produce polished, presentation-ready output. Miro is a full workshop platform. Excalidraw trades polish and features for speed and zero friction.</p>
+    <div class="callout green"><strong>Use it when:</strong> the diagram is for thinking, not for shipping to a client.</div>
+  </section>
+</section>
+
+<!-- SECTION 2: GETTING STARTED -->
+<section>
+  <section>
+    <div class="slide-label">Section 2 — Getting Started</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Getting Started</div>
+    <p class="section-desc">No install, no signup — open the canvas and start drawing.</p>
+    <div class="nav-hint">↓ setup steps</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Open & Draw</div>
+    <h3>Zero setup</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Go to excalidraw.com</div><div class="step-sub">No account, no login wall</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Pick a tool and start drawing</div><div class="step-sub">Shapes, arrows, freehand, text</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Work persists locally in the browser</div><div class="step-sub">Refresh-safe, stored client-side</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Shortcuts</div>
+    <h3>Core keyboard shortcuts</h3>
+    <table class="tool-table">
+      <tr><th>Key</th><th>Tool</th></tr>
+      <tr><td class="tool-name">V / 1</td><td class="tool-desc">Select</td></tr>
+      <tr><td class="tool-name">R</td><td class="tool-desc">Rectangle</td></tr>
+      <tr><td class="tool-name">D</td><td class="tool-desc">Diamond</td></tr>
+      <tr><td class="tool-name">O</td><td class="tool-desc">Ellipse</td></tr>
+      <tr><td class="tool-name">A</td><td class="tool-desc">Arrow</td></tr>
+      <tr><td class="tool-name">L</td><td class="tool-desc">Line</td></tr>
+      <tr><td class="tool-name">T</td><td class="tool-desc">Text</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Save & Export</div>
+    <h3>Getting your work out</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Ctrl+S to save</div><div class="step-sub">Exports native .excalidraw JSON scene file</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Export as image</div><div class="step-sub">PNG or SVG, from the export menu</div></div>
+    </div>
+    <div class="callout blue"><strong>Tip:</strong> .excalidraw files stay fully editable when reopened — unlike a flattened PNG.</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 — Self-Host</div>
+    <h3>Run it yourself</h3>
+    <div class="code">
+<span class="k">docker run</span> <span class="hl">-p 8080:80</span> excalidraw/excalidraw
+    </div>
+    <p>Open-source, MIT-licensed — self-host for full data control instead of using excalidraw.com.</p>
+  </section>
+</section>
+
+<!-- SECTION 3: FEATURES -->
+<section>
+  <section>
+    <div class="slide-label">Section 3 — Features</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Features</div>
+    <p class="section-desc">What the canvas actually gives you, beyond basic shapes.</p>
+    <div class="nav-hint">↓ feature breakdown</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Core Features</div>
+    <h3>Canvas capabilities</h3>
+    <table class="tool-table">
+      <tr><th>Feature</th><th>What it does</th></tr>
+      <tr><td class="tool-name">Infinite Canvas</td><td class="tool-desc">Pan and zoom freely, no page bounds</td></tr>
+      <tr><td class="tool-name">Shapes & Freehand</td><td class="tool-desc">Rectangle, diamond, ellipse, arrow, line, freehand, text</td></tr>
+      <tr><td class="tool-name">Live Collaboration</td><td class="tool-desc">Real-time multiplayer via shareable link, no account needed</td></tr>
+      <tr><td class="tool-name">Libraries</td><td class="tool-desc">Community shape/icon libraries, searchable and importable</td></tr>
+      <tr><td class="tool-name">Mermaid Import</td><td class="tool-desc">Paste Mermaid syntax to auto-generate a diagram</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">03 — Excalidraw+ Extras</div>
+    <h3>Paid-tier additions <span class="badge badge-paid">Paid</span></h3>
+    <table class="tool-table">
+      <tr><th>Feature</th><th>What it does</th></tr>
+      <tr><td class="tool-name">Cloud Storage</td><td class="tool-desc">Persistent boards synced to account</td></tr>
+      <tr><td class="tool-name">Voice / Screenshare</td><td class="tool-desc">Talk while co-editing the same board</td></tr>
+      <tr><td class="tool-name">AI Diagram Gen</td><td class="tool-desc">Text-to-diagram generation <span class="badge badge-beta">Beta</span></td></tr>
+      <tr><td class="tool-name">Team Spaces</td><td class="tool-desc">Shared workspace across a team</td></tr>
+    </table>
+    <div class="callout"><strong>Free tier</strong> covers all core drawing — paid tier is purely collaboration/cloud extras.</div>
+  </section>
+</section>
+
+<!-- SECTION 4: WORKFLOWS -->
+<section>
+  <section>
+    <div class="slide-label">Section 4 — Workflows</div>
+    <p class="section-number">04</p>
+    <div class="section-title">Workflows</div>
+    <p class="section-desc">Two common ways teams actually use Excalidraw day-to-day.</p>
+    <div class="nav-hint">↓ walk through each</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Sketch & Share</div>
+    <h3>Diagram a system, then share it</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Open excalidraw.com</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Draw boxes and arrows for components</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Click Share → generate a live link</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Teammate opens link, edits in real time</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">5</div>
+      <div><div class="step-title">Export PNG/SVG to embed in docs</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 — Self-Host for a Team</div>
+    <h3>Keep it fully internal</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Run the Docker image on internal infra</div><div class="step-sub">docker run -p 8080:80 excalidraw/excalidraw</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Share the internal URL with the team</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Team collaborates without any external service</div></div>
+    </div>
+  </section>
+</section>
+
+<!-- SECTION 5: LIMITS & TIPS -->
+<section>
+  <section>
+    <div class="slide-label">Section 5 — Limits & Tips</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Limits & Tips</div>
+    <p class="section-desc">Where it falls short, and how to get more out of it anyway.</p>
+    <div class="nav-hint">↓ gotchas + tips</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 — Limits</div>
+    <h3>Know before you rely on it</h3>
+    <table class="tool-table">
+      <tr><th>Limit</th><th>Detail</th></tr>
+      <tr><td class="tool-name">No cloud save (free)</td><td class="tool-desc">Local-only unless on Excalidraw+</td></tr>
+      <tr><td class="tool-name">No facilitation tools</td><td class="tool-desc">No voting, timers, workshop templates like Miro</td></tr>
+      <tr><td class="tool-name">Not pixel-precise</td><td class="tool-desc">Weaker fit for polished UI wireframes</td></tr>
+      <tr><td class="tool-name">Collab extras paywalled</td><td class="tool-desc">Voice/screenshare/cloud need Excalidraw+</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">05 — Tips</div>
+    <h3>Get more out of it</h3>
+    <div class="callout blue"><strong>Bookmark scene links</strong> — the share link captures a specific board state you can return to.</div>
+    <div class="callout green"><strong>Embed exports</strong> — drop exported PNG/SVG straight into Markdown or Notion docs.</div>
+    <div class="callout"><strong>Use libraries</strong> — the library panel has reusable icon sets so you're not redrawing common shapes.</div>
+  </section>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section>
+  <div class="slide-label">Quick Reference</div>
+  <p class="section-number">Cheat Sheet</p>
+  <div class="section-title">Quick Reference</div>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Shortcuts</h4>
+      <span class="pill">V select</span>
+      <span class="pill">R rectangle</span>
+      <span class="pill">D diamond</span>
+      <span class="pill">O ellipse</span>
+      <span class="pill">A arrow</span>
+      <span class="pill">L line</span>
+      <span class="pill">T text</span>
+      <span class="pill">Ctrl+S save</span>
+      <span class="pill">Ctrl+Z undo</span>
+      <span class="pill">Shift+drag lock ratio</span>
+      <span class="pill">Alt+drag duplicate</span>
+    </div>
+    <div class="col-card">
+      <h4>Self-host command</h4>
+      <div class="code">
+<span class="k">docker run</span> <span class="hl">-p 8080:80</span> excalidraw/excalidraw
+      </div>
+      <h4 style="margin-top:14px;">Export formats</h4>
+      <div class="code">
+.excalidraw <span class="c">// editable JSON</span><br>
+.png <span class="c">// flattened image</span><br>
+.svg <span class="c">// vector image</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
