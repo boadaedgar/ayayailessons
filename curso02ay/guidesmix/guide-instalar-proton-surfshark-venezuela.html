@@ -366,23 +366,46 @@
     <div class="slide-label">Sección 4 — Configuración</div>
     <p class="section-number">04</p>
     <div class="section-title">La configuración que importa</div>
-    <p class="section-desc">Cuatro ajustes en las dos apps. Sin estos, la VPN se cae en medio de la clase y no te enterás.</p>
+    <p class="section-desc">Cinco ajustes. Se configuran una vez y no se tocan nunca más — si algo hay que prender y apagar seguido, está mal puesto.</p>
     <div class="nav-hint">↓ para entrar</div>
   </section>
 
   <section>
     <div class="slide-label">04 · Configuración</div>
-    <h3>Los cuatro ajustes</h3>
+    <h3>Los cinco ajustes</h3>
     <table class="tool-table">
-      <tr><th>Ajuste</th><th>Para qué sirve</th></tr>
-      <tr><td class="tool-name">Kill switch</td><td class="tool-desc">Si la VPN se cae, corta el internet. Preferís quedarte sin internet a seguir sin protección sin darte cuenta</td></tr>
-      <tr><td class="tool-name">Auto-connect</td><td class="tool-desc">La VPN se prende sola al encender el equipo. Una cosa menos que recordar</td></tr>
+      <tr><th>Ajuste</th><th>Cómo va</th></tr>
+      <tr><td class="tool-name">Kill switch</td><td class="tool-desc">En <strong>Soft</strong>, encendido siempre. No lo pongas en Hard — ver la diapositiva siguiente</td></tr>
+      <tr><td class="tool-name">Auto-connect</td><td class="tool-desc">Encendido. La VPN se prende sola al arrancar el equipo, así el estado normal es "conectada"</td></tr>
       <tr><td class="tool-name">Protocolo</td><td class="tool-desc">Stealth en Proton · NoBorders en Surfshark</td></tr>
-      <tr><td class="tool-name">País de salida</td><td class="tool-desc">Colombia o Panamá. Nunca dejes "el más rápido" automático</td></tr>
+      <tr><td class="tool-name">País de salida</td><td class="tool-desc">Colombia o Panamá. Nunca dejes el automático "el más rápido"</td></tr>
+      <tr><td class="tool-name">Bypasser</td><td class="tool-desc">Agregá tu banco y los sitios venezolanos. Salen directo mientras el resto sigue protegido</td></tr>
     </table>
+    <div class="callout green">
+      <strong>Bypasser te evita apagar la VPN.</strong> Los bancos venezolanos suelen rechazar
+      conexiones desde el exterior. En vez de desconectarte cada vez, poné el banco en Bypasser
+      una sola vez: ese sitio sale por Venezuela y todo lo demás sigue saliendo por Colombia.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Configuración</div>
+    <h3>Kill switch: Soft, no Hard</h3>
+    <table class="tool-table">
+      <tr><th>Modo</th><th>Cuándo corta el internet</th></tr>
+      <tr><td class="tool-name">Soft</td><td class="tool-desc">Solo si la VPN <strong>se cae sola</strong>. Si la apagás vos a propósito, internet sigue andando</td></tr>
+      <tr><td class="tool-name">Hard</td><td class="tool-desc">Siempre que la VPN no esté conectada, aunque la hayas apagado vos</td></tr>
+    </table>
+    <p>Soft corta justo en el caso peligroso — que se caiga sin que te des cuenta — y te deja
+    tranquila en el caso legítimo, cuando la apagás a propósito.</p>
     <div class="callout">
-      <strong>El kill switch es el que más cuesta entender.</strong> Parece molesto que te corte
-      el internet. Pero es justo lo que querés: enterarte al instante de que la VPN se cayó.
+      <strong>Por qué no Hard:</strong> con Hard, cada vez que necesites internet sin VPN tenés
+      que desactivar el kill switch, y tarde o temprano se te queda apagado. Un interruptor que
+      hay que prender y apagar seguido se olvida. Con Soft nunca lo tocás.
+    </div>
+    <div class="callout blue">
+      <strong>El kill switch no te salva del olvido.</strong> Lo que de verdad te protege es
+      comprobar la IP antes de empezar a trabajar. Eso está en la diapositiva siguiente.
     </div>
   </section>
 
@@ -491,11 +514,12 @@
       <span class="pill">Surfshark: del grupo, no la cambies</span>
       <span class="pill">Surfshark primero, después Proton</span>
       <h4 style="margin-top:12px;">Ajustes en las dos apps</h4>
-      <span class="pill">Kill switch: ON</span>
+      <span class="pill">Kill switch: <strong>Soft</strong>, nunca Hard</span>
       <span class="pill">Auto-connect: ON</span>
       <span class="pill">Proton: protocolo Stealth</span>
       <span class="pill">Surfshark: NoBorders ON</span>
       <span class="pill">País: Colombia o Panamá</span>
+      <span class="pill">Bypasser: banco y sitios locales</span>
       <span class="pill">Nunca las dos prendidas</span>
       <span class="pill">Instalar desde la tienda</span>
       <span class="pill">Comprobar la IP antes de empezar</span>
