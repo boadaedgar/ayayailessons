@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instalar Proton VPN y Surfshark en Venezuela — Guía</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" />
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+    }
+    .reveal .slides section { text-align: left; }
+    .reveal h1, .reveal h2 { color: var(--accent); }
+    .reveal h3 { color: var(--blue); font-size: 0.95em; margin-bottom: 12px; }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.55; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 4px 0; }
+    .reveal ul li::before { content: "▸ "; color: var(--accent); }
+
+    .slide-label {
+      position: absolute; top: -38px; right: 0;
+      font-size: 0.42em; color: #444;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .cover-title { font-size: 1.6em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .cover-sub   { font-size: 0.8em; color: var(--muted); margin-bottom: 24px; }
+    .cover-tags  { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      display: inline-block;
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.65em; color: var(--blue);
+    }
+    .tag.amber {
+      background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25);
+      color: var(--accent);
+    }
+
+    .section-number { font-size: 0.6em; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title  { font-size: 1.4em; font-weight: 700; color: var(--accent); line-height: 1.2; margin-bottom: 12px; }
+    .section-desc   { font-size: 0.78em; color: #aaa; max-width: 600px; }
+
+    .code {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.68em; line-height: 1.8; color: #ccc; margin: 10px 0;
+    }
+    .code .k   { color: var(--blue); }
+    .code .s   { color: var(--green); }
+    .code .c   { color: #444; font-style: italic; }
+    .code .hl  { color: var(--accent); }
+    .code .dim { color: #555; }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 10px 14px;
+      font-size: 0.74em; margin: 12px 0; color: #ccc; font-style: italic;
+    }
+    .callout strong { color: var(--accent); font-style: normal; }
+    .callout.blue   { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.green  { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tool-table th {
+      font-size: 0.6em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 6px 10px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table td { padding: 7px 10px; font-size: 0.68em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-name { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+    .tool-desc { color: #bbb; }
+
+    .workflow-step { display: flex; align-items: flex-start; gap: 14px; margin: 10px 0; }
+    .step-num {
+      min-width: 28px; height: 28px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8em; flex-shrink: 0; margin-top: 2px;
+    }
+    .step-title { font-size: 0.78em; font-weight: 600; color: var(--text); }
+    .step-sub   { font-size: 0.68em; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .col-card h4 { font-size: 0.72em; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .badge {
+      display: inline-block; border-radius: 4px; padding: 1px 7px;
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; vertical-align: middle; margin-left: 6px;
+    }
+    .badge-beta { background: rgba(255,213,79,0.15); color: var(--yellow); border: 1px solid rgba(255,213,79,0.3); }
+    .badge-free { background: rgba(129,199,132,0.15); color: var(--green); border: 1px solid rgba(129,199,132,0.3); }
+    .badge-paid { background: rgba(229,115,115,0.15); color: var(--red);   border: 1px solid rgba(229,115,115,0.3); }
+
+    .pill {
+      display: inline-block; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 2px 10px; font-size: 0.62em; color: #aaa; margin: 2px;
+    }
+
+    .nav-hint { font-size: 0.4em; color: #333; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- COVER -->
+<section>
+  <p class="section-number">Guía de instalación</p>
+  <div class="cover-title">Proton VPN y Surfshark</div>
+  <p class="cover-sub">Instalarlas en Venezuela, paso a paso</p>
+  <ul style="color:#888; font-size:0.72em;">
+    <li>Las dos apps instaladas y funcionando, con la configuración que de verdad importa</li>
+    <li>Qué hacer cuando CANTV bloquea una — por eso instalamos dos, no una</li>
+    <li>Cómo comprobar que estás conectada de verdad, sin adivinar</li>
+  </ul>
+  <div class="cover-tags">
+    <span class="tag amber">ayayai · Temporada 2</span>
+    <span class="tag">Venezuela</span>
+    <span class="tag">Proton VPN</span>
+    <span class="tag">Surfshark</span>
+    <span class="tag">Nersy y Zenaida</span>
+  </div>
+  <div class="nav-hint">→ siguiente sección · ↓ sub-diapositivas dentro de la sección</div>
+</section>
+
+<!-- SECCIÓN 1 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 1 — Antes de instalar</div>
+    <p class="section-number">01</p>
+    <div class="section-title">Antes de instalar</div>
+    <p class="section-desc">Por qué hacen falta dos VPN, y por qué hay que instalarlas hoy y no el día que las necesites.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Antes de instalar</div>
+    <h3>Lo más importante de toda la guía</h3>
+    <div class="callout">
+      <strong>Instalá las dos apps HOY.</strong> En enero de 2025 bloquearon en Venezuela las
+      <em>páginas web</em> de más de 20 VPN — Proton, NordVPN, Surfshark, ExpressVPN. Las apps
+      siguen funcionando perfectamente. Lo que se bloqueó fue el sitio de donde se descargan.
+    </div>
+    <p>Si esperás a necesitarla para instalarla, te vas a encontrar con que no podés
+    llegar a la página de descarga. Y para llegar a esa página necesitarías… una VPN.</p>
+    <div class="callout green">
+      <strong>Por eso:</strong> descargá desde la tienda del teléfono (Play Store / App Store),
+      no desde la página web. La tienda no está bloqueada.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Antes de instalar</div>
+    <h3>Qué hace CANTV</h3>
+    <p>CANTV es la empresa de internet del Estado. No solo bloquea páginas: mira
+    <em>qué tipo</em> de tráfico pasa y reconoce cuando es una VPN normal, aunque no sepa a
+    dónde vas.</p>
+    <p>Por eso una VPN cualquiera no alcanza. Hacen falta las que saben disfrazarse:</p>
+    <table class="tool-table">
+      <tr><th>App</th><th>Cómo se disfraza</th></tr>
+      <tr><td class="tool-name">Proton VPN</td><td class="tool-desc">Protocolo <strong>Stealth</strong> — hace que el tráfico parezca navegación normal</td></tr>
+      <tr><td class="tool-name">Surfshark</td><td class="tool-desc">Modo <strong>NoBorders</strong> — se da cuenta solo de que te están filtrando y cambia de servidor</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">01 · Antes de instalar</div>
+    <h3>¿Por qué dos y no una?</h3>
+    <p>Porque son empresas distintas. Cuando bloquean a una, casi nunca bloquean a la otra
+    el mismo día. Tener las dos es la diferencia entre <em>"se me cayó"</em> y
+    <em>"me quedé sin clase"</em>.</p>
+    <table class="tool-table">
+      <tr><th>App</th><th>Precio</th><th>Papel</th></tr>
+      <tr><td class="tool-name">Proton VPN Plus</td><td class="tool-desc">~US$2,99/mes en plan de 2 años · US$9,99 suelto</td><td class="tool-desc">La principal</td></tr>
+      <tr><td class="tool-name">Surfshark</td><td class="tool-desc">~US$1,99–2,49/mes en plan de 2 años</td><td class="tool-desc">El respaldo</td></tr>
+      <tr><td class="tool-name">Proton Free <span class="badge badge-free">Gratis</span></td><td class="tool-desc">US$0</td><td class="tool-desc">Sirve para navegar, no para clase</td></tr>
+    </table>
+    <div class="callout blue">
+      <strong>Edgar paga las suscripciones.</strong> Las tarjetas venezolanas no pasan en estos
+      servicios. No intentes pagarlas tú.
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 2 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 2 — Proton VPN</div>
+    <p class="section-number">02</p>
+    <div class="section-title">Instalar Proton VPN</div>
+    <p class="section-desc">La principal. Suiza, de código abierto, y la que la prensa venezolana y VE sin Filtro nombran.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Proton VPN</div>
+    <h3>Instalación en el teléfono</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Abrí la tienda de tu teléfono</div>
+      <div class="step-sub">Play Store (Android) · App Store (iPhone)</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Buscá "Proton VPN" e instalá</div>
+      <div class="step-sub">El ícono es un candado morado. Que diga Proton AG</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Abrí la app y entrá con el usuario que te dio Edgar</div>
+      <div class="step-sub">Si no tenés usuario todavía, avisá antes de la clase</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Aceptá el permiso de VPN que pide el teléfono</div>
+      <div class="step-sub">Es normal — sin ese permiso la app no puede conectarse</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Proton VPN</div>
+    <h3>Instalación en la computadora</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Entrá a la página oficial</div>
+      <div class="step-sub">protonvpn.com/download</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Descargá la versión de Windows e instalá</div>
+      <div class="step-sub">Dale "Sí" cuando Windows pregunte si permitís cambios</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Entrá con el mismo usuario del teléfono</div>
+      <div class="step-sub">La misma cuenta sirve para varios equipos</div></div>
+    </div>
+    <div class="callout">
+      <strong>Si la página no carga:</strong> ya te la bloquearon. Conectá primero la VPN del
+      teléfono, compartí internet a la computadora, y descargá desde ahí. O pedile a Edgar
+      que te pase el instalador por WhatsApp.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">02 · Proton VPN</div>
+    <h3>Activar Stealth — esto es lo que la hace funcionar</h3>
+    <p>Sin esto, CANTV la reconoce y la corta. Con esto, no.</p>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Entrá a Ajustes dentro de la app</div>
+      <div class="step-sub">El ícono de engranaje</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Buscá "Protocolo" y elegí Stealth</div>
+      <div class="step-sub">Settings → Protocol → Stealth</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Elegí servidor en Colombia o Panamá</div>
+      <div class="step-sub">Son los más cerca — menos lentitud</div></div>
+    </div>
+    <div class="callout green">
+      <strong>Regla simple:</strong> si un día no conecta, lo primero que se prueba es cambiar
+      el protocolo a Stealth. Resuelve la mayoría de los casos.
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 3 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 3 — Surfshark</div>
+    <p class="section-number">03</p>
+    <div class="section-title">Instalar Surfshark</div>
+    <p class="section-desc">El respaldo. La más barata, dispositivos ilimitados, y se adapta sola cuando la filtran.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Surfshark</div>
+    <h3>Instalación</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Buscá "Surfshark" en la tienda del teléfono</div>
+      <div class="step-sub">Ícono de tiburón azul. Que diga Surfshark B.V.</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">En la computadora: surfshark.com/download</div>
+      <div class="step-sub">Mismo procedimiento que Proton</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Entrá con el usuario que te dio Edgar</div>
+      <div class="step-sub">Una sola cuenta cubre teléfono y computadora — no hay límite</div></div>
+    </div>
+    <div class="callout blue">
+      <strong>Ventaja de Surfshark:</strong> dispositivos ilimitados. Teléfono, computadora,
+      tablet, todo con la misma cuenta.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">03 · Surfshark</div>
+    <h3>Activar NoBorders</h3>
+    <p>Es el modo hecho para países donde el internet está filtrado. Se da cuenta solo de
+    que CANTV está bloqueando y busca servidores que pasen.</p>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Ajustes → Avanzado</div>
+      <div class="step-sub">Settings → Advanced</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Activá "NoBorders"</div>
+      <div class="step-sub">En algunas versiones se activa solo cuando detecta bloqueo</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Servidor en Colombia o Panamá</div>
+      <div class="step-sub">Igual que en Proton</div></div>
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 4 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 4 — Configuración</div>
+    <p class="section-number">04</p>
+    <div class="section-title">La configuración que importa</div>
+    <p class="section-desc">Cuatro ajustes en las dos apps. Sin estos, la VPN se cae en medio de la clase y no te enterás.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Configuración</div>
+    <h3>Los cuatro ajustes</h3>
+    <table class="tool-table">
+      <tr><th>Ajuste</th><th>Para qué sirve</th></tr>
+      <tr><td class="tool-name">Kill switch</td><td class="tool-desc">Si la VPN se cae, corta el internet. Preferís quedarte sin internet a seguir sin protección sin darte cuenta</td></tr>
+      <tr><td class="tool-name">Auto-connect</td><td class="tool-desc">La VPN se prende sola al encender el equipo. Una cosa menos que recordar</td></tr>
+      <tr><td class="tool-name">Protocolo</td><td class="tool-desc">Stealth en Proton · NoBorders en Surfshark</td></tr>
+      <tr><td class="tool-name">País de salida</td><td class="tool-desc">Colombia o Panamá. Nunca dejes "el más rápido" automático</td></tr>
+    </table>
+    <div class="callout">
+      <strong>El kill switch es el que más cuesta entender.</strong> Parece molesto que te corte
+      el internet. Pero es justo lo que querés: enterarte al instante de que la VPN se cayó.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Configuración</div>
+    <h3>Comprobar que funciona</h3>
+    <p>No adivines. Comprobalo así, cada vez que vayas a trabajar:</p>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Conectá la VPN</div>
+      <div class="step-sub">Esperá a que diga "Conectado" / "Protected"</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Abrí el navegador y buscá "cuál es mi ip"</div>
+      <div class="step-sub">Cualquier página de las que salen sirve</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Tiene que decir Colombia o Panamá</div>
+      <div class="step-sub">Si dice Venezuela, la VPN no está funcionando. No sigas</div></div>
+    </div>
+    <div class="callout green">
+      <strong>Diez segundos.</strong> Hacelo siempre antes de empezar, no después de que algo falle.
+    </div>
+  </section>
+</section>
+
+<!-- SECCIÓN 5 -->
+<section>
+  <section>
+    <div class="slide-label">Sección 5 — Cuando falla</div>
+    <p class="section-number">05</p>
+    <div class="section-title">Cuando algo falla</div>
+    <p class="section-desc">Los problemas conocidos y qué hacer con cada uno, en orden.</p>
+    <div class="nav-hint">↓ para entrar</div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Cuando falla</div>
+    <h3>Problemas conocidos</h3>
+    <table class="tool-table">
+      <tr><th>Problema</th><th>Qué hacer</th></tr>
+      <tr><td class="tool-desc">Proton no conecta en <strong>iPhone con línea Digitel</strong></td><td class="tool-desc">Falla confirmada por VE sin Filtro. Usá Surfshark en ese teléfono</td></tr>
+      <tr><td class="tool-desc">La página de la VPN no carga</td><td class="tool-desc">Bloquearon el sitio, no la app. La app sigue sirviendo</td></tr>
+      <tr><td class="tool-desc">Conecta pero va lentísimo</td><td class="tool-desc">Cambiá de servidor: probá Panamá si estabas en Colombia</td></tr>
+      <tr><td class="tool-desc">Se cae cada rato</td><td class="tool-desc">Cambiá el protocolo a Stealth. Si sigue, pasate a Surfshark</td></tr>
+      <tr><td class="tool-desc">No conecta de ninguna forma</td><td class="tool-desc">Probá la otra app. Para eso están las dos</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Cuando falla</div>
+    <h3>Orden para resolver</h3>
+    <div class="workflow-step">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Cambiá el protocolo a Stealth / activá NoBorders</div>
+      <div class="step-sub">Resuelve la mayoría de los casos</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Cambiá de servidor</div>
+      <div class="step-sub">Colombia ↔ Panamá ↔ Estados Unidos</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Abrí la otra app</div>
+      <div class="step-sub">Proton ↔ Surfshark. Nunca las dos prendidas a la vez</div></div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Escribí al grupo de ayayai</div>
+      <div class="step-sub">Decí qué probaste de lo anterior — así no repetimos</div></div>
+    </div>
+    <div class="callout">
+      <strong>Nunca prendas las dos VPN al mismo tiempo.</strong> Se pelean entre ellas y
+      ninguna funciona. Apagá una antes de prender la otra.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">05 · Cuando falla</div>
+    <h3>Lo que la VPN no resuelve</h3>
+    <p>La VPN cambia desde dónde parece que te estás conectando. Eso es todo lo que hace.</p>
+    <p>Para usar Claude hace falta además una cuenta y un pago, y eso es un problema aparte
+    que resuelve Edgar — no lo arregla ninguna VPN.</p>
+    <div class="callout blue">
+      <strong>Si Claude te da error de país o de tarjeta:</strong> no es la VPN. Avisale a Edgar.
+      Está en la guía <em>Claude Code con VPN (Venezuela)</em>.
+    </div>
+    <div class="callout green">
+      <strong>Para lo demás la VPN sí sirve</strong> — Instagram, X, YouTube, noticias, WhatsApp
+      cuando anda raro. Ahí la vas a usar todos los días.
+    </div>
+  </section>
+</section>
+
+<!-- REFERENCIA RÁPIDA -->
+<section>
+  <div class="slide-label">Referencia rápida</div>
+  <h2 style="font-size:1.1em; margin-bottom:14px;">Referencia rápida</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h4>Ajustes en las dos apps</h4>
+      <span class="pill">Kill switch: ON</span>
+      <span class="pill">Auto-connect: ON</span>
+      <span class="pill">Proton: protocolo Stealth</span>
+      <span class="pill">Surfshark: NoBorders ON</span>
+      <span class="pill">País: Colombia o Panamá</span>
+      <span class="pill">Nunca las dos prendidas</span>
+      <span class="pill">Instalar desde la tienda</span>
+      <span class="pill">Comprobar la IP antes de empezar</span>
+    </div>
+    <div class="col-card">
+      <h4>Antes de cada clase</h4>
+      <div class="code">
+<span class="c">1 · prender la VPN</span>
+<span class="k">esperar</span> <span class="s">"Conectado"</span>
+
+<span class="c">2 · comprobar</span>
+buscar <span class="s">"cuál es mi ip"</span>
+<span class="hl">debe decir Colombia o Panamá</span>
+
+<span class="c">3 · si dice Venezuela</span>
+<span class="k">no sigas</span> <span class="dim">— revisá protocolo</span>
+
+<span class="c">4 · si no conecta</span>
+Stealth <span class="dim">→</span> otro servidor
+<span class="dim">→</span> la otra app <span class="dim">→</span> avisá
+      </div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:14px;">
+    <strong>Lo único que no se puede posponer:</strong> instalar las dos apps mientras las
+    páginas todavía cargan. Todo lo demás se arregla después.
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+  });
+</script>
+</body>
+</html>
