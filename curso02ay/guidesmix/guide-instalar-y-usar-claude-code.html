@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ayayai — Instalar y usar Claude Code, paso a paso</title>
+  <style>
+    :root {
+      --accent:  #f5a623;
+      --blue:    #4fc3f7;
+      --green:   #81c784;
+      --red:     #e57373;
+      --yellow:  #ffd54f;
+      --purple:  #b39ddb;
+      --bg:      #0f0f1a;
+      --surface: #1a1a2e;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e0e0e0;
+      --muted:   #888;
+      --faint:   #666;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 16px; line-height: 1.65;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px 80px; }
+
+    header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 24px 20px; margin-bottom: 28px;
+    }
+    .header-inner { max-width: 860px; margin: 0 auto; }
+    .logo-row { display: flex; align-items: center; gap: 14px; }
+    .logo-mark {
+      width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.1em; color: #0f0f1a;
+    }
+    .logo-word { font-size: 1.35em; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .logo-word span { color: var(--accent); }
+    .logo-slogan { font-size: 0.72em; color: var(--muted); font-style: italic; margin-top: 2px; }
+
+    .label {
+      font-size: 0.72em; color: var(--faint); letter-spacing: 1.5px;
+      text-transform: uppercase; margin: 26px 0 6px;
+    }
+    h1 { font-size: 2em; color: var(--accent); margin: 6px 0 10px; line-height: 1.15; }
+    h2 {
+      font-size: 1.3em; color: var(--accent); margin: 46px 0 14px;
+      padding-bottom: 9px; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 1.05em; color: var(--blue); margin: 26px 0 8px; }
+    p { margin: 0 0 12px; }
+    .lead { color: #bbb; font-size: 1.05em; }
+
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .chip {
+      background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 20px; padding: 4px 14px; font-size: 0.78em; color: var(--blue);
+    }
+    .chip.amber { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.3); color: var(--accent); }
+    .chip.green { background: rgba(129,199,132,0.1); border-color: rgba(129,199,132,0.3); color: var(--green); }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px; margin: 18px 0;
+    }
+
+    /* Índice */
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+    .toc ol { margin: 0; padding-left: 22px; }
+    .toc li { padding: 3px 0; font-size: 0.95em; }
+    .toc a { border-bottom: none; }
+
+    /* Pasos */
+    .paso {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0; padding: 20px 22px; margin: 20px 0;
+    }
+    .paso-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 10px; }
+    .paso-num {
+      min-width: 36px; height: 36px; background: var(--accent); color: #0f0f1a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.95em; flex-shrink: 0;
+    }
+    .paso-title { font-size: 1.15em; font-weight: 700; color: #fff; line-height: 1.3; padding-top: 5px; }
+
+    .sub { margin: 16px 0 16px 6px; padding-left: 16px; border-left: 2px solid rgba(255,255,255,0.07); }
+    .sub-title { font-weight: 600; color: var(--yellow); font-size: 0.95em; margin-bottom: 4px; }
+    .sub p { margin: 0 0 8px; font-size: 0.95em; }
+
+    .ver {
+      background: rgba(129,199,132,0.08); border: 1px dashed rgba(129,199,132,0.35);
+      border-radius: 8px; padding: 10px 14px; margin: 10px 0;
+      font-size: 0.9em; color: #cfe8d0;
+    }
+    .ver strong { color: var(--green); }
+
+    .callout {
+      background: rgba(245,166,35,0.08); border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 14px 0;
+      font-size: 0.93em; color: #ccc;
+    }
+    .callout strong { color: var(--accent); }
+    .callout.blue { background: rgba(79,195,247,0.08); border-left-color: var(--blue); }
+    .callout.blue strong { color: var(--blue); }
+    .callout.red { background: rgba(229,115,115,0.08); border-left-color: var(--red); }
+    .callout.red strong { color: var(--red); }
+    .callout.green { background: rgba(129,199,132,0.08); border-left-color: var(--green); }
+    .callout.green strong { color: var(--green); }
+    .callout.purple { background: rgba(179,157,219,0.08); border-left-color: var(--purple); }
+    .callout.purple strong { color: var(--purple); }
+
+    table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+    th {
+      font-size: 0.72em; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 8px 10px; text-align: left;
+      border-bottom: 1px solid var(--border); font-weight: 400;
+    }
+    td { padding: 10px; font-size: 0.92em; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    .tabla-wrap { overflow-x: auto; }
+    .mono { font-family: 'Courier New', monospace; color: var(--blue); white-space: nowrap; }
+
+    ul.check { list-style: none; padding: 0; margin: 8px 0; }
+    ul.check li {
+      padding: 8px 0 8px 32px; position: relative; font-size: 0.95em;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    ul.check li:last-child { border-bottom: none; }
+    ul.check li::before {
+      content: "☐"; position: absolute; left: 4px; top: 7px;
+      color: var(--accent); font-size: 1.15em;
+    }
+
+    ul.plain { list-style: none; padding: 0; margin: 8px 0; }
+    ul.plain li { padding: 5px 0 5px 20px; position: relative; font-size: 0.95em; }
+    ul.plain li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+
+    a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(79,195,247,0.3); }
+    a:hover { color: var(--accent); border-bottom-color: rgba(245,166,35,0.5); }
+
+    code {
+      font-family: 'Courier New', monospace; font-size: 0.92em;
+      background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 6px; color: var(--blue);
+    }
+    pre {
+      background: rgba(0,0,0,0.55); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px; overflow-x: auto;
+      font-family: 'Courier New', monospace; font-size: 0.88em;
+      line-height: 1.85; color: #ddd; margin: 12px 0; white-space: pre;
+    }
+    pre .c { color: #5a5a6a; font-style: italic; }
+    pre .ok { color: var(--green); }
+    pre .hl { color: var(--accent); }
+
+    /* Consola simulada */
+    .console-mock { border-radius: 8px; overflow: hidden; border: 1px solid #000; margin: 14px 0; }
+    .console-titlebar {
+      background: #012456; color: #eee; font-size: 0.75em;
+      padding: 7px 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .console-titlebar .dots { display: flex; gap: 6px; margin-left: auto; }
+    .console-titlebar .dot { width: 10px; height: 10px; border-radius: 50%; background: #666; }
+    .console-body {
+      background: #012456; color: #eee; font-family: 'Courier New', monospace;
+      font-size: 0.82em; line-height: 1.9; padding: 14px 16px;
+      overflow-x: auto; white-space: pre;
+    }
+    .console-body .path { color: #55aaff; }
+    .console-body .ok { color: #7fff7f; }
+    .console-cap { font-size: 0.8em; color: var(--muted); margin-top: -6px; }
+
+    .concepto {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 18px; margin: 12px 0;
+    }
+    .concepto .term { font-size: 1.02em; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
+    .concepto .analog { font-size: 0.9em; color: var(--muted); font-style: italic; margin-top: 6px; }
+
+    .os-tabs { display: flex; gap: 8px; margin: 14px 0 0; }
+    .os-pill {
+      font-size: 0.75em; letter-spacing: 1px; text-transform: uppercase;
+      border-radius: 6px; padding: 3px 10px; font-weight: 700;
+    }
+    .os-win { background: rgba(79,195,247,0.15); color: var(--blue); border: 1px solid rgba(79,195,247,0.35); }
+    .os-mac { background: rgba(179,157,219,0.15); color: var(--purple); border: 1px solid rgba(179,157,219,0.35); }
+
+    footer {
+      margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+      font-size: 0.88em; color: var(--faint);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-mark">ai</div>
+      <div>
+        <div class="logo-word">aya<span>ya</span>i</div>
+        <div class="logo-slogan">Tecnología moderna para la familia — nadie se queda atrás</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <p style="margin-bottom:0;"><a href="../index.html" style="font-size:0.9em;">← Todas las sesiones y guías</a></p>
+
+  <div class="label">Guía completa · Temporada 2</div>
+  <h1>Instalar y usar Claude Code, paso a paso</h1>
+  <p class="lead">Esta guía no da nada por sabido. Empieza por explicarte qué es cada cosa, y después te lleva de la mano — parte por parte — hasta que Claude Code esté funcionando en tu computadora y le hayas pedido tu primera tarea. Si en algún punto te trancas, no sigas: escribe al grupo.</p>
+
+  <div class="meta">
+    <span class="chip amber">Windows y Mac</span>
+    <span class="chip">Venezuela · Florida</span>
+    <span class="chip">Sin experiencia técnica</span>
+    <span class="chip green">Tiempo: 45–60 minutos</span>
+  </div>
+
+  <div class="callout blue">
+    <strong>Lee esto primero:</strong> vas a escribir comandos en una ventana negra o azul. No le tengas miedo. Nada de lo que hay aquí borra tus fotos, tus documentos ni tus programas. Y todo comando solo se ejecuta cuando le das <strong>Enter</strong> — antes de eso, no pasa nada.
+  </div>
+
+  <div class="toc">
+    <div class="label" style="margin:0 0 8px;">Lo que vamos a hacer</div>
+    <ol>
+      <li><a href="#p0">Antes de empezar — qué necesitas tener a mano</a></li>
+      <li><a href="#p1">Las palabras que vas a oír todo el día (los conceptos)</a></li>
+      <li><a href="#p2">Paso 1 — VPN (solo Venezuela)</a></li>
+      <li><a href="#p3">Paso 2 — Cuenta de Claude y plan pago</a></li>
+      <li><a href="#p4">Paso 3 — Abrir la terminal por primera vez</a></li>
+      <li><a href="#p5">Paso 4 — Instalar Claude Code</a></li>
+      <li><a href="#p6">Paso 5 — Comprobar que quedó instalado</a></li>
+      <li><a href="#p7">Paso 6 — Conectar tu cuenta (login)</a></li>
+      <li><a href="#p8">Paso 7 — Crear la carpeta de tu proyecto</a></li>
+      <li><a href="#p9">Paso 8 — Tu primera tarea con Claude</a></li>
+      <li><a href="#p10">Uso básico — cómo se trabaja con Claude Code</a></li>
+      <li><a href="#p11">Cuando algo sale mal</a></li>
+      <li><a href="#p12">Tu práctica de la semana</a></li>
+    </ol>
+  </div>
+
+  <!-- ============ PARTE 0 ============ -->
+  <h2 id="p0">Antes de empezar</h2>
+
+  <div class="card">
+    <ul class="check">
+      <li><strong>Tu computadora</strong> — Windows o Mac. Desde el teléfono <em>no</em> se puede. Claude Code vive en la computadora.</li>
+      <li><strong>Internet estable</strong> — se descargan cosas.</li>
+      <li><strong>Tu correo electrónico abierto</strong> — te van a mandar un código de confirmación.</li>
+      <li><strong>Una tarjeta</strong> para el plan pago (o hablar con Edgar antes, si estás en Venezuela).</li>
+      <li><strong>Papel y lápiz</strong> — anota el correo y la contraseña que uses. En serio: anótalos.</li>
+      <li><strong>Una hora sin apuro</strong>. Esto no es de escuchar, es de hacer.</li>
+    </ul>
+  </div>
+
+  <div class="callout red">
+    <strong>Si estás en Venezuela:</strong> empieza por el Paso 1 (VPN). Sin VPN prendido, la página de Claude no te va a abrir y el programa no se va a poder conectar. Es lo primero, siempre.
+  </div>
+
+  <div class="callout green">
+    <strong>Si estás en Florida (u otro estado de EE.UU.):</strong> te saltas el Paso 1. Arrancas directo en el Paso 2.
+  </div>
+
+  <!-- ============ PARTE 1 — CONCEPTOS ============ -->
+  <h2 id="p1">Las palabras que vas a oír todo el día</h2>
+  <p>Antes de tocar nada, cinco minutos de vocabulario. Si entiendes estas ocho palabras, el resto de la guía se vuelve fácil.</p>
+
+  <div class="concepto">
+    <div class="term">1 · Claude Code</div>
+    <p style="margin:0;">Es Claude — la misma inteligencia artificial del chat — pero trabajando <strong>dentro de tu computadora</strong>, con tus carpetas y tus archivos reales. En el chat de la página web, Claude te escribe un texto y tú lo copias a mano. Con Claude Code, Claude <em>crea el archivo directamente en tu máquina</em>.</p>
+    <div class="analog">Piénsalo así: el chat es un asesor por teléfono. Claude Code es un asistente sentado en tu escritorio, que abre tus carpetas y hace el trabajo — pero siempre pidiéndote permiso.</div>
+  </div>
+
+  <div class="concepto">
+    <div class="term">2 · La terminal (o consola, o PowerShell)</div>
+    <p style="margin:0;">Es una ventana donde le escribes órdenes a la computadora en texto, en vez de hacer doble clic en íconos. Es el mismo explorador de archivos de siempre, pero escrito. Claude Code vive ahí adentro.</p>
+    <div class="analog">Doble clic en una carpeta = caminar con el mouse. La terminal = decirle a dónde ir, escribiéndolo.</div>
+  </div>
+
+  <div class="concepto">
+    <div class="term">3 · Comando</div>
+    <p style="margin:0;">Una palabra o frase corta que escribes en la terminal y le das Enter. La computadora la ejecuta. <code>cd fotos</code> significa "entra a la carpeta fotos". Nada más.</p>
+  </div>
+
+  <div class="concepto">
+    <div class="term">4 · Instalar</div>
+    <p style="margin:0;">Descargar un programa de internet y dejarlo listo para usarse. Instalar Claude Code significa que después vas a poder escribir la palabra <code>claude</code> en cualquier carpeta y se abre.</p>
+  </div>
+
+  <div class="concepto">
+    <div class="term">5 · Carpeta de proyecto</div>
+    <p style="margin:0;">La carpeta donde vive tu trabajo. Claude Code <strong>solo toca los archivos de la carpeta donde lo abriste</strong> — no anda husmeando en el resto de tu computadora. Por eso la regla de oro es: párate primero en la carpeta correcta, y ahí escribe <code>claude</code>.</p>
+  </div>
+
+  <div class="concepto">
+    <div class="term">6 · Prompt</div>
+    <p style="margin:0;">Lo que tú le pides, escrito en español normal. No hay que aprenderse fórmulas. "Hazme una lista de 5 ejercicios de equilibrio para pacientes con Parkinson" es un prompt perfecto.</p>
+  </div>
+
+  <div class="concepto">
+    <div class="term">7 · Permisos</div>
+    <p style="margin:0;">Antes de crear, cambiar o borrar cualquier archivo, Claude <strong>te pregunta</strong> y tú decides con las flechas y Enter. No hace nada a tus espaldas.</p>
+  </div>
+
+  <div class="concepto">
+    <div class="term">8 · Sesión</div>
+    <p style="margin:0;">Una conversación completa, desde que abres Claude hasta que lo cierras. Mientras dura, Claude se acuerda de todo lo que hablaron. Cuando cierras, esa memoria se limpia.</p>
+  </div>
+
+  <h3>¿Y qué es un VPN? (para quien esté en Venezuela)</h3>
+  <p>Un VPN hace que tu internet salga por otro país. Anthropic — la empresa de Claude — no da servicio en Venezuela, así que sin VPN la página ni siquiera carga. Con el VPN prendido, para ellos tú estás conectada desde Estados Unidos o España, y todo funciona normal.</p>
+  <div class="callout blue">
+    <strong>Importante:</strong> el VPN tiene que estar prendido <em>siempre</em> que vayas a usar Claude — no solo el día que creas la cuenta. Si un día no te funciona, lo primero que revisas es si el VPN está conectado.
+  </div>
+
+  <h3>¿Y Node.js y npm?</h3>
+  <p>Los vas a oír nombrar. Son herramientas técnicas que <strong>hoy probablemente no vas a necesitar</strong>: hay una forma de instalar Claude Code de un solo comando que no las requiere. Solo aparecen en esta guía como plan B, por si el camino principal falla.</p>
+
+  <!-- ============ PASO 1 — VPN ============ -->
+  <h2 id="p2">Paso 1 — VPN <span style="font-size:0.7em;color:var(--red);">(solo Venezuela)</span></h2>
+  <p style="color:#aaa;">Si estás en Florida, Chicago o cualquier otro lugar fuera de Venezuela, <a href="#p3">salta al Paso 2</a>.</p>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">1</div>
+      <div class="paso-title">Deja el VPN conectado antes de tocar cualquier otra cosa</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) Abre tu aplicación de VPN</div>
+      <p>Proton VPN o Surfshark, la que ya tengas instalada.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">b) Conéctate a un servidor de Estados Unidos</div>
+      <p>Si Estados Unidos no te conecta o va muy lento, prueba con España. Cualquiera de los dos sirve.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">c) Comprueba que de verdad quedó conectado</div>
+      <p>Abre el navegador y entra a <code>claude.ai</code>. Si la página carga, el VPN está haciendo su trabajo.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> la aplicación del VPN diciendo "Conectado" o "Protegido", y la página de Claude abriendo normal en el navegador.
+    </div>
+
+    <div class="callout red">
+      <strong>Si claude.ai no abre:</strong> desconecta el VPN, vuelve a conectarlo, y prueba con otro servidor. Si sigue sin abrir, escribe al grupo antes de seguir — de aquí para adelante nada va a funcionar.
+    </div>
+  </div>
+
+  <p>¿Todavía no tienes VPN instalado? Está todo en la guía aparte:
+    <a href="guide-paso-a-paso-vpn-proton.html">Paso a paso del VPN con Proton</a> ·
+    <a href="guide-instalar-proton-surfshark-venezuela.html">Instalar Proton o Surfshark</a>
+  </p>
+
+  <!-- ============ PASO 2 — CUENTA ============ -->
+  <h2 id="p3">Paso 2 — Cuenta de Claude y plan pago</h2>
+  <p>Claude Code <strong>no funciona con la cuenta gratis</strong>. Necesitas el plan pago. Es el requisito, no hay vuelta.</p>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">2</div>
+      <div class="paso-title">Crea tu cuenta</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) Abre el navegador y entra a claude.ai</div>
+      <p>Chrome, Edge, Safari — el que uses normalmente.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">b) Haz clic en "Sign up" (registrarse)</div>
+      <p>Puedes usar tu correo, o el botón de "Continue with Google" si tienes Gmail. Con Google es más rápido y no tienes que inventar contraseña nueva.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">c) Confirma tu correo</div>
+      <p>Te llega un mensaje con un código o un enlace. Si no aparece en dos minutos, revisa la carpeta de spam o correo no deseado.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">d) Anota el correo y la contraseña en tu papel</div>
+      <p>Este es el paso que todo el mundo se salta y del que después todo el mundo se arrepiente.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> la pantalla del chat de Claude, con tu nombre o tu correo arriba a la derecha.
+    </div>
+  </div>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">3</div>
+      <div class="paso-title">Activa el plan pago (Claude Pro)</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) Busca "Upgrade" o "Plan" en el menú de tu cuenta</div>
+      <p>Está en el ícono de tu perfil, arriba a la derecha, o abajo a la izquierda según la pantalla.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">b) Elige Claude Pro</div>
+      <div class="tabla-wrap">
+        <table>
+          <tr><th>Plan</th><th>Precio</th><th>¿Sirve para Claude Code?</th></tr>
+          <tr><td class="mono">Gratis</td><td>US$0</td><td style="color:var(--red);">No. No alcanza.</td></tr>
+          <tr><td class="mono">Pro</td><td>~US$20/mes (unos US$22 con impuesto)</td><td style="color:var(--green);">Sí. Este es el nuestro.</td></tr>
+          <tr><td class="mono">Max</td><td>US$100–200/mes</td><td>Sí, pero es para quien programa todo el día. No lo necesitas.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">c) Paga</div>
+      <p>Tarjeta de crédito o débito internacional. Si estás en Venezuela y tu tarjeta no pasa, no insistas cinco veces seguidas — habla con Edgar, hay otras formas de resolverlo.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> en tu cuenta, la palabra <strong>Pro</strong> al lado de tu nombre.
+    </div>
+
+    <div class="callout blue">
+      <strong>Sobre los límites:</strong> el plan Pro te da una cuota de uso que se renueva cada pocas horas. Para el trabajo normal de nuestros proyectos alcanza de sobra. Si un día te dice que llegaste al límite, no está roto — espera un rato y sigue.
+    </div>
+  </div>
+
+  <!-- ============ PASO 3 — TERMINAL ============ -->
+  <h2 id="p4">Paso 3 — Abrir la terminal por primera vez</h2>
+  <p>Este es el paso que más nervios da y el más inofensivo de todos. Abrir la terminal no hace absolutamente nada. Es una ventana vacía esperando que le escribas.</p>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">4</div>
+      <div class="paso-title">Abre la terminal</div>
+    </div>
+
+    <div class="os-tabs"><span class="os-pill os-win">Si tienes Windows</span></div>
+    <div class="sub">
+      <div class="sub-title">a) Presiona la tecla Windows</div>
+      <p>La del logo de ventanitas, abajo a la izquierda del teclado. O haz clic en el ícono de Windows de la barra de abajo.</p>
+    </div>
+    <div class="sub">
+      <div class="sub-title">b) Escribe: powershell</div>
+      <p>No hace falta abrir nada primero — apenas empiezas a escribir, Windows busca.</p>
+    </div>
+    <div class="sub">
+      <div class="sub-title">c) Haz clic en "Windows PowerShell" y dale Enter</div>
+      <p>Se abre una ventana azul o negra con unas letras. Esa es.</p>
+    </div>
+
+    <div class="os-tabs"><span class="os-pill os-mac">Si tienes Mac</span></div>
+    <div class="sub">
+      <div class="sub-title">a) Presiona Command + barra espaciadora</div>
+      <p>Se abre el buscador de Mac (Spotlight), en el centro de la pantalla.</p>
+    </div>
+    <div class="sub">
+      <div class="sub-title">b) Escribe: terminal</div>
+    </div>
+    <div class="sub">
+      <div class="sub-title">c) Dale Enter</div>
+      <p>Se abre una ventana blanca o negra con letras. Esa es.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> una ventana con texto y una línea al final que termina en <code>&gt;</code> o en <code>$</code>, con el cursor parpadeando. Eso significa "estoy lista, escríbeme algo".
+    </div>
+
+    <div class="console-mock">
+      <div class="console-titlebar"><span>Windows PowerShell</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot" style="background:#e57373"></div></div></div>
+      <div class="console-body"><span class="path">PS C:\Users\Nersy&gt;</span> _</div>
+    </div>
+    <p class="console-cap">El texto de la izquierda te dice en qué carpeta estás parada. Ahorita estás en tu carpeta personal.</p>
+  </div>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">5</div>
+      <div class="paso-title">Prueba que no muerde — escribe tu primer comando</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) Escribe esta palabra y dale Enter</div>
+      <pre>pwd</pre>
+      <p>Te responde con la ruta de la carpeta donde estás parada. No cambió nada, solo te informó.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">b) Ahora escribe este otro y dale Enter</div>
+      <div class="os-tabs" style="margin-bottom:6px;"><span class="os-pill os-win">Windows</span></div>
+      <pre>dir</pre>
+      <div class="os-tabs" style="margin-bottom:6px;"><span class="os-pill os-mac">Mac</span></div>
+      <pre>ls</pre>
+      <p>Te lista lo que hay en esa carpeta: Documentos, Descargas, Escritorio… las mismas carpetas que ves con el mouse.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> una lista de nombres de carpetas. Y con eso ya entendiste la terminal: le preguntas, te responde.
+    </div>
+
+    <div class="callout green">
+      <strong>Dos teclas que te van a salvar desde ahora:</strong><br>
+      <strong>Flecha arriba ↑</strong> — trae el último comando que escribiste, para no escribirlo otra vez.<br>
+      <strong>Ctrl + C</strong> (en Mac también Ctrl + C, no Command) — cancela lo que esté corriendo. Tu botón de pánico.
+    </div>
+  </div>
+
+  <!-- ============ PASO 4 — INSTALAR ============ -->
+  <h2 id="p5">Paso 4 — Instalar Claude Code</h2>
+  <p>Un solo comando. Lo copias, lo pegas en la terminal, le das Enter, y esperas.</p>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">6</div>
+      <div class="paso-title">Pega el comando de instalación</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) Copia el comando que corresponde a tu computadora</div>
+      <div class="os-tabs" style="margin-bottom:6px;"><span class="os-pill os-win">Windows</span></div>
+      <pre>irm https://claude.ai/install.ps1 | iex</pre>
+      <div class="os-tabs" style="margin-bottom:6px;"><span class="os-pill os-mac">Mac</span></div>
+      <pre>curl -fsSL https://claude.ai/install.sh | bash</pre>
+      <p style="color:#aaa;font-size:0.9em;">Traducido: "descarga el instalador oficial de Claude desde internet y ejecútalo". Eso es todo lo que hace.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">b) Pégalo en la terminal</div>
+      <p><strong>Windows:</strong> haz clic derecho dentro de la ventana — con eso pega. También sirve Ctrl + V.<br>
+      <strong>Mac:</strong> Command + V.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">c) Dale Enter y espera</div>
+      <p>Van a pasar montones de líneas de texto volando. <strong>Es normal.</strong> No toques nada, no cierres la ventana. Puede tardar entre uno y cinco minutos según tu internet.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">d) Cuando termine, cierra la terminal y vuélvela a abrir</div>
+      <p>Este paso parece bobo y es el que más gente se salta. La terminal necesita volver a arrancar para darse cuenta de que hay un programa nuevo. Ciérrala con la X y ábrela otra vez como en el Paso 3.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> un mensaje al final tipo "installed successfully" o "Claude Code installed", y que la terminal te devuelva el cursor parpadeando.
+    </div>
+
+    <div class="callout">
+      <strong>Plan B, solo si el comando de arriba falla:</strong> existe otra forma que usa una herramienta llamada Node.js. Primero instalas Node desde <code>nodejs.org</code> (la versión que dice <strong>LTS</strong>), reinicias la terminal, y después pegas:
+      <pre style="margin-top:8px;">npm install -g @anthropic-ai/claude-code</pre>
+      No te compliques con esto si el primer comando funcionó.
+    </div>
+
+    <div class="callout red">
+      <strong>Venezuela:</strong> si la descarga se queda pegada o da error de conexión, casi siempre es el VPN. Revisa que siga conectado, cambia de servidor y vuelve a intentar.
+    </div>
+  </div>
+
+  <!-- ============ PASO 5 — VERIFICAR ============ -->
+  <h2 id="p6">Paso 5 — Comprobar que quedó instalado</h2>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">7</div>
+      <div class="paso-title">Pregúntale la versión</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) En la terminal recién abierta, escribe:</div>
+      <pre>claude --version</pre>
+      <p>Son dos guiones seguidos antes de la palabra <code>version</code>. Sin espacio entre ellos.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> un número, algo como <code>2.0.14</code>. El número exacto no importa. Que aparezca un número, sí.
+    </div>
+
+    <div class="callout red">
+      <strong>Si dice "no se reconoce como un comando"</strong> (o <code>command not found</code>): casi siempre es que no cerraste y volviste a abrir la terminal. Ciérrala completa y ábrela de nuevo. Si después de eso sigue igual, mándale una foto de la pantalla al grupo.
+    </div>
+  </div>
+
+  <!-- ============ PASO 6 — LOGIN ============ -->
+  <h2 id="p7">Paso 6 — Conectar tu cuenta</h2>
+  <p>El programa ya está en tu máquina, pero todavía no sabe quién eres. Esto se hace una sola vez.</p>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">8</div>
+      <div class="paso-title">Inicia sesión</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) Escribe la palabra mágica y dale Enter</div>
+      <pre>claude</pre>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">b) Elige "Claude account with subscription"</div>
+      <p>Te va a preguntar cómo quieres conectarte. Mueves con las flechas ↑ ↓ y eliges con Enter. La opción correcta es la de <strong>cuenta con suscripción</strong>, no la de API.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">c) Se abre tu navegador solo</div>
+      <p>Aparece una página de Anthropic pidiéndote autorizar. Si no se abre sola, la terminal te muestra un enlace largo: cópialo y pégalo en el navegador.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">d) Haz clic en "Authorize"</div>
+      <p>Inicia sesión con la misma cuenta Pro del Paso 2. Ojo: <em>la misma</em>. Si tienes dos correos, es fácil equivocarse aquí.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">e) Vuelve a la terminal</div>
+      <p>Sola se conecta. Puede que te pida pegar un código que te muestra el navegador — si es así, cópialo y pégalo en la terminal.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> la pantalla de bienvenida de Claude Code, con un recuadro abajo donde escribir. Ahí ya estás <em>adentro</em> de Claude.
+    </div>
+
+    <div class="callout red">
+      <strong>Si dice que no tienes acceso:</strong> te conectaste con una cuenta que no tiene el plan Pro. Escribe <code>/logout</code>, dale Enter, y vuelve a empezar este paso con el correo correcto.
+    </div>
+  </div>
+
+  <!-- ============ PASO 7 — CARPETA ============ -->
+  <h2 id="p8">Paso 7 — Crear la carpeta de tu proyecto</h2>
+  <p>Regla de oro: <strong>Claude trabaja en la carpeta donde tú lo abriste</strong>. Así que primero creamos la carpeta, después nos paramos adentro, y ahí sí lo abrimos.</p>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">9</div>
+      <div class="paso-title">Crea la carpeta y párate adentro</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) Si estás dentro de Claude, sal primero</div>
+      <p>Escribe <code>/exit</code> y dale Enter. Vuelves a la terminal normal.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">b) Crea la carpeta</div>
+      <pre>mkdir mi-proyecto</pre>
+      <p><code>mkdir</code> es "make directory" — crear carpeta. Ponle el nombre de tu proyecto de verdad, sin espacios y sin acentos:</p>
+      <ul class="plain">
+        <li>Nersy → <code>mkdir parkinson-fitness</code></li>
+        <li>Zenaida → <code>mkdir tuenfermera</code></li>
+        <li>Elvira → <code>mkdir elvisness</code></li>
+      </ul>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">c) Entra a la carpeta</div>
+      <pre>cd mi-proyecto</pre>
+      <p><code>cd</code> es "change directory" — cambiar de carpeta. Es el comando que más vas a usar en tu vida.</p>
+      <p class="callout blue" style="margin-top:10px;"><strong>Truco:</strong> escribe <code>cd mi</code> y presiona la tecla <strong>Tab</strong>. Te completa el nombre solita. Así nunca lo escribes mal.</p>
+    </div>
+
+    <div class="ver">
+      <strong>Debes ver:</strong> que el texto de la izquierda cambió y ahora termina en el nombre de tu carpeta. Ejemplo: <code>PS C:\Users\Nersy\parkinson-fitness&gt;</code>. Eso significa "estoy parada adentro".
+    </div>
+
+    <div class="console-mock">
+      <div class="console-titlebar"><span>Windows PowerShell</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot" style="background:#e57373"></div></div></div>
+      <div class="console-body"><span class="path">PS C:\Users\Nersy&gt;</span> mkdir parkinson-fitness
+<span class="path">PS C:\Users\Nersy&gt;</span> cd parkinson-fitness
+<span class="path">PS C:\Users\Nersy\parkinson-fitness&gt;</span> claude
+<span class="ok">✓ Claude Code listo. ¿En qué te ayudo?</span></div>
+    </div>
+    <p class="console-cap">Fíjate cómo cambia el texto de la izquierda al entrar a la carpeta. Ese detalle es todo.</p>
+  </div>
+
+  <!-- ============ PASO 8 — PRIMERA TAREA ============ -->
+  <h2 id="p9">Paso 8 — Tu primera tarea con Claude</h2>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">10</div>
+      <div class="paso-title">Pídele algo de verdad</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">a) Estando parada en tu carpeta, abre Claude</div>
+      <pre>claude</pre>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">b) Escríbele en español, normal, y dale Enter</div>
+      <pre>Crea un archivo hola.txt que diga: Funciona</pre>
+      <p>Sin comandos raros. Como le escribirías a una persona por WhatsApp.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">c) Claude te va a pedir permiso</div>
+      <p>Aparece un recuadro preguntando si puede crear el archivo, con opciones tipo "Yes" / "No". Te mueves con las flechas ↑ ↓ y eliges con <strong>Enter</strong>. Dile que sí.</p>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">d) Comprueba con tus propios ojos</div>
+      <p>Abre el explorador de archivos con el mouse, entra a tu carpeta, y ahí debe estar <code>hola.txt</code>. Ábrelo: dice "Funciona".</p>
+    </div>
+
+    <div class="ver">
+      <strong>Si el archivo está ahí — terminaste.</strong> Claude Code está instalado, conectado, y trabajando en tu computadora. Manda una captura de pantalla al grupo para que sepamos que te funcionó.
+    </div>
+  </div>
+
+  <div class="paso">
+    <div class="paso-head">
+      <div class="paso-num">11</div>
+      <div class="paso-title">Ahora pídele algo de tu proyecto</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">Ejemplos reales, no de mentira</div>
+      <pre><span class="c"># Nersy</span>
+Hazme un archivo ejercicios-equilibrio.md con 5 ejercicios
+de equilibrio para personas con Parkinson mayores de 60 años,
+explicados en lenguaje sencillo.
+
+<span class="c"># Zenaida</span>
+Escríbeme 7 ideas de publicaciones para mi Instagram de
+enfermería, una por cada día de la semana, y guárdalas
+en un archivo ideas-semana.md
+
+<span class="c"># Elvira</span>
+Créame un archivo con los textos de la página principal
+de Elvisness: título, tres beneficios y una llamada a la acción.</pre>
+    </div>
+
+    <div class="callout green">
+      <strong>Y ahí está la gracia:</strong> le pediste algo en español y te quedó un archivo real, en tu computadora, que puedes abrir, editar y usar. Eso es lo que el chat no hace.
+    </div>
+  </div>
+
+  <!-- ============ USO BÁSICO ============ -->
+  <h2 id="p10">Uso básico — cómo se trabaja con Claude Code</h2>
+
+  <h3>Los comandos de la terminal que necesitas (son seis)</h3>
+  <div class="tabla-wrap">
+    <table>
+      <tr><th>Windows</th><th>Mac</th><th>Qué hace</th></tr>
+      <tr><td class="mono">pwd</td><td class="mono">pwd</td><td>Te dice en qué carpeta estás parada</td></tr>
+      <tr><td class="mono">dir</td><td class="mono">ls</td><td>Lista lo que hay en esta carpeta</td></tr>
+      <tr><td class="mono">cd nombre</td><td class="mono">cd nombre</td><td>Entra a esa carpeta</td></tr>
+      <tr><td class="mono">cd ..</td><td class="mono">cd ..</td><td>Sale una carpeta hacia atrás (los dos puntos son parte del comando)</td></tr>
+      <tr><td class="mono">mkdir nombre</td><td class="mono">mkdir nombre</td><td>Crea una carpeta nueva aquí mismo</td></tr>
+      <tr><td class="mono">cls</td><td class="mono">clear</td><td>Limpia la pantalla. No borra nada, solo ordena la vista</td></tr>
+    </table>
+  </div>
+  <div class="callout red">
+    <strong>Si el nombre tiene espacios,</strong> ponlo entre comillas: <code>cd "mi proyecto"</code>. Por eso conviene ponerle nombres sin espacios a tus carpetas.
+  </div>
+
+  <h3>Las teclas que valen más que los comandos</h3>
+  <div class="tabla-wrap">
+    <table>
+      <tr><th>Tecla</th><th>Qué hace</th></tr>
+      <tr><td class="mono">Flecha arriba ↑</td><td>Trae el comando anterior. No lo vuelvas a escribir.</td></tr>
+      <tr><td class="mono">Tab</td><td>Completa el nombre de la carpeta por ti. Escribe las primeras letras y dale Tab.</td></tr>
+      <tr><td class="mono">Ctrl + C</td><td>Cancela lo que esté corriendo. Tu botón de pánico.</td></tr>
+      <tr><td class="mono">Esc</td><td>Dentro de Claude: lo detiene si arrancó a hacer algo que no querías.</td></tr>
+      <tr><td class="mono">Enter</td><td>Ejecuta. Hasta que no le das Enter, no pasa nada.</td></tr>
+    </table>
+  </div>
+
+  <h3>Los comandos de Claude (empiezan con barra <code>/</code>)</h3>
+  <p>La barra le avisa a Claude que eso es una orden para el programa, no una pregunta para él.</p>
+  <div class="tabla-wrap">
+    <table>
+      <tr><th>Comando</th><th>Qué hace</th></tr>
+      <tr><td class="mono">/help</td><td>Muestra la lista de todo lo que puedes escribir</td></tr>
+      <tr><td class="mono">/clear</td><td>Borra la conversación y empieza de cero, sin cerrar Claude</td></tr>
+      <tr><td class="mono">/login</td><td>Conecta tu cuenta. Se usa la primera vez o si te desconectaste</td></tr>
+      <tr><td class="mono">/logout</td><td>Desconecta la cuenta actual</td></tr>
+      <tr><td class="mono">/status</td><td>Te dice con qué cuenta estás conectada y cómo va tu uso</td></tr>
+      <tr><td class="mono">/exit</td><td>Cierra Claude y te devuelve a la terminal</td></tr>
+    </table>
+  </div>
+  <div class="callout blue">
+    <strong>/clear es tu mejor amigo.</strong> Cuando cambies de tema, límpiala. Claude se enfoca mejor y trabaja más rápido.
+  </div>
+
+  <h3>Cómo se le pide bien</h3>
+  <div class="card">
+    <ul class="plain">
+      <li><strong>Escribe en español normal.</strong> No hay fórmulas mágicas. Escríbele como le escribirías a un asistente nuevo.</li>
+      <li><strong>Di para quién es.</strong> "para personas mayores de 60 con Parkinson" da un resultado muy distinto de "para pacientes".</li>
+      <li><strong>Di el formato.</strong> "en una lista de 5 puntos", "en un archivo que se llame X", "corto, para Instagram".</li>
+      <li><strong>Corrige sobre la marcha.</strong> "Más corto". "Cámbiale el título". "Quítale los tecnicismos". Él se acuerda de lo anterior.</li>
+      <li><strong>Si no te gustó, dilo.</strong> No hay que empezar de cero. Sigue conversando.</li>
+    </ul>
+  </div>
+
+  <h3>Lo que Claude te va a preguntar</h3>
+  <p>Cada vez que vaya a crear, cambiar o borrar un archivo, aparece un recuadro pidiéndote permiso. Tú decides con las flechas y Enter.</p>
+  <div class="callout">
+    <strong>Al principio dile que sí a cada cosa, una por una,</strong> y ve mirando qué hace. Cuando le agarres confianza, hay opciones para no preguntar cada vez. Pero eso es para más adelante — por ahora, mira cada paso.
+  </div>
+
+  <h3>La rutina de todos los días</h3>
+  <pre><span class="c"># 1. (Solo Venezuela) Prende el VPN</span>
+
+<span class="c"># 2. Abre la terminal</span>
+
+<span class="c"># 3. Párate en tu carpeta</span>
+cd mi-proyecto
+
+<span class="c"># 4. Abre Claude</span>
+claude
+
+<span class="c"># 5. Pídele lo que necesites, en español</span>
+
+<span class="c"># 6. Cuando termines</span>
+/exit</pre>
+  <div class="callout green">
+    <strong>Eso es todo.</strong> Seis pasos, y cuatro de ellos son un clic. En una semana lo haces sin pensar.
+  </div>
+
+  <!-- ============ PROBLEMAS ============ -->
+  <h2 id="p11">Cuando algo sale mal</h2>
+  <div class="tabla-wrap">
+    <table>
+      <tr><th>Lo que ves</th><th>Qué hacer</th></tr>
+      <tr><td class="mono">'claude' no se reconoce</td><td>Cierra la terminal completa y ábrela otra vez. Es el 90% de los casos.</td></tr>
+      <tr><td class="mono">command not found: claude</td><td>Lo mismo, en Mac. Cierra y abre la terminal.</td></tr>
+      <tr><td class="mono">'npm' no se reconoce</td><td>Solo aplica si usaste el plan B. Falta instalar Node.js desde nodejs.org (versión LTS) y reiniciar la terminal.</td></tr>
+      <tr><td>No pasa nada al pegar el comando en Windows</td><td>Ejecuta <code>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code>, responde <code>S</code> o <code>Y</code>, y vuelve a intentar.</td></tr>
+      <tr><td>Dice que no tienes acceso o que necesitas suscripción</td><td>Te conectaste con la cuenta equivocada. <code>/logout</code> y vuelve a entrar con el correo del plan Pro.</td></tr>
+      <tr><td>La descarga se queda pegada</td><td>Venezuela: revisa el VPN y cambia de servidor. Fuera de Venezuela: revisa tu internet y vuelve a intentar.</td></tr>
+      <tr><td>El antivirus bloquea la instalación</td><td>Permítelo esta vez, o usa el plan B con npm.</td></tr>
+      <tr><td>Claude no encuentra tus archivos</td><td>Abriste Claude parada en la carpeta equivocada. <code>/exit</code>, <code>cd</code> a la carpeta correcta, y abre <code>claude</code> otra vez.</td></tr>
+      <tr><td>Se quedó pensando y no para</td><td><strong>Esc</strong> para detenerlo. Si no responde, <strong>Ctrl + C</strong>.</td></tr>
+      <tr><td>Dice que llegaste al límite de uso</td><td>Normal en el plan Pro. Espera unas horas y vuelve. No está roto.</td></tr>
+    </table>
+  </div>
+
+  <div class="callout blue">
+    <strong>Regla de la casa:</strong> antes de pelear media hora sola, manda una foto de la pantalla al grupo. Nadie se queda atrás — pero para ayudarte hay que ver qué dice el error.
+  </div>
+
+  <!-- ============ PRÁCTICA ============ -->
+  <h2 id="p12">Tu práctica de la semana</h2>
+  <div class="card">
+    <ul class="check">
+      <li>Abre Claude Code al menos tres días distintos, aunque sea cinco minutos. La meta de esta semana es perderle el miedo a la terminal, nada más.</li>
+      <li>Practica moverte: <code>cd</code>, <code>cd ..</code>, <code>dir</code> o <code>ls</code>, y <code>pwd</code> cuando te pierdas.</li>
+      <li>Pídele a Claude tres cosas de tu proyecto real. Una fácil, una mediana, y una que creas que no va a poder.</li>
+      <li>Anota en un papel las dudas que te salgan. Esas las resolvemos en tu sesión individual.</li>
+    </ul>
+  </div>
+
+  <h3>Para pensar antes de la próxima sesión</h3>
+  <p>¿Qué cosa haces todas las semanas en tu proyecto, que te quita tiempo y siempre es igual? Esa es la primera que vamos a automatizar.</p>
+
+  <footer>
+    ayayai · Temporada 2 · Claude Code<br>
+    ¿Trancada con algo? Escribe al grupo con una foto de la pantalla. Nadie se queda atrás.
+  </footer>
+
+</div>
+
+</body>
+</html>
