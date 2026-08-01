@@ -407,6 +407,30 @@ instalar <span class="hl">Proton VPN</span> y entrar
       Proton VPN.
     </div>
   </section>
+
+  <section>
+    <div class="slide-label">03 · Tu cuenta Proton</div>
+    <h3><span class="dev dev-movil">📱 Teléfono</span> Si el correo te pide una clave extra</h3>
+    <p>Al entrar a Proton Mail desde el teléfono puede salirte <strong>"Desbloquear datos"</strong>
+      o un botón que dice <strong>"No bloquear de nuevo"</strong>. Eso no es un bloqueo de
+      internet ni tiene que ver con la VPN: es el correo ofreciéndote ponerle una clave propia
+      a la app.</p>
+    <table class="tool-table">
+      <tr><th>Lo que te sale</th><th>Qué hacés</th></tr>
+      <tr><td class="tool-desc">"No bloquear de nuevo"</td><td class="tool-desc">Tocalo. Así no te lo vuelve a pedir</td></tr>
+      <tr><td class="tool-desc">"Desbloquear datos"</td><td class="tool-desc">Poné la misma clave de tu cuenta Proton, o la huella / cara</td></tr>
+      <tr><td class="tool-desc">Ya no te deja entrar</td><td class="tool-desc">Cerrá sesión y volvé a entrar con tu @proton.me</td></tr>
+    </table>
+    <div class="callout blue">
+      <strong>No le pongas clave extra a la app.</strong> El teléfono ya tiene la suya, y si la
+      olvidás te quedás afuera del correo donde está la invitación. Tu clave de Proton bien
+      guardada es la que de verdad protege la cuenta.
+    </div>
+    <div class="callout green">
+      <strong>El atajo:</strong> aceptá la invitación desde el navegador, en mail.proton.me. Ahí
+      nunca te pide nada de esto.
+    </div>
+  </section>
 </section>
 
 <!-- SECCIÓN 4 -->
@@ -450,6 +474,26 @@ instalar <span class="hl">Proton VPN</span> y entrar
 
   <section>
     <div class="slide-label">04 · Proton VPN</div>
+    <h3><span class="dev dev-movil">📱 Teléfono</span> Comprobá que la invitación agarró</h3>
+    <p>Entrá a los ajustes de Proton VPN y mirá si hay <strong>candados azules</strong> — un
+      símbolo con un "+" al lado de NetShield, VPN Accelerator, NAT moderada, DNS personalizado.</p>
+    <table class="tool-table">
+      <tr><th>Lo que ves</th><th>Qué significa</th></tr>
+      <tr><td class="tool-desc">Sin candados</td><td class="tool-desc">✅ Estás en el plan completo. Seguí</td></tr>
+      <tr><td class="tool-desc">Candados con "+"</td><td class="tool-desc">❌ La app entró con la cuenta gratis</td></tr>
+    </table>
+    <div class="callout red">
+      <strong>Si ves candados, no sigas.</strong> Falta aceptar la invitación, o la app quedó
+      con otra cuenta. Volvé a mail.proton.me, aceptala, y en la app cerrá sesión y entrá otra vez.
+    </div>
+    <div class="callout blue">
+      <strong>La otra señal:</strong> en la cuenta gratis <strong>no aparece Colombia</strong> en
+      la lista de países. Si no la ves, es lo mismo — todavía estás en gratis.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Proton VPN</div>
     <h3><span class="dev dev-movil">📱 Teléfono</span> Activar Stealth</h3>
     <p>Este ajuste es el que hace que funcione en Venezuela. Sin él, CANTV la reconoce y la corta.</p>
     <div class="workflow-step">
@@ -464,8 +508,8 @@ instalar <span class="hl">Proton VPN</span> y entrar
     </div>
     <div class="workflow-step">
       <div class="step-num">3</div>
-      <div><div class="step-title">Kill switch en el modo normal, no permanente</div>
-      <div class="step-sub">Settings → Kill switch (dejá apagado "Permanent" / "Always-on")</div></div>
+      <div><div class="step-title">Dejá encendido "Permitir ruta alternativa"</div>
+      <div class="step-sub">Ajustes → Avanzado → Permitir ruta alternativa. Le busca la vuelta cuando bloquean a Proton</div></div>
     </div>
     <div class="workflow-step">
       <div class="step-num">4</div>
@@ -475,6 +519,28 @@ instalar <span class="hl">Proton VPN</span> y entrar
     <div class="callout green">
       <strong>Regla para recordar:</strong> si un día Proton no conecta, lo primero que se
       prueba es que el protocolo esté en Stealth.
+    </div>
+  </section>
+
+  <section>
+    <div class="slide-label">04 · Proton VPN</div>
+    <h3><span class="dev dev-movil">📱 Teléfono</span> El interruptor de bloqueo</h3>
+    <p>También se llama <em>kill switch</em>. Corta todo el internet cuando la VPN se cae.
+      <strong>Nosotros lo dejamos apagado.</strong></p>
+    <table class="tool-table">
+      <tr><th>Teléfono</th><th>Dónde está</th><th>Cómo lo dejás</th></tr>
+      <tr><td class="tool-name">iPhone</td><td class="tool-desc">Proton VPN → Ajustes → Interruptor de bloqueo</td><td class="tool-desc"><strong>Apagado</strong></td></tr>
+      <tr><td class="tool-name">Android</td><td class="tool-desc">No lo maneja Proton. La app te manda a los ajustes del teléfono</td><td class="tool-desc">VPN siempre activa: <strong>encendida</strong><br>Bloquear conexiones sin VPN: <strong>apagado</strong></td></tr>
+    </table>
+    <div class="callout red">
+      <strong>En Venezuela esto muerde.</strong> Si prendés "Bloquear conexiones sin VPN" y un
+      día Proton no conecta, el teléfono se queda sin internet completo — no vas a poder ni
+      abrir la página de Proton para arreglarlo. Con "VPN siempre activa" ya se reconecta sola,
+      que es lo que necesitamos.
+    </div>
+    <div class="callout blue">
+      <strong>Lo que estás cediendo:</strong> mientras se reconecta, unos segundos de tu internet
+      salen sin disfrazar. Para lo nuestro — entrar a Claude — no es problema.
     </div>
   </section>
 </section>
@@ -524,7 +590,8 @@ instalar <span class="hl">Proton VPN</span> y entrar
     <table class="tool-table">
       <tr><th>Ajuste</th><th>Surfshark</th><th>Proton VPN</th></tr>
       <tr><td class="tool-desc">Cuenta</td><td class="tool-desc">la del grupo</td><td class="tool-desc"><strong>la tuya</strong></td></tr>
-      <tr><td class="tool-desc">Kill switch</td><td class="tool-desc">Soft</td><td class="tool-desc">normal, no permanente</td></tr>
+      <tr><td class="tool-desc">Kill switch</td><td class="tool-desc">Soft</td><td class="tool-desc"><strong>apagado</strong></td></tr>
+      <tr><td class="tool-desc">Ruta alternativa</td><td class="tool-desc">—</td><td class="tool-desc">encendida</td></tr>
       <tr><td class="tool-desc">Auto-connect</td><td class="tool-desc">encendido</td><td class="tool-desc">encendido</td></tr>
       <tr><td class="tool-desc">Protocolo</td><td class="tool-desc">WireGuard</td><td class="tool-desc"><strong>Stealth</strong></td></tr>
       <tr><td class="tool-desc">País</td><td class="tool-desc">Colombia</td><td class="tool-desc">Colombia</td></tr>
@@ -561,6 +628,10 @@ buscar <span class="s">"cuál es mi ip"</span>
       <span class="pill">2 · cambiar de país</span>
       <span class="pill">3 · abrir la otra app</span>
       <span class="pill">4 · escribir al grupo</span>
+      <h4 style="margin-top:10px;">Señales de que algo quedó a medias</h4>
+      <span class="pill">candados azules "+" = cuenta gratis</span>
+      <span class="pill">no aparece Colombia = cuenta gratis</span>
+      <span class="pill">sin internet = kill switch prendido</span>
     </div>
     <div class="col-card">
       <h4>Las cuentas</h4>
@@ -568,7 +639,9 @@ buscar <span class="s">"cuál es mi ip"</span>
       <span class="pill">Proton: tuya, tu clave</span>
       <span class="pill">La clave nunca por WhatsApp</span>
       <h4 style="margin-top:10px;">Ajustes fijos</h4>
-      <span class="pill">Kill switch: Soft</span>
+      <span class="pill">Surfshark kill switch: Soft</span>
+      <span class="pill">Proton kill switch: apagado</span>
+      <span class="pill">Ruta alternativa: ON</span>
       <span class="pill">Auto-connect: ON</span>
       <span class="pill">Proton: Stealth</span>
       <span class="pill">Surfshark: WireGuard</span>
